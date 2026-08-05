@@ -25,7 +25,22 @@ from config.env_contract import (
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv(BASE_DIR / ".env")
+# The launcher/service may select one external env file.
+# This selector is intentionally not read from an env file.
+QLKLT_ENV_FILE = os.getenv("QLKLT_ENV_FILE", "").strip()
+if QLKLT_ENV_FILE:
+    _QLKLT_ENV_PATH = Path(QLKLT_ENV_FILE).expanduser()
+    if not _QLKLT_ENV_PATH.is_absolute():
+        _QLKLT_ENV_PATH = BASE_DIR / _QLKLT_ENV_PATH
+    _QLKLT_ENV_PATH = _QLKLT_ENV_PATH.resolve()
+    if not _QLKLT_ENV_PATH.is_file():
+        raise RuntimeError(
+            f"QLKLT_ENV_FILE does not exist or is not a file: {_QLKLT_ENV_PATH}"
+        )
+else:
+    _QLKLT_ENV_PATH = BASE_DIR / ".env"
+
+load_dotenv(dotenv_path=_QLKLT_ENV_PATH, override=False)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/

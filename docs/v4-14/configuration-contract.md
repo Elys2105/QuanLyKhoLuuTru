@@ -29,3 +29,12 @@ Existing installer aliases are accepted temporarily: `DATABASE_*`, `POSTGRES_*`,
 ## Deployment boundary
 
 PACK V4-14-01B V3 changes source only. It does not edit `D:\Server`, connect to a database, migrate data, build installers, or restart services.
+
+
+## Explicit environment file selection
+
+Launchers and Windows services may set `QLKLT_ENV_FILE` to an absolute path such as `D:\QLKLT-V414-Data\config\central.env` before Django starts. When this selector is present, settings load only that file and do not also load `api\.env`.
+
+The selector must be set by the launcher or service and must not be placed inside an env file. If it is absent, local development keeps the existing default of `api\.env`. An explicit path that does not exist causes startup to fail clearly.
+
+This prevents local-development values or transitional aliases such as `MEDIA_ROOT` from being mixed with central values such as `ARCHIVE_STORAGE_ROOT`.
