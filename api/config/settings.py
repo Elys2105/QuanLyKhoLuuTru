@@ -14,6 +14,14 @@ from pathlib import Path
 from datetime import timedelta
 from dotenv import load_dotenv
 import os
+from config.env_contract import (
+    get_app_env,
+    get_env_bool,
+    get_env_csv,
+    get_env_value,
+    resolve_database_config,
+    resolve_storage_root,
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,12 +31,18 @@ load_dotenv(BASE_DIR / ".env")
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key")
+SECRET_KEY = get_env_value(
+    "SECRET_KEY",
+    aliases=("DJANGO_SECRET_KEY",),
+    default="fallback-secret-key",
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG", "False") == "True"
+DEBUG = get_env_bool("DEBUG", aliases=("DJANGO_DEBUG",), default=False)
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+ALLOWED_HOSTS = get_env_csv("ALLOWED_HOSTS", aliases=("DJANGO_ALLOWED_HOSTS",), default="localhost,127.0.0.1")
+APP_ENV = get_app_env()
+CSRF_TRUSTED_ORIGINS = get_env_csv("CSRF_TRUSTED_ORIGINS", default="")
 
 
 # Application definition
@@ -103,26 +117,8 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DB_ENGINE = os.getenv("DB_ENGINE", "sqlite")
-
-if DB_ENGINE == "postgres":
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": os.getenv("DB_NAME"),
-            "USER": os.getenv("DB_USER"),
-            "PASSWORD": os.getenv("DB_PASSWORD"),
-            "HOST": os.getenv("DB_HOST"),
-            "PORT": os.getenv("DB_PORT"),
-        }
-    }
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / os.getenv("DB_NAME", "db.sqlite3"),
-        }
-    }
+DB_ENGINE, _DATABASE_DEFAULT = resolve_database_config(BASE_DIR, app_env=APP_ENV)
+DATABASES = {"default": _DATABASE_DEFAULT}
 
 
 # Password validation
@@ -191,10 +187,10 @@ SPECTACULAR_SETTINGS = {
     "SERVE_INCLUDE_SCHEMA": False,
 }
 
-CORS_ALLOWED_ORIGINS = os.getenv(
+CORS_ALLOWED_ORIGINS = get_env_csv(
     "CORS_ALLOWED_ORIGINS",
-    "http://localhost:3000,http://127.0.0.1:3000",
-).split(",")
+    default="http://localhost:3000,http://127.0.0.1:3000",
+)
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(
@@ -209,8 +205,6 @@ SIMPLE_JWT = {
     "UPDATE_LAST_LOGIN": True,
 }
 
-MEDIA_URL = os.getenv("MEDIA_URL", "/media/")
-MEDIA_ROOT = BASE_DIR / os.getenv("MEDIA_ROOT", "media")
 
 MAX_UPLOAD_SIZE_MB = int(os.getenv("MAX_UPLOAD_SIZE_MB", 100))
 
@@ -226,13 +220,9 @@ def _archive_env_int(name: str, default: int) -> int:
         return default
 
 
-ARCHIVE_STORAGE_ROOT = os.environ.get(
-    "ARCHIVE_STORAGE_ROOT",
-    str(BASE_DIR / "media"),
-)
-
+ARCHIVE_STORAGE_ROOT = resolve_storage_root(BASE_DIR)
 MEDIA_ROOT = ARCHIVE_STORAGE_ROOT
-MEDIA_URL = os.environ.get("MEDIA_URL", "/media/")
+MEDIA_URL = get_env_value("MEDIA_URL", default="/media/")
 
 # Cho phép upload file lớn hơn mặc định. Với file rất lớn, Django vẫn ghi ra file tạm,
 # không giữ toàn bộ trong RAM.
@@ -258,4 +248,3 @@ ARCHIVE_STORAGE_WARNING_PERCENT = _archive_env_int(
     "ARCHIVE_STORAGE_WARNING_PERCENT",
     10,
 )
-
