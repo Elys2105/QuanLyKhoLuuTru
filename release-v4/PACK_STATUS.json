@@ -1,0 +1,26 @@
+{
+    "release_version":  "4.0.0.13",
+    "current_pack":  "V4-13",
+    "current_pack_name":  "Final Rebuild",
+    "status":  "PASS",
+    "completed_packs":  [
+                            "V4-01",
+                            "V4-02",
+                            "V4-03A",
+                            "V4-03B",
+                            "V4-03C",
+                            "V4-04",
+                            "V4-05",
+                            "V4-06",
+                            "V4-07",
+                            "V4-08",
+                            "V4-09",
+                            "V4-10",
+                            "V4-11",
+                            "V4-12",
+                            "V4-13"
+                        ],
+    "next_pack":  "CLEAN_MACHINE_TEST",
+    "output_root":  "D:\\archive-management\\release-v4\\one-click-final-v13\\output",
+    "verified_at":  "2026-07-31T10:32:45.1194201+07:00"
+}

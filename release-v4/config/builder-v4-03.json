@@ -1,0 +1,60 @@
+{
+    "schema_version":  1,
+    "pack":  "V4-03A",
+    "generated_at":  "2026-07-31T00:09:49+07:00",
+    "project_root":  "D:\\archive-management",
+    "release_root":  "D:\\archive-management\\release-v4",
+    "source":  {
+                   "backend":  "D:\\archive-management\\api",
+                   "frontend":  "D:\\archive-management\\web"
+               },
+    "payload":  {
+                    "server":  "D:\\archive-management\\release-v4\\payload\\server",
+                    "client":  "D:\\archive-management\\release-v4\\payload\\client"
+                },
+    "policy":  {
+                   "modify_source":  false,
+                   "include_backend_source":  true,
+                   "include_frontend_source":  true,
+                   "include_current_media":  false,
+                   "include_virtual_environment":  false,
+                   "include_node_modules":  false,
+                   "include_next_build":  false,
+                   "preserve_installed_user_data":  true
+               },
+    "exclusions":  {
+                       "backend_directories":  [
+                                                   ".venv",
+                                                   "venv",
+                                                   "__pycache__",
+                                                   ".pytest_cache",
+                                                   ".mypy_cache",
+                                                   ".ruff_cache",
+                                                   ".git",
+                                                   "media",
+                                                   "staticfiles",
+                                                   "logs",
+                                                   "install-logs"
+                                               ],
+                       "frontend_directories":  [
+                                                    "node_modules",
+                                                    ".next",
+                                                    ".git",
+                                                    "coverage",
+                                                    "dist",
+                                                    "build",
+                                                    "logs",
+                                                    "install-logs"
+                                                ],
+                       "file_patterns":  [
+                                             "*.pyc",
+                                             "*.pyo",
+                                             "*.log",
+                                             "*.tmp",
+                                             "*.bak",
+                                             "*.old",
+                                             "Thumbs.db",
+                                             ".DS_Store"
+                                         ]
+                   }
+}

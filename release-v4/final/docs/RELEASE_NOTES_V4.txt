@@ -1,0 +1,33 @@
+QUAN LY KHO LUU TRU - RELEASE V4
+
+Thanh phan:
+- Server installer
+- Client installer
+- Runtime tools
+- Database tools
+- Windows Services tools
+- Desktop Experience
+- Backup and Restore
+- Server / Client configuration
+- Health Check
+- Updater
+- Uninstaller helper
+
+Luu y:
+- Server installer dung Compression=none va chia thanh nhieu file .bin.
+- Phai giu Setup.exe va tat ca file .bin cung mot thu muc.
+- PostgreSQL service chua duoc phat hien tren may build.
+- Port 5432 tren may build chua listen.
+- NSSM chua co san tren may build.
+- IP 26.65.199.10 thuoc Radmin VPN, khong nen dung mac dinh cho LAN that.
+- api\media hien tai khong nam trong installer.
+- Database va media phai backup/restore bang bo cong cu rieng.
+
+Khuyen nghi truoc khi phat hanh:
+1. Cai thu tren may test sach.
+2. Cau hinh PostgreSQL.
+3. Cai NSSM.
+4. Dang ky Backend/Frontend services.
+5. Chay full health check.
+6. Chay backup test.
+7. Chay restore test tren moi truong test.

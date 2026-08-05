@@ -1,0 +1,47 @@
+{
+    "pack":  "V4-03B",
+    "status":  "PASS",
+    "generated_at":  "2026-07-31T01:00:30.6081750+07:00",
+    "build_mode":  "payload-server-no-compression",
+    "reused_build":  false,
+    "server_source":  "D:\\archive-management\\release-v4\\payload\\server",
+    "server_iss":  "D:\\archive-management\\release-v4\\installer\\inno\\QuanLyKhoLuuTru_Server.iss",
+    "output_directory":  "D:\\archive-management\\release-v4\\installer\\output",
+    "files":  [
+                  {
+                      "name":  "QuanLyKhoLuuTru_Server_V4_03B_Setup.exe",
+                      "path":  "D:\\archive-management\\release-v4\\installer\\output\\QuanLyKhoLuuTru_Server_V4_03B_Setup.exe",
+                      "size_bytes":  5118907,
+                      "size_mb":  4.88,
+                      "sha256":  "991DA7BED934E48B76AB4046B6306FFB03908B10A9A7AD59F668E7812C10BB3E"
+                  },
+                  {
+                      "name":  "QuanLyKhoLuuTru_Server_V4_03B_Setup-1.bin",
+                      "path":  "D:\\archive-management\\release-v4\\installer\\output\\QuanLyKhoLuuTru_Server_V4_03B_Setup-1.bin",
+                      "size_bytes":  1994881024,
+                      "size_mb":  1902.47,
+                      "sha256":  "9CCDB89B01FEFEA1C7ED8AE26D794E8600BAB3F4C3A3282D4D3E18955531E706"
+                  },
+                  {
+                      "name":  "QuanLyKhoLuuTru_Server_V4_03B_Setup-2.bin",
+                      "path":  "D:\\archive-management\\release-v4\\installer\\output\\QuanLyKhoLuuTru_Server_V4_03B_Setup-2.bin",
+                      "size_bytes":  2000000000,
+                      "size_mb":  1907.35,
+                      "sha256":  "777634A56051A5A3A62935106857DE2D97F7A188ADC202FC64CF55CDA05F9B65"
+                  },
+                  {
+                      "name":  "QuanLyKhoLuuTru_Server_V4_03B_Setup-3.bin",
+                      "path":  "D:\\archive-management\\release-v4\\installer\\output\\QuanLyKhoLuuTru_Server_V4_03B_Setup-3.bin",
+                      "size_bytes":  2000000000,
+                      "size_mb":  1907.35,
+                      "sha256":  "FB88C9EC7F45B845707E828858CE33532C6E6783A6B330EDFF703527D7CC6169"
+                  },
+                  {
+                      "name":  "QuanLyKhoLuuTru_Server_V4_03B_Setup-4.bin",
+                      "path":  "D:\\archive-management\\release-v4\\installer\\output\\QuanLyKhoLuuTru_Server_V4_03B_Setup-4.bin",
+                      "size_bytes":  670379371,
+                      "size_mb":  639.32,
+                      "sha256":  "AF320A1F4A4F21FE120465FEA70548155E675706717638EB40CDE615006F3507"
+                  }
+              ]
+}

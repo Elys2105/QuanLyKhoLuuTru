@@ -1,0 +1,108 @@
+﻿
+
+===== .env =====
+
+===== api\.env =====
+api\.env:4: DEBUG=True
+api\.env:6: ALLOWED_HOSTS=localhost,127.0.0.1
+api\.env:9: # DATABASE
+api\.env:10: # Bước 2 tạm thời vẫn dùng SQLite.
+api\.env:11: # Bước 3 sẽ đổi sang PostgreSQL.
+api\.env:13: DB_ENGINE=postgres
+api\.env:17: DB_HOST=localhost
+api\.env:18: DB_PORT=5432
+api\.env:21: # CORS
+api\.env:24: CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+api\.env:36: MEDIA_URL=/media/
+api\.env:42: APP_NAME=Archive Management API
+
+===== api\.env.example =====
+api\.env.example:1: DEBUG=True
+api\.env.example:3: ALLOWED_HOSTS=localhost,127.0.0.1
+api\.env.example:5: DB_ENGINE=sqlite
+api\.env.example:6: DB_NAME=db.sqlite3
+api\.env.example:9: DB_HOST=
+api\.env.example:10: DB_PORT=
+api\.env.example:12: CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+api\.env.example:18: MEDIA_URL=/media/
+api\.env.example:21: APP_NAME=Archive Management API
+
+===== api\.venv_ocr_paddle\Lib\site-packages\cssutils\settings.py =====
+api\.venv_ocr_paddle\Lib\site-packages\cssutils\settings.py:8: enable support for parsing special MS only filter values
+api\.venv_ocr_paddle\Lib\site-packages\cssutils\settings.py:13: from . import cssproductions, tokenize2
+
+===== api\.venv_ocr_paddle\Lib\site-packages\docx\settings.py =====
+api\.venv_ocr_paddle\Lib\site-packages\docx\settings.py:3: from __future__ import annotations
+api\.venv_ocr_paddle\Lib\site-packages\docx\settings.py:5: from typing import TYPE_CHECKING, cast
+api\.venv_ocr_paddle\Lib\site-packages\docx\settings.py:7: from docx.shared import ElementProxy
+api\.venv_ocr_paddle\Lib\site-packages\docx\settings.py:10: import docx.types as t
+api\.venv_ocr_paddle\Lib\site-packages\docx\settings.py:11: from docx.oxml.settings import CT_Settings
+api\.venv_ocr_paddle\Lib\site-packages\docx\settings.py:12: from docx.oxml.xmlchemy import BaseOxmlElement
+
+===== api\.venv_ocr_paddle\Lib\site-packages\docx\oxml\settings.py =====
+api\.venv_ocr_paddle\Lib\site-packages\docx\oxml\settings.py:3: from __future__ import annotations
+api\.venv_ocr_paddle\Lib\site-packages\docx\oxml\settings.py:5: from typing import TYPE_CHECKING, Callable
+api\.venv_ocr_paddle\Lib\site-packages\docx\oxml\settings.py:7: from docx.oxml.xmlchemy import BaseOxmlElement, ZeroOrOne
+api\.venv_ocr_paddle\Lib\site-packages\docx\oxml\settings.py:10: from docx.oxml.shared import CT_OnOff
+api\.venv_ocr_paddle\Lib\site-packages\docx\oxml\settings.py:119: evenAndOddHeaders: CT_OnOff | None = ZeroOrOne(  # pyright: ignore[reportAssignmentType]
+
+===== api\.venv_ocr_paddle\Lib\site-packages\docx\parts\settings.py =====
+api\.venv_ocr_paddle\Lib\site-packages\docx\parts\settings.py:3: from __future__ import annotations
+api\.venv_ocr_paddle\Lib\site-packages\docx\parts\settings.py:5: import os
+api\.venv_ocr_paddle\Lib\site-packages\docx\parts\settings.py:6: from typing import TYPE_CHECKING, cast
+api\.venv_ocr_paddle\Lib\site-packages\docx\parts\settings.py:8: from docx.opc.constants import CONTENT_TYPE as CT
+api\.venv_ocr_paddle\Lib\site-packages\docx\parts\settings.py:9: from docx.opc.packuri import PackURI
+api\.venv_ocr_paddle\Lib\site-packages\docx\parts\settings.py:10: from docx.opc.part import XmlPart
+api\.venv_ocr_paddle\Lib\site-packages\docx\parts\settings.py:11: from docx.oxml.parser import parse_xml
+api\.venv_ocr_paddle\Lib\site-packages\docx\parts\settings.py:12: from docx.settings import Settings
+api\.venv_ocr_paddle\Lib\site-packages\docx\parts\settings.py:15: from docx.oxml.settings import CT_Settings
+api\.venv_ocr_paddle\Lib\site-packages\docx\parts\settings.py:16: from docx.package import Package
+
+===== api\.venv_ocr_paddle\Lib\site-packages\scipy\_lib\cobyqa\settings.py =====
+api\.venv_ocr_paddle\Lib\site-packages\scipy\_lib\cobyqa\settings.py:1: import sys
+api\.venv_ocr_paddle\Lib\site-packages\scipy\_lib\cobyqa\settings.py:2: from enum import Enum
+api\.venv_ocr_paddle\Lib\site-packages\scipy\_lib\cobyqa\settings.py:4: import numpy as np
+api\.venv_ocr_paddle\Lib\site-packages\scipy\_lib\cobyqa\settings.py:29: DEBUG = "debug"
+api\.venv_ocr_paddle\Lib\site-packages\scipy\_lib\cobyqa\settings.py:73: Options.DEBUG.value: False,
+
+===== api\config\settings.py =====
+api\config\settings.py:13: from pathlib import Path
+api\config\settings.py:14: from datetime import timedelta
+api\config\settings.py:15: from dotenv import load_dotenv
+api\config\settings.py:16: import os
+api\config\settings.py:28: # SECURITY WARNING: don't run with debug turned on in production!
+api\config\settings.py:29: DEBUG = os.getenv("DEBUG", "False") == "True"
+api\config\settings.py:31: ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+api\config\settings.py:47: "corsheaders",
+api\config\settings.py:63: "apps.imports",
+api\config\settings.py:64: "apps.exports",
+api\config\settings.py:66: "apps.reports",
+api\config\settings.py:72: "corsheaders.middleware.CorsMiddleware",
+api\config\settings.py:103: # Database
+api\config\settings.py:104: # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+api\config\settings.py:106: DB_ENGINE = os.getenv("DB_ENGINE", "sqlite")
+api\config\settings.py:108: if DB_ENGINE == "postgres":
+api\config\settings.py:109: DATABASES = {
+api\config\settings.py:111: "ENGINE": "django.db.backends.postgresql",
+api\config\settings.py:115: "HOST": os.getenv("DB_HOST"),
+api\config\settings.py:116: "PORT": os.getenv("DB_PORT"),
+api\config\settings.py:120: DATABASES = {
+api\config\settings.py:122: "ENGINE": "django.db.backends.sqlite3",
+api\config\settings.py:123: "NAME": BASE_DIR / os.getenv("DB_NAME", "db.sqlite3"),
+api\config\settings.py:170: "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+api\config\settings.py:188: "TITLE": os.getenv("APP_NAME", "Archive Management API"),
+api\config\settings.py:189: "DESCRIPTION": "API quản lý kho lưu trữ hồ sơ, tài liệu số hóa",
+api\config\settings.py:194: CORS_ALLOWED_ORIGINS = os.getenv(
+api\config\settings.py:195: "CORS_ALLOWED_ORIGINS",
+api\config\settings.py:196: "http://localhost:3000,http://127.0.0.1:3000",
+api\config\settings.py:212: MEDIA_URL = os.getenv("MEDIA_URL", "/media/")
+api\config\settings.py:235: MEDIA_URL = os.environ.get("MEDIA_URL", "/media/")
+
+===== web\.env.local =====
+web\.env.local:1: NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000
+
+===== web\next.config.ts =====
+web\next.config.ts:1: import type { NextConfig } from "next";
+web\next.config.ts:7: export default nextConfig;
+
+===== web\package.json =====

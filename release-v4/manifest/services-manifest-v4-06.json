@@ -1,0 +1,69 @@
+{
+    "project":  "QuanLyKhoLuuTru",
+    "pack":  "V4-06",
+    "status":  "PASS",
+    "generated_at":  "2026-07-31T01:29:42.0961418+07:00",
+    "services_root":  "D:\\archive-management\\release-v4\\services",
+    "nssm_detected":  false,
+    "nssm_path":  null,
+    "services":  [
+                     "QuanLyKhoLuuTru-Backend",
+                     "QuanLyKhoLuuTru-Frontend"
+                 ],
+    "service_registration_performed":  false,
+    "files":  [
+                  {
+                      "relative_path":  "config\\services.json",
+                      "size_bytes":  2237,
+                      "sha256":  "345EDDCB4DFD83468497DAB197230B5C0AF07123A54165BE9072795140CC1611"
+                  },
+                  {
+                      "relative_path":  "scripts\\DEPLOY_SERVICES.ps1",
+                      "size_bytes":  778,
+                      "sha256":  "D016C523D38318A318A9DCB4DDB11344892AB2675238A053D1B23E5CC5D55B84"
+                  },
+                  {
+                      "relative_path":  "scripts\\INSTALL_NSSM.ps1",
+                      "size_bytes":  1123,
+                      "sha256":  "3A722204A2CD45EC76AA7195060A175BAC4A7CC5F153C123868075F15F5728F8"
+                  },
+                  {
+                      "relative_path":  "scripts\\INSTALL_SERVICES.ps1",
+                      "size_bytes":  2970,
+                      "sha256":  "4C98E9F0B083A7D9AC530F8F13483F7F9BB93E05D34E9ABBD4048126582366CF"
+                  },
+                  {
+                      "relative_path":  "scripts\\RESTART_SERVICES.ps1",
+                      "size_bytes":  405,
+                      "sha256":  "AA0DFE7FA174ADE2572310C4CE970AECAC7E3349B8B189064D85AD7EDC1B07E5"
+                  },
+                  {
+                      "relative_path":  "scripts\\SERVICE_HEALTH.ps1",
+                      "size_bytes":  1067,
+                      "sha256":  "387DB6BA566E96EFEFE8C2F4B6DF7639D7F2718FAE3E357AC2B1D53234D68A71"
+                  },
+                  {
+                      "relative_path":  "scripts\\SERVICE_STATUS.ps1",
+                      "size_bytes":  893,
+                      "sha256":  "B2E89A67CAD92FECBF9D96E44B98AA68816B60C1170C27B7C7A3C1F691EA26F4"
+                  },
+                  {
+                      "relative_path":  "scripts\\START_SERVICES.ps1",
+                      "size_bytes":  424,
+                      "sha256":  "0DB97DAAB1DE5917E738CB1E0A5FA4ADFC091B767405941096042E4FFA9C30E5"
+                  },
+                  {
+                      "relative_path":  "scripts\\STOP_SERVICES.ps1",
+                      "size_bytes":  442,
+                      "sha256":  "48B9AEA76A29B7A42E41ADB8ED031674F943A380B7F9E9A4EE64D2D70DA14145"
+                  },
+                  {
+                      "relative_path":  "scripts\\UNINSTALL_SERVICES.ps1",
+                      "size_bytes":  1445,
+                      "sha256":  "1BF9FF481F1B8AFC4FBB0B7A5B2038EA88DF733C74D9223311E5EF3F7B0F6AF3"
+                  }
+              ],
+    "warnings":  [
+                     "Chua co NSSM. Script se tao bo cai NSSM rieng."
+                 ]
+}

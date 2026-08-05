@@ -1,0 +1,29 @@
+{
+    "pack":  "V4-11",
+    "status":  "PASS",
+    "generated_at":  "2026-07-31T01:32:47.0942808+07:00",
+    "final_root":  "D:\\archive-management\\release-v4\\final",
+    "server_installer_ready":  true,
+    "client_installer_ready":  true,
+    "server_slice_count":  4,
+    "release_tools_ready":  true,
+    "updater_ready":  true,
+    "uninstaller_helper_ready":  true,
+    "checksum_ready":  true,
+    "final_manifest_ready":  true,
+    "release_notes_ready":  true,
+    "checklist_ready":  true,
+    "install_test_performed":  false,
+    "update_test_performed":  false,
+    "uninstall_test_performed":  false,
+    "source_modified":  false,
+    "database_modified":  false,
+    "current_media_modified":  false,
+    "warnings":  [
+                     "PostgreSQL service not detected",
+                     "Port 5432 not listening",
+                     "NSSM not detected",
+                     "Radmin VPN IP detected"
+                 ],
+    "log":  "D:\\archive-management\\release-v4\\logs\\PACK_V4_11_20260731_013226.log"
+}

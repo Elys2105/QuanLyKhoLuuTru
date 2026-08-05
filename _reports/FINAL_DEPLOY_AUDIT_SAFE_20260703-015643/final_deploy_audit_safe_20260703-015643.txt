@@ -1,0 +1,524 @@
+﻿
+================================================================
+00_INFO
+================================================================
+ROOT=D:\archive-management
+API=D:\archive-management\api
+WEB=D:\archive-management\web
+PY=D:\archive-management\api\.venv\Scripts\python.exe
+REPORT_DIR=D:\archive-management\_reports\FINAL_DEPLOY_AUDIT_SAFE_20260703-015643
+REPORT=D:\archive-management\_reports\FINAL_DEPLOY_AUDIT_SAFE_20260703-015643\final_deploy_audit_safe_20260703-015643.txt
+
+================================================================
+01_PATH_CHECK
+================================================================
+D:\archive-management=True
+D:\archive-management\api=True
+D:\archive-management\web=True
+D:\archive-management\api\.venv\Scripts\python.exe=True
+D:\archive-management\api\manage.py=True
+D:\archive-management\web\package.json=True
+
+================================================================
+02_POSTGRES_CHECK
+================================================================
+POSTGRES_SERVICE=postgresql-x64-18 STATUS=Running
+
+================================================================
+03_STOP_OLD_BACKEND_FRONTEND_PORTS
+================================================================
+
+================================================================
+04_BACKEND_STATIC_CHECKS
+================================================================
+
+================================================================
+PYTHON_VERSION
+================================================================
+WORKDIR=D:\archive-management\api
+EXE=D:\archive-management\api\.venv\Scripts\python.exe
+ARGS=--version
+EXIT_CODE=0
+Python 3.11.9
+
+================================================================
+DJANGO_CHECK
+================================================================
+WORKDIR=D:\archive-management\api
+EXE=D:\archive-management\api\.venv\Scripts\python.exe
+ARGS=manage.py check
+EXIT_CODE=0
+System check identified no issues (0 silenced).
+
+================================================================
+DJANGO_DEPLOY_CHECK_REVIEW_WARNINGS_OK
+================================================================
+WORKDIR=D:\archive-management\api
+EXE=D:\archive-management\api\.venv\Scripts\python.exe
+ARGS=manage.py check --deploy
+EXIT_CODE=0
+--- STDERR / WARNING ---
+System check identified some issues:
+
+WARNINGS:
+?: (drf_spectacular.W001) D:\archive-management\api\apps\accounts\serializers.py: Warning [MeView > UserMeSerializer]: unable to resolve type hint for function "get_full_name". Consider using a type hint or @extend_schema_field. Defaulting to string.
+?: (drf_spectacular.W001) D:\archive-management\api\apps\accounts\serializers.py: Warning [MeView > UserMeSerializer]: unable to resolve type hint for function "get_groups". Consider using a type hint or @extend_schema_field. Defaulting to string.
+?: (drf_spectacular.W001) D:\archive-management\api\apps\accounts\serializers.py: Warning [MeView > UserMeSerializer]: unable to resolve type hint for function "get_role". Consider using a type hint or @extend_schema_field. Defaulting to string.
+?: (drf_spectacular.W001) D:\archive-management\api\apps\documents\serializers.py: Warning [DocumentViewSet > DocumentSerializer]: unable to resolve type hint for function "get_catalog_code". Consider using a type hint or @extend_schema_field. Defaulting to string.
+?: (drf_spectacular.W001) D:\archive-management\api\apps\documents\serializers.py: Warning [DocumentViewSet > DocumentSerializer]: unable to resolve type hint for function "get_catalog_id". Consider using a type hint or @extend_schema_field. Defaulting to string.
+?: (drf_spectacular.W001) D:\archive-management\api\apps\documents\serializers.py: Warning [DocumentViewSet > DocumentSerializer]: unable to resolve type hint for function "get_catalog_name". Consider using a type hint or @extend_schema_field. Defaulting to string.
+?: (drf_spectacular.W001) D:\archive-management\api\apps\documents\serializers.py: Warning [DocumentViewSet > DocumentSerializer]: unable to resolve type hint for function "get_digital_file_count". Consider using a type hint or @extend_schema_field. Defaulting to string.
+?: (drf_spectacular.W001) D:\archive-management\api\apps\documents\serializers.py: Warning [DocumentViewSet > DocumentSerializer]: unable to resolve type hint for function "get_fond_code". Consider using a type hint or @extend_schema_field. Defaulting to string.
+?: (drf_spectacular.W001) D:\archive-management\api\apps\documents\serializers.py: Warning [DocumentViewSet > DocumentSerializer]: unable to resolve type hint for function "get_fond_id". Consider using a type hint or @extend_schema_field. Defaulting to string.
+?: (drf_spectacular.W001) D:\archive-management\api\apps\documents\serializers.py: Warning [DocumentViewSet > DocumentSerializer]: unable to resolve type hint for function "get_fond_name". Consider using a type hint or @extend_schema_field. Defaulting to string.
+?: (drf_spectacular.W001) D:\archive-management\api\apps\documents\serializers.py: Warning [DocumentViewSet > DocumentSerializer]: unable to resolve type hint for function "get_profile_code". Consider using a type hint or @extend_schema_field. Defaulting to string.
+?: (drf_spectacular.W001) D:\archive-management\api\apps\documents\serializers.py: Warning [DocumentViewSet > DocumentSerializer]: unable to resolve type hint for function "get_profile_title". Consider using a type hint or @extend_schema_field. Defaulting to string.
+?: (drf_spectacular.W001) D:\archive-management\api\apps\profiles\serializers.py: Warning [ProfileViewSet > ProfileSerializer]: unable to resolve type hint for function "get_box_id". Consider using a type hint or @extend_schema_field. Defaulting to string.
+?: (drf_spectacular.W001) D:\archive-management\api\apps\profiles\serializers.py: Warning [ProfileViewSet > ProfileSerializer]: unable to resolve type hint for function "get_box_number". Consider using a type hint or @extend_schema_field. Defaulting to string.
+?: (drf_spectacular.W001) D:\archive-management\api\apps\profiles\serializers.py: Warning [ProfileViewSet > ProfileSerializer]: unable to resolve type hint for function "get_box_title". Consider using a type hint or @extend_schema_field. Defaulting to string.
+?: (drf_spectacular.W001) D:\archive-management\api\apps\profiles\serializers.py: Warning [ProfileViewSet > ProfileSerializer]: unable to resolve type hint for function "get_catalog_code". Consider using a type hint or @extend_schema_field. Defaulting to string.
+?: (drf_spectacular.W001) D:\archive-management\api\apps\profiles\serializers.py: Warning [ProfileViewSet > ProfileSerializer]: unable to resolve type hint for function "get_catalog_name". Consider using a type hint or @extend_schema_field. Defaulting to string.
+?: (drf_spectacular.W001) D:\archive-management\api\apps\profiles\serializers.py: Warning [ProfileViewSet > ProfileSerializer]: unable to resolve type hint for function "get_fond_code". Consider using a type hint or @extend_schema_field. Defaulting to string.
+?: (drf_spectacular.W001) D:\archive-management\api\apps\profiles\serializers.py: Warning [ProfileViewSet > ProfileSerializer]: unable to resolve type hint for function "get_fond_id". Consider using a type hint or @extend_schema_field. Defaulting to string.
+?: (drf_spectacular.W001) D:\archive-management\api\apps\profiles\serializers.py: Warning [ProfileViewSet > ProfileSerializer]: unable to resolve type hint for function "get_fond_name". Consider using a type hint or @extend_schema_field. Defaulting to string.
+?: (drf_spectacular.W001) D:\archive-management\api\apps\profiles\serializers.py: Warning [ProfileViewSet > ProfileSerializer]: unable to resolve type hint for function "get_location_code". Consider using a type hint or @extend_schema_field. Defaulting to string.
+?: (drf_spectacular.W001) D:\archive-management\api\apps\profiles\serializers.py: Warning [ProfileViewSet > ProfileSerializer]: unable to resolve type hint for function "get_location_id". Consider using a type hint or @extend_schema_field. Defaulting to string.
+?: (drf_spectacular.W001) D:\archive-management\api\apps\profiles\serializers.py: Warning [ProfileViewSet > ProfileSerializer]: unable to resolve type hint for function "get_location_name". Consider using a type hint or @extend_schema_field. Defaulting to string.
+?: (drf_spectacular.W001) D:\archive-management\api\apps\profiles\serializers.py: Warning [ProfileViewSet > ProfileSerializer]: unable to resolve type hint for function "get_storage_file_number". Consider using a type hint or @extend_schema_field. Defaulting to string.
+?: (drf_spectacular.W001) D:\archive-management\api\apps\profiles\serializers.py: Warning [ProfileViewSet > ProfileSerializer]: unable to resolve type hint for function "get_storage_file_title". Consider using a type hint or @extend_schema_field. Defaulting to string.
+?: (drf_spectacular.W001) D:\archive-management\api\apps\profiles\serializers.py: Warning [ProfileViewSet > ProfileSerializer]: unable to resolve type hint for function "get_warehouse_code". Consider using a type hint or @extend_schema_field. Defaulting to string.
+?: (drf_spectacular.W001) D:\archive-management\api\apps\profiles\serializers.py: Warning [ProfileViewSet > ProfileSerializer]: unable to resolve type hint for function "get_warehouse_id". Consider using a type hint or @extend_schema_field. Defaulting to string.
+?: (drf_spectacular.W001) D:\archive-management\api\apps\profiles\serializers.py: Warning [ProfileViewSet > ProfileSerializer]: unable to resolve type hint for function "get_warehouse_name". Consider using a type hint or @extend_schema_field. Defaulting to string.
+?: (drf_spectacular.W001) Warning: operationId "ocr_jobs_retrieve" has collisions [('/api/ocr/jobs/', 'get'), ('/api/ocr/jobs/{id}/', 'get')]. resolving with numeral suffixes.
+?: (drf_spectacular.W002) D:\archive-management\api\apps\exports\views.py: Error [ProfileExcelExportView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) D:\archive-management\api\apps\exports\views.py: Error [ProfilePdfExportView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) D:\archive-management\api\apps\imports\views.py: Error [ProfileImportTemplateView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) D:\archive-management\api\apps\imports\views.py: Error [ProfileImportView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) D:\archive-management\api\apps\ocr\views.py: Error [OcrDigitalFileDeleteView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) D:\archive-management\api\apps\ocr\views.py: Error [OcrDigitalFilePageImageView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) D:\archive-management\api\apps\ocr\views.py: Error [OcrDigitalFileProgressView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) D:\archive-management\api\apps\ocr\views.py: Error [OcrDigitalFileTextView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) D:\archive-management\api\apps\ocr\views.py: Error [OcrJobDetailView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) D:\archive-management\api\apps\ocr\views.py: Error [OcrJobListView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) D:\archive-management\api\apps\ocr\views.py: Error [OcrJobProgressView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) D:\archive-management\api\apps\ocr\views.py: Error [OcrProfileSuggestionView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) D:\archive-management\api\apps\ocr\views.py: Error [OcrRunDigitalFileView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) D:\archive-management\api\apps\ocr\views.py: Error [OcrRunQualityDigitalFileView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) D:\archive-management\api\apps\ocr\views.py: Error [OcrSearchView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) D:\archive-management\api\apps\reports\views.py: Error [DashboardStatisticsView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) D:\archive-management\api\apps\storage\archive_tree_views.py: Error [ArchiveTreeSummaryView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) D:\archive-management\api\apps\storage\archive_tree_views.py: Error [ArchiveTreeView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) D:\archive-management\api\apps\system\views.py: Error [StorageHealthView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (security.W004) You have not set a value for the SECURE_HSTS_SECONDS setting. If your entire site is served only over SSL, you may want to consider setting a value and enabling HTTP Strict Transport Security. Be sure to read the documentation first; enabling HSTS carelessly can cause serious, irreversible problems.
+?: (security.W008) Your SECURE_SSL_REDIRECT setting is not set to True. Unless your site should be available over both SSL and non-SSL connections, you may want to either set this setting True or configure a load balancer or reverse-proxy server to redirect all connections to HTTPS.
+?: (security.W009) Your SECRET_KEY has less than 50 characters, less than 5 unique characters, or it's prefixed with 'django-insecure-' indicating that it was generated automatically by Django. Please generate a long and random value, otherwise many of Django's security-critical features will be vulnerable to attack.
+?: (security.W012) SESSION_COOKIE_SECURE is not set to True. Using a secure-only session cookie makes it more difficult for network traffic sniffers to hijack user sessions.
+?: (security.W016) You have 'django.middleware.csrf.CsrfViewMiddleware' in your MIDDLEWARE, but you have not set CSRF_COOKIE_SECURE to True. Using a secure-only CSRF cookie makes it more difficult for network traffic sniffers to steal the CSRF token.
+?: (security.W018) You should not have DEBUG set to True in deployment.
+
+System check identified 54 issues (0 silenced).
+
+================================================================
+MAKEMIGRATIONS_DRY_RUN
+================================================================
+WORKDIR=D:\archive-management\api
+EXE=D:\archive-management\api\.venv\Scripts\python.exe
+ARGS=manage.py makemigrations --check --dry-run
+EXIT_CODE=0
+No changes detected
+
+================================================================
+SHOWMIGRATIONS
+================================================================
+WORKDIR=D:\archive-management\api
+EXE=D:\archive-management\api\.venv\Scripts\python.exe
+ARGS=manage.py showmigrations
+EXIT_CODE=0
+accounts
+ (no migrations)
+admin
+ [X] 0001_initial
+ [X] 0002_logentry_remove_auto_add
+ [X] 0003_logentry_add_action_flag_choices
+audit
+ [X] 0001_initial
+auth
+ [X] 0001_initial
+ [X] 0002_alter_permission_name_max_length
+ [X] 0003_alter_user_email_max_length
+ [X] 0004_alter_user_username_opts
+ [X] 0005_alter_user_last_login_null
+ [X] 0006_require_contenttypes_0002
+ [X] 0007_alter_validators_add_error_messages
+ [X] 0008_alter_user_username_max_length
+ [X] 0009_alter_user_last_name_max_length
+ [X] 0010_alter_group_name_max_length
+ [X] 0011_update_proxy_permissions
+ [X] 0012_alter_user_first_name_max_length
+catalogs
+ [X] 0001_initial
+common
+ (no migrations)
+contenttypes
+ [X] 0001_initial
+ [X] 0002_remove_content_type_name
+documents
+ [X] 0001_initial
+ [X] 0002_document_record_cataloging_fields
+exports
+ (no migrations)
+files
+ [X] 0001_initial
+ [X] 0002_alter_digitalfile_file
+ [X] 0003_alter_digitalfile_file_max_length
+fonds
+ [X] 0001_initial
+imports
+ (no migrations)
+ocr
+ [X] 0001_initial
+ [X] 0002_ocrjob_current_page_ocrjob_ocr_mode_and_more
+permissions
+ (no migrations)
+profiles
+ [X] 0001_initial
+ [X] 0002_profile_cataloging_fields
+reports
+ (no migrations)
+search
+ (no migrations)
+sessions
+ [X] 0001_initial
+storage
+ [X] 0001_initial
+token_blacklist
+ [X] 0001_initial
+ [X] 0002_outstandingtoken_jti_hex
+ [X] 0003_auto_20171017_2007
+ [X] 0004_auto_20171017_2013
+ [X] 0005_remove_outstandingtoken_jti
+ [X] 0006_auto_20171017_2113
+ [X] 0007_auto_20171017_2214
+ [X] 0008_migrate_to_bigautofield
+ [X] 0010_fix_migrate_to_bigautofield
+ [X] 0011_linearizes_history
+ [X] 0012_alter_outstandingtoken_user
+ [X] 0013_alter_blacklistedtoken_options_and_more
+
+================================================================
+05_DB_CONFIG_AND_COUNTS
+================================================================
+
+================================================================
+DB_PROBE
+================================================================
+WORKDIR=D:\archive-management\api
+EXE=D:\archive-management\api\.venv\Scripts\python.exe
+ARGS="D:\archive-management\_reports\FINAL_DEPLOY_AUDIT_SAFE_20260703-015643\db_probe.py"
+EXIT_CODE=1
+--- STDERR / WARNING ---
+Traceback (most recent call last):
+  File "D:\archive-management\_reports\FINAL_DEPLOY_AUDIT_SAFE_20260703-015643\db_probe.py", line 5, in <module>
+    django.setup()
+  File "D:\archive-management\api\.venv\Lib\site-packages\django\__init__.py", line 19, in setup
+    configure_logging(settings.LOGGING_CONFIG, settings.LOGGING)
+                      ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\archive-management\api\.venv\Lib\site-packages\django\conf\__init__.py", line 81, in __getattr__
+    self._setup(name)
+  File "D:\archive-management\api\.venv\Lib\site-packages\django\conf\__init__.py", line 68, in _setup
+    self._wrapped = Settings(settings_module)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\archive-management\api\.venv\Lib\site-packages\django\conf\__init__.py", line 166, in __init__
+    mod = importlib.import_module(self.SETTINGS_MODULE)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\chaun\AppData\Local\Programs\Python\Python311\Lib\importlib\__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1126, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1140, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'config'
+
+================================================================
+06_MEDIA_STORAGE_CHECK
+================================================================
+MEDIA_DIR=D:\archive-management\api\media
+MEDIA_EXISTS=True
+MEDIA_FILE_COUNT=22
+MEDIA_SIZE_MB=102.25
+
+================================================================
+07_FRONTEND_BUILD
+================================================================
+NPM_BUILD_EXIT_CODE=0
+
+> web@0.1.0 build
+> next build
+
+▲ Next.js 16.2.9 (Turbopack)
+- Environments: .env.local
+
+  Creating an optimized production build ...
+Found 1 warning while optimizing generated CSS:
+System.Management.Automation.RemoteException
+[2m│   }[22m
+[2m│   .has-\[\>img\:fir�\1 s\]\:pt-0 {[22m
+[2m│[22m     &:has(>img:fir�s) {
+[2m┆[22m                [33m[2m^--[22m 'fir�' is not recognized as a valid pseudo-class. Did you mean '::fir�' (pseudo-element) or is this a typo?[39m
+[2m┆[22m
+[2m│       padding-top: 0;[22m
+[2m│     }[22m
+System.Management.Automation.RemoteException
+✓ Compiled successfully in 9.5s
+  Running TypeScript ...
+  Finished TypeScript in 5.3s ...
+  Collecting page data using 15 workers ...
+  Generating static pages using 15 workers (0/20) ...
+  Generating static pages using 15 workers (5/20) 
+  Generating static pages using 15 workers (10/20) 
+  Generating static pages using 15 workers (15/20) 
+✓ Generating static pages using 15 workers (20/20) in 579ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /bao-cao
+├ ○ /cay-luu-tru
+├ ○ /danh-muc
+├ ○ /dashboard
+├ ○ /ho-so
+├ ƒ /ho-so/[id]
+├ ○ /hop-cap
+├ ○ /kho
+├ ○ /login
+├ ○ /muc-luc
+├ ○ /nhap-lieu
+├ ○ /nhat-ky
+├ ○ /nhat-ky-he-thong
+├ ○ /ocr
+├ ○ /phong
+├ ○ /tai-lieu
+├ ƒ /tai-lieu/[id]
+└ ○ /tim-kiem
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+
+================================================================
+08_START_BACKEND_FRONTEND
+================================================================
+BACKEND_PORT_8000_AFTER_START=True
+FRONTEND_PORT_3000_AFTER_START=True
+
+================================================================
+09_HTTP_HEALTH
+================================================================
+BACKEND_LOGIN_GET_STATUS=405
+BACKEND_LOGIN_GET_405_EXPECTED_OK
+FRONT_LOGIN_STATUS=200
+
+================================================================
+10_AUTH_PERMISSION_SMOKE
+================================================================
+LOGIN_OK=Admin
+LOGIN_OK=user_test
+API_GET|NO_AUTH|/api/search/profiles/|STATUS=401|ERROR=The remote server returned an error: (401) Unauthorized.
+NO_AUTH_BLOCKED_OK|/api/search/profiles/|STATUS=401
+API_GET|ADMIN|/api/search/profiles/|STATUS=200|LEN=3891
+API_GET|USER|/api/search/profiles/|STATUS=200|LEN=3891
+API_GET|NO_AUTH|/api/search/profiles/?q=|STATUS=401|ERROR=The remote server returned an error: (401) Unauthorized.
+NO_AUTH_BLOCKED_OK|/api/search/profiles/?q=|STATUS=401
+API_GET|ADMIN|/api/search/profiles/?q=|STATUS=200|LEN=3891
+API_GET|USER|/api/search/profiles/?q=|STATUS=200|LEN=3891
+API_GET|NO_AUTH|/api/dashboard/|STATUS=404|ERROR=The remote server returned an error: (404) Not Found.
+NO_AUTH_ENDPOINT_404_REVIEW|/api/dashboard/
+API_GET|ADMIN|/api/dashboard/|STATUS=404|ERROR=The remote server returned an error: (404) Not Found.
+API_GET|USER|/api/dashboard/|STATUS=404|ERROR=The remote server returned an error: (404) Not Found.
+API_GET|NO_AUTH|/api/dashboard/stats/|STATUS=404|ERROR=The remote server returned an error: (404) Not Found.
+NO_AUTH_ENDPOINT_404_REVIEW|/api/dashboard/stats/
+API_GET|ADMIN|/api/dashboard/stats/|STATUS=404|ERROR=The remote server returned an error: (404) Not Found.
+API_GET|USER|/api/dashboard/stats/|STATUS=404|ERROR=The remote server returned an error: (404) Not Found.
+API_GET|NO_AUTH|/api/fonds/|STATUS=401|ERROR=The remote server returned an error: (401) Unauthorized.
+NO_AUTH_BLOCKED_OK|/api/fonds/|STATUS=401
+API_GET|ADMIN|/api/fonds/|STATUS=200|LEN=1324
+API_GET|USER|/api/fonds/|STATUS=403|ERROR=The remote server returned an error: (403) Forbidden.
+API_GET|NO_AUTH|/api/catalogs/|STATUS=401|ERROR=The remote server returned an error: (401) Unauthorized.
+NO_AUTH_BLOCKED_OK|/api/catalogs/|STATUS=401
+API_GET|ADMIN|/api/catalogs/|STATUS=200|LEN=1253
+API_GET|USER|/api/catalogs/|STATUS=403|ERROR=The remote server returned an error: (403) Forbidden.
+API_GET|NO_AUTH|/api/warehouses/|STATUS=401|ERROR=The remote server returned an error: (401) Unauthorized.
+NO_AUTH_BLOCKED_OK|/api/warehouses/|STATUS=401
+API_GET|ADMIN|/api/warehouses/|STATUS=200|LEN=295
+API_GET|USER|/api/warehouses/|STATUS=200|LEN=295
+API_GET|NO_AUTH|/api/storage-locations/|STATUS=401|ERROR=The remote server returned an error: (401) Unauthorized.
+NO_AUTH_BLOCKED_OK|/api/storage-locations/|STATUS=401
+API_GET|ADMIN|/api/storage-locations/|STATUS=200|LEN=295
+API_GET|USER|/api/storage-locations/|STATUS=200|LEN=295
+API_GET|NO_AUTH|/api/storage-boxes/|STATUS=401|ERROR=The remote server returned an error: (401) Unauthorized.
+NO_AUTH_BLOCKED_OK|/api/storage-boxes/|STATUS=401
+API_GET|ADMIN|/api/storage-boxes/|STATUS=200|LEN=295
+API_GET|USER|/api/storage-boxes/|STATUS=200|LEN=295
+API_GET|NO_AUTH|/api/storage-files/|STATUS=401|ERROR=The remote server returned an error: (401) Unauthorized.
+NO_AUTH_BLOCKED_OK|/api/storage-files/|STATUS=401
+API_GET|ADMIN|/api/storage-files/|STATUS=200|LEN=295
+API_GET|USER|/api/storage-files/|STATUS=200|LEN=295
+API_GET|NO_AUTH|/api/profiles/|STATUS=401|ERROR=The remote server returned an error: (401) Unauthorized.
+NO_AUTH_BLOCKED_OK|/api/profiles/|STATUS=401
+API_GET|ADMIN|/api/profiles/|STATUS=200|LEN=2539
+API_GET|USER|/api/profiles/|STATUS=200|LEN=2539
+API_GET|NO_AUTH|/api/documents/|STATUS=401|ERROR=The remote server returned an error: (401) Unauthorized.
+NO_AUTH_BLOCKED_OK|/api/documents/|STATUS=401
+API_GET|ADMIN|/api/documents/|STATUS=200|LEN=18227
+API_GET|USER|/api/documents/|STATUS=200|LEN=18227
+API_GET|NO_AUTH|/api/digital-files/|STATUS=401|ERROR=The remote server returned an error: (401) Unauthorized.
+NO_AUTH_BLOCKED_OK|/api/digital-files/|STATUS=401
+API_GET|ADMIN|/api/digital-files/|STATUS=200|LEN=17828
+API_GET|USER|/api/digital-files/|STATUS=200|LEN=17828
+
+================================================================
+11_FRONTEND_ROUTE_SMOKE
+================================================================
+FRONT_GET|/login|STATUS=200
+FRONT_GET|/dashboard|STATUS=200
+FRONT_GET|/tim-kiem|STATUS=200
+FRONT_GET|/ho-so|STATUS=200
+FRONT_GET|/tai-lieu|STATUS=200
+FRONT_GET|/nhat-ky-he-thong|STATUS=200
+
+================================================================
+12_SYNC_CONFIG_VERDICT
+================================================================
+API_ENV|DEBUG=True
+API_ENV|ALLOWED_HOSTS=localhost,127.0.0.1
+API_ENV|DB_ENGINE=postgres
+API_ENV|DB_HOST=localhost
+API_ENV|DB_PORT=5432
+API_ENV|CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+API_ENV|MEDIA_URL=/media/
+WEB_ENV|NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000
+
+SYNC_RULE:
+1. Nhiều tài khoản trên cùng server/backend/database thì sẽ đồng bộ dữ liệu.
+2. Nhiều máy muốn đồng bộ thì tất cả máy phải dùng chung 1 backend API và chung 1 database.
+3. Nếu frontend đang trỏ 127.0.0.1 hoặc localhost thì mỗi máy sẽ gọi chính máy đó, không tự đồng bộ chéo máy.
+4. Muốn máy 1 sửa, máy 2/3 thấy ngay thì NEXT_PUBLIC_API_BASE_URL phải trỏ IP/server chung, ví dụ http://192.168.1.10:8000.
+5. DB_HOST=localhost chỉ đúng khi PostgreSQL nằm trên chính máy server backend chung.
+
+================================================================
+13_SECURITY_SCAN_PROJECT_ONLY
+================================================================
+SCAN_ROOT=D:\archive-management\api\apps
+SECURITY_REVIEW|AllowAny|api\apps\accounts\views.py:2: from rest_framework.permissions import IsAuthenticated, AllowAny
+SECURITY_REVIEW|AllowAny|api\apps\accounts\views.py:31: permission_classes = [AllowAny]
+SECURITY_REVIEW|AllowAny|api\apps\accounts\views.py:46: permission_classes = [AllowAny]
+SCAN_ROOT=D:\archive-management\api\config
+SCAN_ROOT=D:\archive-management\web\src
+SECURITY_REVIEW|localStorage|web\src\features\profiles\offline\offline-profile-storage.ts:39: const raw = window.localStorage.getItem(key);
+SECURITY_REVIEW|localStorage|web\src\features\profiles\offline\offline-profile-storage.ts:46: window.localStorage.removeItem(key);
+SECURITY_REVIEW|localStorage|web\src\features\profiles\offline\offline-profile-storage.ts:54: window.localStorage.setItem(key, JSON.stringify(value));
+SECURITY_REVIEW|localStorage|web\src\lib\api\client.ts:31: return window.localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
+SECURITY_REVIEW|localStorage|web\src\lib\api\client.ts:36: window.localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, token);
+SECURITY_REVIEW|localStorage|web\src\lib\api\client.ts:41: window.localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+SECURITY_REVIEW|localStorage|web\src\lib\api\client.ts:46: return window.localStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN);
+SECURITY_REVIEW|localStorage|web\src\lib\api\client.ts:51: window.localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, token);
+SECURITY_REVIEW|localStorage|web\src\lib\api\client.ts:57: window.localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+SECURITY_REVIEW|localStorage|web\src\lib\api\client.ts:58: window.localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
+SECURITY_REVIEW|localStorage|web\src\lib\api\client.ts:59: window.localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+SECURITY_REVIEW|localStorage|web\src\stores\auth-store.ts:21: return window.localStorage.getItem(key);
+SECURITY_REVIEW|localStorage|web\src\stores\auth-store.ts:26: window.localStorage.setItem(key, value);
+SECURITY_REVIEW|localStorage|web\src\stores\auth-store.ts:31: window.localStorage.removeItem(key);
+SECURITY_REVIEW|offline|web\src\app\(protected)\ho-so\page.tsx:18: import { OfflineProfilesCard } from "@/features/profiles/components/offline-profiles-card";
+SECURITY_REVIEW|offline|web\src\app\(protected)\ho-so\page.tsx:251: <OfflineProfilesCard
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:9: addOfflineProfile,
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:10: getOfflineProfileCache,
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:11: getOfflineProfiles,
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:12: removeOfflineProfile,
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:13: saveOfflineProfileCache,
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:14: updateOfflineProfile,
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:15: type OfflineProfileItem,
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:16: } from "@/features/profiles/offline/offline-profile-storage";
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:31: interface OfflineProfilesCardProps {
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:39: interface OfflineFormValues {
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:52: const DEFAULT_VALUES: OfflineFormValues = {
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:129: function buildPayload(values: OfflineFormValues): ProfilePayload {
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:175: export function OfflineProfilesCard({
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:181: }: OfflineProfilesCardProps) {
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:182: const [values, setValues] = useState<OfflineFormValues>(DEFAULT_VALUES);
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:183: const [offlineItems, setOfflineItems] = useState<OfflineProfileItem[]>([]);
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:189: setOfflineItems(getOfflineProfiles());
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:191: const cache = getOfflineProfileCache();
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:203: const cache = saveOfflineProfileCache({
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:212: const cachedData = useMemo(() => getOfflineProfileCache(), [
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:224: function reloadOfflineItems() {
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:225: setOfflineItems(getOfflineProfiles());
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:228: function updateValue<K extends keyof OfflineFormValues>(
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:230: value: OfflineFormValues[K],
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:238: function handleSaveOffline(event: FormEvent<HTMLFormElement>) {
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:243: addOfflineProfile(payload);
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:244: reloadOfflineItems();
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:246: setMessage("Đã lưu hồ sơ vào hàng chờ offline.");
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:248: setMessage(error instanceof Error ? error.message : "Không lưu được hồ sơ offline.");
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:252: async function handleSyncOne(item: OfflineProfileItem) {
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:258: removeOfflineProfile(item.id);
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:259: reloadOfflineItems();
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:265: updateOfflineProfile(item.id, {
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:270: reloadOfflineItems();
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:278: const pendingItems = getOfflineProfiles();
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:286: const ok = window.confirm("Xóa hồ sơ offline này khỏi hàng chờ?");
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:290: removeOfflineProfile(id);
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:291: reloadOfflineItems();
+SECURITY_REVIEW|offline|web\src\features\profiles\components\offline-profiles-card.tsx:294: const canSync = offlineItems.length > 0 && !isSyncing && !syncingId;
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:3: export type OfflineProfileStatus = "pending" | "failed";
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:5: export interface OfflineProfileItem {
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:10: status: OfflineProfileStatus;
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:14: export interface OfflineProfileCache {
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:21: const OFFLINE_PROFILES_KEY = "archive_management_offline_profiles_v1";
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:22: const OFFLINE_CACHE_KEY = "archive_management_offline_profile_cache_v1";
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:28: function createOfflineId(): string {
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:33: return `offline-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:57: export function getOfflineProfiles(): OfflineProfileItem[] {
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:58: return readJson<OfflineProfileItem[]>(OFFLINE_PROFILES_KEY, []);
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:61: export function saveOfflineProfiles(items: OfflineProfileItem[]): void {
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:62: writeJson(OFFLINE_PROFILES_KEY, items);
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:65: export function addOfflineProfile(payload: ProfilePayload): OfflineProfileItem {
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:68: const item: OfflineProfileItem = {
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:69: id: createOfflineId(),
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:76: const items = getOfflineProfiles();
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:77: saveOfflineProfiles([item, ...items]);
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:82: export function removeOfflineProfile(id: string): void {
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:83: const items = getOfflineProfiles().filter((item) => item.id !== id);
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:84: saveOfflineProfiles(items);
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:87: export function updateOfflineProfile(
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:89: patch: Partial<OfflineProfileItem>,
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:93: const items = getOfflineProfiles().map((item) => {
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:103: saveOfflineProfiles(items);
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:106: export function getOfflineProfileCache(): OfflineProfileCache {
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:107: return readJson<OfflineProfileCache>(OFFLINE_CACHE_KEY, {
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:114: export function saveOfflineProfileCache(
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:115: patch: Partial<OfflineProfileCache>,
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:116: ): OfflineProfileCache {
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:117: const currentCache = getOfflineProfileCache();
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:119: const nextCache: OfflineProfileCache = {
+SECURITY_REVIEW|offline|web\src\features\profiles\offline\offline-profile-storage.ts:125: writeJson(OFFLINE_CACHE_KEY, nextCache);
+
+================================================================
+14_FINAL_CONCLUSION
+================================================================
+FINAL_AUDIT_SAFE_DONE=PASS
+REPORT=D:\archive-management\_reports\FINAL_DEPLOY_AUDIT_SAFE_20260703-015643\final_deploy_audit_safe_20260703-015643.txt
+
+ĐỌC NHANH:
+- DJANGO_CHECK EXIT_CODE=0 là backend cơ bản OK.
+- DJANGO_DEPLOY_CHECK_REVIEW_WARNINGS_OK có thể có warning, cần đọc nhưng không làm dừng audit.
+- NPM_BUILD_EXIT_CODE=0 là frontend build OK.
+- BACKEND_PORT_8000_AFTER_START=True và FRONTEND_PORT_3000_AFTER_START=True là runtime OK.
+- NO_AUTH_BLOCKED_OK cho API dữ liệu là bảo mật không đăng nhập OK.
+- NO_AUTH_OPEN_DANGER_REVIEW là cần vá quyền trước khi giao khách.
+- WEB_ENV còn 127.0.0.1/localhost thì không phải mô hình đồng bộ nhiều máy.

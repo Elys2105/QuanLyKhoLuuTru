@@ -1,0 +1,28 @@
+{
+    "schema_version":  1,
+    "pack":  "V4-03A",
+    "generated_at":  "2026-07-31T00:09:49+07:00",
+    "server_installer":  {
+                             "output_name":  "QuanLyKhoLuuTru-Server-Setup.exe",
+                             "payload_root":  "D:\\archive-management\\release-v4\\payload\\server",
+                             "files":  30658,
+                             "bytes":  6665137699,
+                             "size_mb":  6356.37,
+                             "install_root":  "C:\\Program Files\\QuanLyKhoLuuTru\\Server",
+                             "data_root":  "C:\\ProgramData\\QuanLyKhoLuuTru",
+                             "preserves_user_media":  true
+                         },
+    "client_installer":  {
+                             "output_name":  "QuanLyKhoLuuTru-Client-Setup.exe",
+                             "payload_root":  "D:\\archive-management\\release-v4\\payload\\client",
+                             "files":  4,
+                             "bytes":  1100,
+                             "size_mb":  0,
+                             "install_root":  "C:\\Program Files\\QuanLyKhoLuuTru\\Client",
+                             "synchronizes_documents":  false
+                         },
+    "next_stage":  {
+                       "pack":  "V4-03B",
+                       "task":  "Generate Inno Setup installer sources and compiler pipeline"
+                   }
+}

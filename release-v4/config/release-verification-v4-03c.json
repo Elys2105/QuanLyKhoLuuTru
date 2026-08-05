@@ -1,0 +1,25 @@
+{
+    "pack":  "V4-03C",
+    "status":  "PASS",
+    "generated_at":  "2026-07-31T01:16:43.8720224+07:00",
+    "checks":  {
+                   "client_exe_exists":  true,
+                   "server_exe_exists":  true,
+                   "server_slices_exist":  true,
+                   "server_slices_contiguous":  true,
+                   "original_checksums_verified":  true,
+                   "final_copy_verified":  true,
+                   "final_checksum_created":  true,
+                   "install_guide_created":  true
+               },
+    "pass_count":  40,
+    "failures":  [
+
+                 ],
+    "warnings":  [
+                     "Khong co Vietnamese.isl; tu dong dung English de compile Client",
+                     "Checksum cu khong co: QuanLyKhoLuuTru_Client_V4_03B_Setup.exe"
+                 ],
+    "output":  "D:\\archive-management\\release-v4\\final",
+    "log":  "D:\\archive-management\\release-v4\\logs\\PACK_V4_03C_20260731_011619.log"
+}

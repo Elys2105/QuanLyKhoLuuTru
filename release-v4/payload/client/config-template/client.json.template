@@ -1,0 +1,8 @@
+{
+    "schema_version":  1,
+    "server_host":  "__SERVER_HOST__",
+    "server_port":  3000,
+    "backend_port":  8000,
+    "protocol":  "http",
+    "launch_path":  "/"
+}

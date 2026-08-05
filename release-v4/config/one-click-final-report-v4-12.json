@@ -1,0 +1,17 @@
+{
+    "pack":  "V4-12",
+    "status":  "PASS",
+    "generated_at":  "2026-07-31T02:00:25.7610336+07:00",
+    "output_root":  "D:\\archive-management\\release-v4\\one-click-final\\output",
+    "server_compiled":  true,
+    "client_compiled":  true,
+    "runtime_bootstrap_ready":  true,
+    "database_bootstrap_ready":  true,
+    "services_bootstrap_ready":  true,
+    "client_ip_wizard_ready":  true,
+    "clean_machine_test_performed":  false,
+    "source_modified":  false,
+    "database_modified":  false,
+    "current_media_modified":  false,
+    "log":  "D:\\archive-management\\release-v4\\logs\\PACK_V4_12_20260731_013358.log"
+}

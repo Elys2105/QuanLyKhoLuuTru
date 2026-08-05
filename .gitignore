@@ -1,0 +1,89 @@
+# >>> QLKLT V4-14 MANAGED IGNORE >>>
+# Secrets and local environment
+**/.env
+**/.env.*
+!**/.env.example
+!**/.env.sample
+!**/.env.template
+**/secrets/
+**/PRIVATE_DO_NOT_SHARE/
+**/PRIVATE_LOCAL_ONLY/
+
+# Python
+**/__pycache__/
+**/*.py[cod]
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
+**/.venv/
+**/.venv*/
+**/venv/
+**/venv*/
+**/.virtualenv/
+**/.virtualenv*/
+/api/.venv_ocr_paddle/
+/chandra-local/.venv_chandra/
+
+# Django runtime data
+/api/media/
+/api/storage/
+/api/uploads/
+/api/staticfiles/
+/api/*.pdf
+/api/ocr_debug_context*.txt
+/api/*_result.json
+**/db.sqlite3
+**/*.sqlite
+**/*.sqlite3
+**/*.db
+**/archive_management
+
+# Frontend generated content
+/web/node_modules/
+/web/.next/
+/web/out/
+/web/dist/
+/web/coverage/
+/web/.turbo/
+
+# Logs, caches and temporary files
+**/*.log
+**/logs/
+**/tmp/
+**/temp/
+**/*.tmp
+**/*.bak
+**/*.old
+
+# Large ML/runtime artifacts
+**/*.onnx
+**/*.pdmodel
+**/*.pdiparams
+**/*.pth
+**/*.pt
+**/*.ckpt
+**/*.safetensors
+
+# Installer and release outputs; keep source scripts/manifests
+/release-v4/**/baseline/
+/release-v4/**/pack-results/
+/release-v4/**/logs/
+/release-v4/**/backup*/
+/release-v4/**/stage*/
+/release-v4/**/bundle*/
+/release-v4/**/output*/
+/release-v4/**/dist*/
+/release-v4/**/*.zip
+/release-v4/**/*.7z
+/release-v4/**/*.bin
+/release-v4/**/*.exe
+/release-v4/**/*.msi
+
+# OS and editors
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/*.log
+*.swp
+# <<< QLKLT V4-14 MANAGED IGNORE <<<

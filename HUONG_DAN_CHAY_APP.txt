@@ -1,0 +1,188 @@
+HUONG DAN CHAY APP - QuanLyKhoLuuTru
+
+1. Cau hinh may khuyen nghi
+
+- Windows 10/11 64-bit.
+- RAM toi thieu 8GB, khuyen nghi 16GB.
+- O trong toi thieu 50GB cho ban thu nghiem.
+- Neu luu tru that: nen co o rieng toi thieu 500GB hoac 1TB.
+- PostgreSQL dang dung database: archive_db.
+- Thu muc du an hien tai: D:\archive-management.
+
+2. Cach mo app hang ngay
+
+Cach khuyen nghi:
+
+- Bam dup shortcut tren Desktop:
+  QuanLyKhoLuuTru App
+
+App se tu khoi dong backend va frontend o che do nen.
+Nguoi dung khong can mo npm, python, backend, frontend rieng.
+
+Neu app hien man hinh cho qua lau, cho 1-2 phut roi kiem tra muc 7.
+
+3. Cach mo server thu cong de debug
+
+Chi dung khi can xem loi ro rang.
+
+- Bam dup shortcut tren Desktop:
+  QuanLyKhoLuuTru Server
+
+Hoac chay PowerShell:
+
+  cd D:\archive-management
+  powershell -ExecutionPolicy Bypass -File .\scripts\start-quanlykholuutru-local.ps1
+
+4. Tai khoan dang nhap hien tai
+
+username: Admin
+password: Admin@123456789
+
+Sau khi dua vao su dung that, can doi mat khau admin.
+
+5. Cac dia chi noi bo
+
+Frontend:
+
+  http://localhost:3000
+
+Backend:
+
+  http://127.0.0.1:8000
+
+Dashboard API:
+
+  http://127.0.0.1:8000/api/reports/dashboard/
+
+6. Kiem tra port neu app khong mo duoc
+
+Chay PowerShell:
+
+  powershell -ExecutionPolicy Bypass -File D:\archive-management\scripts\check-ports.ps1
+
+Ket qua tot:
+
+  Port 8000 dang trong.
+
+hoac neu app dang chay nen thi port 8000/3000 co the dang duoc su dung boi python/node.
+
+7. Xu ly loi app dung o man hinh cho
+
+Kiem tra log:
+
+  Get-ChildItem D:\archive-management\logs
+  Get-Content D:\archive-management\logs\desktop-backend.log -Tail 80
+  Get-Content D:\archive-management\logs\desktop-frontend.log -Tail 80
+
+Neu backend loi, kiem tra:
+
+  cd D:\archive-management\api
+  .\.venv\Scripts\python.exe manage.py check
+
+Neu frontend loi, kiem tra:
+
+  cd D:\archive-management\web
+  npx tsc --noEmit
+  npm run build
+
+8. Cach tat server nen khi can
+
+Neu can tat backend/frontend dang chay nen, chay PowerShell:
+
+  $ports = @(8000, 3000)
+
+  foreach ($port in $ports) {
+      $items = Get-NetTCPConnection -LocalPort $port -State Listen -ErrorAction SilentlyContinue
+
+      foreach ($item in $items) {
+          $pidToStop = $item.OwningProcess
+          $proc = Get-Process -Id $pidToStop -ErrorAction SilentlyContinue
+
+          if ($proc.ProcessName -in @("node", "python")) {
+              Stop-Process -Id $pidToStop -Force
+          }
+      }
+  }
+
+9. Backup du lieu PostgreSQL
+
+Chay PowerShell:
+
+  $stamp = Get-Date -Format "yyyyMMdd-HHmmss"
+  $backupDir = "D:\archive-management-backups\db"
+  New-Item -ItemType Directory -Force $backupDir | Out-Null
+
+  & "C:\Program Files\PostgreSQL\18\bin\pg_dump.exe" `
+    -U archive_user `
+    -d archive_db `
+    -F c `
+    -f "$backupDir\archive_db_$stamp.backup"
+
+Neu duoc hoi password, nhap:
+
+  123456789
+
+10. Backup thu muc media va source
+
+Chay PowerShell:
+
+  cd D:\archive-management
+
+  $stamp = Get-Date -Format "yyyyMMdd-HHmmss"
+  $backupRoot = "D:\archive-management-backups\manual-$stamp"
+
+  New-Item -ItemType Directory -Force $backupRoot | Out-Null
+
+  $excludeDirs = @(
+      "node_modules",
+      ".next",
+      ".venv",
+      ".venv_chandra",
+      "__pycache__",
+      "dist-desktop"
+  )
+
+  robocopy D:\archive-management $backupRoot /E /R:1 /W:1 /XD $excludeDirs /XF *.pyc
+
+11. Cach copy app installer ra Downloads
+
+Chay PowerShell:
+
+  $downloads = Join-Path $env:USERPROFILE "Downloads"
+  $source = "D:\archive-management\web\dist-desktop\QuanLyKhoLuuTru Setup 0.1.0.exe"
+  $target = Join-Path $downloads "QuanLyKhoLuuTru Setup 0.1.0.exe"
+
+  Copy-Item $source $target -Force
+  Start-Process $downloads
+
+12. Luu y ve ban PACK V1
+
+Ban hien tai la app desktop local wrapper.
+
+Nghia la:
+
+- App da mo duoc nhu phan mem desktop.
+- App co the tu khoi dong backend/frontend tren may hien tai.
+- Nhung neu cai sang may khac, van can xu ly Python, Node, PostgreSQL, database, media va cau hinh thu muc.
+
+Khong nen hua offline dong bo nhieu may o giai doan nay.
+
+Offline local mot may: co the dung neu may do co day du backend/database/media local.
+
+Online/LAN: se lam sau khi cau hinh may chu noi bo va firewall.
+
+13. Shortcut tren Desktop
+
+Nen dung:
+
+  QuanLyKhoLuuTru App
+
+Dung de debug:
+
+  QuanLyKhoLuuTru Server
+
+Khong nen dung shortcut cu neu no tro toi:
+
+  C:\Users\...\AppData\Local\Programs\web\QuanLyKhoLuuTru.exe
+
+vi co the la ban cai cu.

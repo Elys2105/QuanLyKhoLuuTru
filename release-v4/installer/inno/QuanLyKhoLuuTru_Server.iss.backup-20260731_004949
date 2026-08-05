@@ -1,0 +1,44 @@
+#define MyAppName "Quan ly Kho Luu tru - Server"
+#define MyAppVersion "4.0.0-dev"
+#define MyAppPublisher "QuanLyKhoLuuTru"
+
+[Setup]
+AppId={{B89E108E-2E5D-4C79-8D9A-7B6E8BD3F403}
+AppName={#MyAppName}
+AppVersion={#MyAppVersion}
+AppVerName={#MyAppName} {#MyAppVersion}
+AppPublisher={#MyAppPublisher}
+DefaultDirName={autopf}\QuanLyKhoLuuTru
+DefaultGroupName=Quan ly Kho Luu tru
+DisableProgramGroupPage=yes
+OutputDir=D:\archive-management\release-v4\installer\output
+OutputBaseFilename=QuanLyKhoLuuTru_Server_V4_03B_Setup
+Compression=none
+SolidCompression=no
+DiskSpanning=yes
+DiskSliceSize=2000000000
+SlicesPerDisk=1
+PrivilegesRequired=admin
+ArchitecturesAllowed=x64compatible
+ArchitecturesInstallIn64BitMode=x64compatible
+WizardStyle=modern
+SetupLogging=yes
+UsePreviousAppDir=yes
+Uninstallable=yes
+CloseApplications=yes
+RestartApplications=no
+RestartIfNeededByRun=no
+VersionInfoVersion=4.0.0.0
+VersionInfoCompany=QuanLyKhoLuuTru
+VersionInfoDescription=Quan ly Kho Luu tru V4 Server Installer
+VersionInfoProductName=Quan ly Kho Luu tru
+VersionInfoProductVersion=4.0.0.0
+
+[Languages]
+Name: "english"; MessagesFile: "compiler:Default.isl"
+
+[Dirs]
+Name: "{app}\logs"; Permissions: users-modify
+
+[Files]
+Source: "D:\archive-management\release-v4\payload\server\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs

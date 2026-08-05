@@ -1,0 +1,32 @@
+QUAN LY KHO LUU TRU - HUONG DAN BO CAI V4-03C
+Generated: 2026-07-31 01:16:43
+
+1. CAI SERVER
+Mo thu muc:
+  final\server
+
+Bat buoc giu cung mot thu muc:
+  QuanLyKhoLuuTru_Server_V4_03B_Setup.exe
+  Tat ca file QuanLyKhoLuuTru_Server_V4_03B_Setup-*.bin
+
+Chay Setup.exe bang quyen Administrator.
+Khong doi ten, khong xoa, khong tach cac file .bin.
+
+2. CAI CLIENT
+Mo thu muc:
+  final\client
+
+Chay:
+  QuanLyKhoLuuTru_Client_V4_03B_Setup.exe
+
+3. DU LIEU
+Kho api\media hien tai khong nam trong installer.
+Database va media se duoc xu ly boi cac PACK Database/Backup/Restore tiep theo.
+
+4. KIEM TRA TOAN VEN
+Doi chieu file:
+  SHA256SUMS.txt
+
+5. LUU Y
+Server installer dang dung Compression=none de build nhanh va tranh het RAM.
+Tong dung luong bo cai Server xap xi dung luong payload goc.

@@ -1,0 +1,373 @@
+import subprocess
+import sys
+from pathlib import Path
+
+from django.conf import settings
+from django.db.models import Q
+from django.utils import timezone
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from apps.common.responses import success_response
+from apps.files.models import DigitalFile
+from apps.ocr.models import OcrJob
+from apps.ocr.runner import get_pdf_page_count, normalize_for_search
+from apps.ocr.serializers import OcrJobSerializer
+from apps.ocr.services import search_ocr_text
+from apps.permissions.permissions import CanUploadDigitalFile, CanViewArchive
+
+
+BASE_DIR = Path(settings.BASE_DIR)
+
+
+def error_response(message, status_code=status.HTTP_400_BAD_REQUEST, details=None):
+    return Response(
+        {
+            "success": False,
+            "error": {
+                "code": "OCR_ERROR",
+                "message": message,
+                "details": details or {},
+            },
+        },
+        status=status_code,
+    )
+
+
+def create_job(digital_file, user, mode):
+    total_pages = get_pdf_page_count(digital_file.file.path)
+
+    return OcrJob.objects.create(
+        digital_file=digital_file,
+        profile=digital_file.profile,
+        document=digital_file.document,
+        created_by=user if getattr(user, "is_authenticated", False) else None,
+        status=OcrJob.Status.PENDING,
+        ocr_mode=mode,
+        engine="paddle-pending",
+        language="vi",
+        current_page=0,
+        page_count=total_pages,
+        progress_percent=0,
+        started_at=None,
+        finished_at=None,
+    )
+
+
+def start_ocr_pipeline_process(fast_job, quality_job, pdf_path):
+    command = [
+        sys.executable,
+        str(BASE_DIR / "manage.py"),
+        "run_ocr_pipeline",
+        "--fast-job-id",
+        str(fast_job.id),
+        "--quality-job-id",
+        str(quality_job.id),
+        "--pdf",
+        str(pdf_path),
+    ]
+
+    creationflags = 0
+    if sys.platform.startswith("win"):
+        creationflags = subprocess.CREATE_NEW_PROCESS_GROUP
+
+    subprocess.Popen(
+        command,
+        cwd=str(BASE_DIR),
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        stdin=subprocess.DEVNULL,
+        creationflags=creationflags,
+        close_fds=True,
+    )
+
+
+def get_best_ocr_job_for_file(digital_file_id):
+    quality = (
+        OcrJob.objects
+        .filter(
+            digital_file_id=digital_file_id,
+            ocr_mode=OcrJob.Mode.QUALITY,
+            status=OcrJob.Status.COMPLETED,
+        )
+        .order_by("-id")
+        .first()
+    )
+    if quality:
+        return quality
+
+    fast = (
+        OcrJob.objects
+        .filter(
+            digital_file_id=digital_file_id,
+            ocr_mode=OcrJob.Mode.FAST,
+            status=OcrJob.Status.COMPLETED,
+        )
+        .order_by("-id")
+        .first()
+    )
+    if fast:
+        return fast
+
+    return (
+        OcrJob.objects
+        .filter(digital_file_id=digital_file_id)
+        .order_by("-id")
+        .first()
+    )
+
+
+class OcrJobListView(APIView):
+    permission_classes = [IsAuthenticated, CanViewArchive]
+
+    def get(self, request):
+        queryset = (
+            OcrJob.objects
+            .select_related("digital_file", "profile", "document", "created_by")
+            .all()
+        )
+
+        q = request.query_params.get("q")
+        status_value = request.query_params.get("status")
+        mode_value = request.query_params.get("ocr_mode")
+        digital_file_id = request.query_params.get("digital_file")
+        profile_id = request.query_params.get("profile")
+        document_id = request.query_params.get("document")
+
+        if q:
+            queryset = queryset.filter(
+                Q(extracted_text__icontains=q)
+                | Q(normalized_text__icontains=normalize_for_search(q))
+                | Q(digital_file__original_name__icontains=q)
+                | Q(profile__profile_code__icontains=q)
+                | Q(profile__title__icontains=q)
+                | Q(document__document_code__icontains=q)
+                | Q(document__title__icontains=q)
+            )
+
+        if status_value:
+            queryset = queryset.filter(status=status_value)
+
+        if mode_value:
+            queryset = queryset.filter(ocr_mode=mode_value)
+
+        if digital_file_id:
+            queryset = queryset.filter(digital_file_id=digital_file_id)
+
+        if profile_id:
+            queryset = queryset.filter(profile_id=profile_id)
+
+        if document_id:
+            queryset = queryset.filter(document_id=document_id)
+
+        page = max(int(request.query_params.get("page", 1)), 1)
+        page_size = min(max(int(request.query_params.get("page_size", 20)), 1), 100)
+
+        total = queryset.count()
+        start = (page - 1) * page_size
+        end = start + page_size
+
+        serializer = OcrJobSerializer(queryset[start:end], many=True)
+
+        return success_response(
+            message="Lấy danh sách OCR job thành công.",
+            data={
+                "results": serializer.data,
+                "pagination": {
+                    "page": page,
+                    "page_size": page_size,
+                    "total": total,
+                    "total_pages": (total + page_size - 1) // page_size,
+                    "has_next": end < total,
+                    "has_previous": page > 1,
+                },
+            },
+        )
+
+
+class OcrJobDetailView(APIView):
+    permission_classes = [IsAuthenticated, CanViewArchive]
+
+    def get(self, request, pk):
+        try:
+            job = (
+                OcrJob.objects
+                .select_related("digital_file", "profile", "document", "created_by")
+                .get(pk=pk)
+            )
+        except OcrJob.DoesNotExist:
+            return error_response("Không tìm thấy OCR job.", status.HTTP_404_NOT_FOUND)
+
+        return success_response(
+            message="Lấy chi tiết OCR job thành công.",
+            data=OcrJobSerializer(job).data,
+        )
+
+
+class OcrJobProgressView(APIView):
+    permission_classes = [IsAuthenticated, CanViewArchive]
+
+    def get(self, request, pk):
+        try:
+            job = OcrJob.objects.get(pk=pk)
+        except OcrJob.DoesNotExist:
+            return error_response("Không tìm thấy OCR job.", status.HTTP_404_NOT_FOUND)
+
+        return success_response(
+            message="Lấy tiến trình OCR thành công.",
+            data=OcrJobSerializer(job).data,
+        )
+
+
+class OcrDigitalFileProgressView(APIView):
+    permission_classes = [IsAuthenticated, CanViewArchive]
+
+    def get(self, request, digital_file_id):
+        jobs = (
+            OcrJob.objects
+            .filter(digital_file_id=digital_file_id)
+            .order_by("-id")[:2]
+        )
+
+        return success_response(
+            message="Lấy tiến trình OCR thành công.",
+            data=OcrJobSerializer(jobs, many=True).data,
+        )
+
+
+class OcrRunDigitalFileView(APIView):
+    permission_classes = [IsAuthenticated, CanUploadDigitalFile]
+
+    def post(self, request, digital_file_id):
+        try:
+            digital_file = (
+                DigitalFile.objects
+                .select_related("profile", "document")
+                .get(pk=digital_file_id, is_deleted=False)
+            )
+        except DigitalFile.DoesNotExist:
+            return error_response(
+                "Không tìm thấy file số hóa hoặc file đã bị xóa.",
+                status.HTTP_404_NOT_FOUND,
+            )
+
+        force = bool(request.data.get("force", False))
+
+        if force:
+            OcrJob.objects.filter(
+                digital_file=digital_file,
+                status__in=[OcrJob.Status.PENDING, OcrJob.Status.RUNNING],
+            ).update(
+                status=OcrJob.Status.FAILED,
+                error_message="Job cũ bị hủy do chạy lại OCR.",
+                finished_at=timezone.now(),
+            )
+
+        running = OcrJob.objects.filter(
+            digital_file=digital_file,
+            status__in=[OcrJob.Status.PENDING, OcrJob.Status.RUNNING],
+        ).order_by("-id")
+
+        if running.exists() and not force:
+            return success_response(
+                message="OCR đang chạy.",
+                data={
+                    "jobs": OcrJobSerializer(running[:2], many=True).data,
+                    "progress_url": f"/api/ocr/digital-files/{digital_file.id}/progress/",
+                    "best_text_url": f"/api/ocr/digital-files/{digital_file.id}/text/",
+                },
+            )
+
+        fast_job = create_job(digital_file, request.user, OcrJob.Mode.FAST)
+        quality_job = create_job(digital_file, request.user, OcrJob.Mode.QUALITY)
+
+        start_ocr_pipeline_process(fast_job, quality_job, digital_file.file.path)
+
+        return success_response(
+            message="Đã bắt đầu OCR nhanh. OCR chất lượng cao sẽ tự chạy sau khi OCR nhanh hoàn tất.",
+            data={
+                "fast_job": OcrJobSerializer(fast_job).data,
+                "quality_job": OcrJobSerializer(quality_job).data,
+                "progress_url": f"/api/ocr/digital-files/{digital_file.id}/progress/",
+                "best_text_url": f"/api/ocr/digital-files/{digital_file.id}/text/",
+            },
+        )
+
+
+class OcrRunQualityDigitalFileView(APIView):
+    permission_classes = [IsAuthenticated, CanUploadDigitalFile]
+
+    def post(self, request, digital_file_id):
+        return error_response(
+            "Quality OCR hiện chạy tự động sau fast OCR. Hãy gọi endpoint /run/.",
+            status.HTTP_400_BAD_REQUEST,
+        )
+
+
+class OcrDigitalFileTextView(APIView):
+    permission_classes = [IsAuthenticated, CanViewArchive]
+
+    def get(self, request, digital_file_id):
+        job = get_best_ocr_job_for_file(digital_file_id)
+
+        if not job:
+            return error_response(
+                "File này chưa có kết quả OCR.",
+                status.HTTP_404_NOT_FOUND,
+            )
+
+        return success_response(
+            message="Lấy text OCR thành công.",
+            data=OcrJobSerializer(job).data,
+        )
+
+
+
+class OcrDigitalFileDeleteView(APIView):
+    permission_classes = [IsAuthenticated, CanUploadDigitalFile]
+
+    def delete(self, request, digital_file_id):
+        try:
+            digital_file = DigitalFile.objects.get(
+                pk=digital_file_id,
+                is_deleted=False,
+            )
+        except DigitalFile.DoesNotExist:
+            return error_response(
+                "Không tìm thấy file số hóa hoặc file đã bị xóa.",
+                status.HTTP_404_NOT_FOUND,
+            )
+
+        deleted_count, _ = OcrJob.objects.filter(
+            digital_file=digital_file,
+        ).delete()
+
+        return success_response(
+            message="Đã xóa bản OCR. Có thể chạy OCR lại.",
+            data={
+                "digital_file_id": digital_file_id,
+                "deleted_count": deleted_count,
+            },
+        )
+class OcrSearchView(APIView):
+    permission_classes = [IsAuthenticated, CanViewArchive]
+
+    def get(self, request):
+        q = request.query_params.get("q", "")
+
+        if not q.strip():
+            return error_response("Vui lòng nhập từ khóa q.", status.HTTP_400_BAD_REQUEST)
+
+        jobs = search_ocr_text(q, limit=50)
+        serializer = OcrJobSerializer(jobs, many=True)
+
+        return success_response(
+            message="Tìm kiếm OCR thành công.",
+            data={
+                "q": q,
+                "results": serializer.data,
+                "total": len(serializer.data),
+            },
+        )

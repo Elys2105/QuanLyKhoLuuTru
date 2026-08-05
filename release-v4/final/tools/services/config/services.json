@@ -1,0 +1,36 @@
+{
+    "project":  "QuanLyKhoLuuTru",
+    "pack":  "V4-06",
+    "generated_at":  "2026-07-31T01:29:41.8656560+07:00",
+    "install_root":  "C:\\Program Files\\QuanLyKhoLuuTru\\Server",
+    "data_root":  "C:\\ProgramData\\QuanLyKhoLuuTru\\Server",
+    "nssm":  {
+                 "detected":  false,
+                 "detected_path":  null,
+                 "deployed_path":  "C:\\Program Files\\QuanLyKhoLuuTru\\Server\\service-tools\\nssm.exe"
+             },
+    "backend":  {
+                    "service_name":  "QuanLyKhoLuuTru-Backend",
+                    "display_name":  "Quan Ly Kho Luu Tru - Backend",
+                    "description":  "Django backend service for Quan Ly Kho Luu Tru",
+                    "executable":  "C:\\Program Files\\QuanLyKhoLuuTru\\Server\\app\\api\\.venv\\Scripts\\python.exe",
+                    "fallback_executable":  "python.exe",
+                    "working_directory":  "C:\\Program Files\\QuanLyKhoLuuTru\\Server\\app\\api",
+                    "arguments":  "manage.py runserver 127.0.0.1:8000 --noreload",
+                    "stdout":  "C:\\ProgramData\\QuanLyKhoLuuTru\\Server\\logs\\backend-service.out.log",
+                    "stderr":  "C:\\ProgramData\\QuanLyKhoLuuTru\\Server\\logs\\backend-service.err.log",
+                    "start":  "SERVICE_AUTO_START"
+                },
+    "frontend":  {
+                     "service_name":  "QuanLyKhoLuuTru-Frontend",
+                     "display_name":  "Quan Ly Kho Luu Tru - Frontend",
+                     "description":  "Next.js frontend service for Quan Ly Kho Luu Tru",
+                     "executable":  "C:\\Program Files\\nodejs\\node.exe",
+                     "fallback_executable":  "node.exe",
+                     "working_directory":  "C:\\Program Files\\QuanLyKhoLuuTru\\Server\\app\\web",
+                     "arguments":  "node_modules\\next\\dist\\bin\\next start -H 0.0.0.0 -p 3000",
+                     "stdout":  "C:\\ProgramData\\QuanLyKhoLuuTru\\Server\\logs\\frontend-service.out.log",
+                     "stderr":  "C:\\ProgramData\\QuanLyKhoLuuTru\\Server\\logs\\frontend-service.err.log",
+                     "start":  "SERVICE_AUTO_START"
+                 }
+}

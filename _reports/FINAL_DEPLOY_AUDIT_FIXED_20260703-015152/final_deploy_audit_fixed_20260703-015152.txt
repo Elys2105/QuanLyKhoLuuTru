@@ -1,0 +1,58 @@
+﻿
+================================================================
+00_INFO
+================================================================
+ROOT=D:\archive-management
+API=D:\archive-management\api
+WEB=D:\archive-management\web
+PY=D:\archive-management\api\.venv\Scripts\python.exe
+REPORT_DIR=D:\archive-management\_reports\FINAL_DEPLOY_AUDIT_FIXED_20260703-015152
+REPORT=D:\archive-management\_reports\FINAL_DEPLOY_AUDIT_FIXED_20260703-015152\final_deploy_audit_fixed_20260703-015152.txt
+
+================================================================
+01_PATH_CHECK
+================================================================
+D:\archive-management=True
+D:\archive-management\api=True
+D:\archive-management\web=True
+D:\archive-management\api\.venv\Scripts\python.exe=True
+D:\archive-management\api\manage.py=True
+D:\archive-management\web\package.json=True
+
+================================================================
+02_START_POSTGRES_IF_EXISTS
+================================================================
+POSTGRES_SERVICE=postgresql-x64-18 STATUS=Running
+
+================================================================
+03_STOP_OLD_PORTS
+================================================================
+
+================================================================
+04_NATIVE_CHECKS_NO_CMD_QUOTE_BUG
+================================================================
+
+================================================================
+PYTHON_VERSION
+================================================================
+WORKDIR=D:\archive-management\api
+EXE=D:\archive-management\api\.venv\Scripts\python.exe
+ARGS=--version
+EXIT_CODE=0
+Python 3.11.9
+
+================================================================
+DJANGO_CHECK
+================================================================
+WORKDIR=D:\archive-management\api
+EXE=D:\archive-management\api\.venv\Scripts\python.exe
+ARGS=manage.py check
+EXIT_CODE=0
+System check identified no issues (0 silenced).
+
+================================================================
+DJANGO_DEPLOY_CHECK_REVIEW
+================================================================
+WORKDIR=D:\archive-management\api
+EXE=D:\archive-management\api\.venv\Scripts\python.exe
+ARGS=manage.py check --deploy

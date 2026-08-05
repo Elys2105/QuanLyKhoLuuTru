@@ -1,0 +1,26 @@
+{
+    "product":  "QuanLyKhoLuuTru",
+    "pack":  "V4-05",
+    "generated_at":  "2026-07-31T01:28:48.7674005+07:00",
+    "host":  "127.0.0.1",
+    "port":  5432,
+    "database":  "archive_management",
+    "user":  "archive_management",
+    "password":  "CHANGE_ME",
+    "admin_database":  "postgres",
+    "admin_user":  "postgres",
+    "connect_timeout_seconds":  10,
+    "backup_directory":  "C:\\ProgramData\\QuanLyKhoLuuTru\\Server\\backups\\database",
+    "tools":  {
+                  "psql":  "C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe",
+                  "pg_dump":  "C:\\Program Files\\PostgreSQL\\18\\bin\\pg_dump.exe",
+                  "pg_restore":  "C:\\Program Files\\PostgreSQL\\18\\bin\\pg_restore.exe",
+                  "createdb":  "C:\\Program Files\\PostgreSQL\\18\\bin\\createdb.exe",
+                  "pg_isready":  "C:\\Program Files\\PostgreSQL\\18\\bin\\pg_isready.exe"
+              },
+    "windows_service":  {
+                            "detected":  true,
+                            "name":  "postgresql-x64-18",
+                            "state":  "Running"
+                        }
+}

@@ -1,0 +1,66 @@
+{
+    "project":  "QuanLyKhoLuuTru",
+    "pack":  "V4-04",
+    "status":  "PASS",
+    "generated_at":  "2026-07-31T01:17:23.6268463+07:00",
+    "runtime_root":  "D:\\archive-management\\release-v4\\runtime",
+    "detected":  {
+                     "python":  "D:\\archive-management\\api\\.venv\\Scripts\\python.exe",
+                     "python_version":  "Python 3.11.9",
+                     "node":  "C:\\Program Files\\nodejs\\node.exe",
+                     "node_version":  "v22.21.0",
+                     "npm":  "C:\\Program Files\\nodejs\\npm.cmd",
+                     "npm_version":  "11.7.0",
+                     "psql":  "C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe",
+                     "pg_dump":  "C:\\Program Files\\PostgreSQL\\18\\bin\\pg_dump.exe",
+                     "pg_restore":  "C:\\Program Files\\PostgreSQL\\18\\bin\\pg_restore.exe"
+                 },
+    "files":  [
+                  {
+                      "relative_path":  "config\\runtime.json",
+                      "size_bytes":  2045,
+                      "sha256":  "57DF7FBB8921DA9F16E10BEC05659DEC7828ED791961E7D45FA6FF40B3F14216"
+                  },
+                  {
+                      "relative_path":  "config\\server.env.template",
+                      "size_bytes":  424,
+                      "sha256":  "DE4F8584B9307E6141DB40ED9212419135418EF3F17915DC39D41C7D8679D27B"
+                  },
+                  {
+                      "relative_path":  "scripts\\OPEN_CLIENT.ps1",
+                      "size_bytes":  575,
+                      "sha256":  "789392447C01B8F3D5BFD8D7D189C26A8D6AA9C6429A4D58433C253BD9459BD1"
+                  },
+                  {
+                      "relative_path":  "scripts\\RUNTIME_HEALTH.ps1",
+                      "size_bytes":  820,
+                      "sha256":  "18300A20A259BDCC07DEF210696C6CA91A6AB1146E6B1F67B3614107CDF1FF41"
+                  },
+                  {
+                      "relative_path":  "scripts\\RUNTIME_PRECHECK.ps1",
+                      "size_bytes":  1598,
+                      "sha256":  "96B191F6C8C1BA2395E910EE57F7563EE293F86B3BBA513542E096BDCA1A0759"
+                  },
+                  {
+                      "relative_path":  "scripts\\RUNTIME_STATUS.ps1",
+                      "size_bytes":  1238,
+                      "sha256":  "7A83DDE2CAD258B28027CAB4B6711B57F00A4844D1D7E2302530DDE1522DA235"
+                  },
+                  {
+                      "relative_path":  "scripts\\START_SERVER.ps1",
+                      "size_bytes":  3630,
+                      "sha256":  "02D0323043ED0432DAC5A5EA7B1E99AA9CAE33F91FDE590DE86F47D9178A7247"
+                  },
+                  {
+                      "relative_path":  "scripts\\STOP_SERVER.ps1",
+                      "size_bytes":  963,
+                      "sha256":  "ED8F5973096A1E08F4484779CB6022C8ADB18BABEB0AAD0B1FA62EAB2D8C62A7"
+                  }
+              ],
+    "warnings":  [
+
+                 ],
+    "failures":  [
+
+                 ]
+}

@@ -1,0 +1,70 @@
+{
+    "project":  "QuanLyKhoLuuTru",
+    "pack":  "V4-12",
+    "status":  "PASS",
+    "generated_at":  "2026-07-31T02:00:25.7407426+07:00",
+    "deployment_type":  "ONLINE_ONE_CLICK",
+    "target_requirements":  [
+                                "Windows 10/11 x64",
+                                "Administrator rights",
+                                "Internet access",
+                                "WinGet/App Installer"
+                            ],
+    "server_installer":  "KhoLuuTru_V4_Server_Setup.exe",
+    "client_installer":  "KhoLuuTru_V4_Client_Setup.exe",
+    "client_ip_wizard":  true,
+    "automatic_python":  true,
+    "automatic_node":  true,
+    "automatic_postgresql":  true,
+    "automatic_venv":  true,
+    "automatic_pip":  true,
+    "automatic_npm_build":  true,
+    "automatic_database":  true,
+    "automatic_migrate":  true,
+    "automatic_services":  true,
+    "automatic_firewall":  true,
+    "automatic_shortcuts":  true,
+    "automatic_health_check":  true,
+    "clean_machine_test_performed":  false,
+    "files":  [
+                  {
+                      "name":  "KhoLuuTru_V4_Client_Setup.exe",
+                      "size_bytes":  2099347,
+                      "size_mb":  2,
+                      "sha256":  "9704AC5D17391FCA39473AAB6E0A9565951B0A5772FC8C04EA9B13E468EA4760"
+                  },
+                  {
+                      "name":  "KhoLuuTru_V4_Server_Setup.exe",
+                      "size_bytes":  5126599,
+                      "size_mb":  4.89,
+                      "sha256":  "CAA8BABA5AE2640B8B5B7B197BD89C1254DAF19CC0A0AB195C6309940253B45B"
+                  },
+                  {
+                      "name":  "KhoLuuTru_V4_Server_Setup-1.bin",
+                      "size_bytes":  1994873344,
+                      "size_mb":  1902.46,
+                      "sha256":  "3C394C6A5EA8973FC2810EDA37168DD5FEE8499C487553742610B61453178B2A"
+                  },
+                  {
+                      "name":  "KhoLuuTru_V4_Server_Setup-2.bin",
+                      "size_bytes":  2000000000,
+                      "size_mb":  1907.35,
+                      "sha256":  "C31E3E11BD1D97A2B45E5252E795EFAA4856095A60D29A393481F11039034359"
+                  },
+                  {
+                      "name":  "KhoLuuTru_V4_Server_Setup-3.bin",
+                      "size_bytes":  2000000000,
+                      "size_mb":  1907.35,
+                      "sha256":  "79FC6FF110725A4A160AAB2BBCC74C058B2C7250D78D1FCD4975E873CC1520B6"
+                  },
+                  {
+                      "name":  "KhoLuuTru_V4_Server_Setup-4.bin",
+                      "size_bytes":  670492031,
+                      "size_mb":  639.43,
+                      "sha256":  "400002823866FD82D9AB20B0520D4489C281D3DC6F9CC02AC28C9BADE7F32BEA"
+                  }
+              ],
+    "warnings":  [
+
+                 ]
+}

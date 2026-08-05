@@ -1,0 +1,35 @@
+{
+    "schema_version":  13,
+    "pack":  "V4-13",
+    "name":  "Final Rebuild",
+    "status":  "PASS",
+    "built_at":  "2026-07-31T10:32:44.9732595+07:00",
+    "project_root":  "D:\\archive-management",
+    "release_root":  "D:\\archive-management\\release-v4",
+    "output_root":  "D:\\archive-management\\release-v4\\one-click-final-v13\\output",
+    "server_installer":  "D:\\archive-management\\release-v4\\one-click-final-v13\\output\\KhoLuuTru_V4_Server_Setup_FIXED.exe",
+    "client_installer":  "D:\\archive-management\\release-v4\\one-click-final-v13\\output\\KhoLuuTru_V4_Client_Setup_FIXED.exe",
+    "server_slices":  4,
+    "sha256":  "D:\\archive-management\\release-v4\\one-click-final-v13\\output\\SHA256SUMS.txt",
+    "parser_checked":  [
+                           "D:\\archive-management\\release-v4\\one-click-final-v13\\stage-server\\bootstrap\\POST_INSTALL_SERVER_V13.ps1",
+                           "D:\\archive-management\\release-v4\\one-click-final-v13\\stage-server\\bootstrap\\UNINSTALL_SERVER_V13.ps1",
+                           "D:\\archive-management\\release-v4\\one-click-final-v13\\stage-client\\bootstrap\\POST_INSTALL_CLIENT_V13.ps1"
+                       ],
+    "protections":  {
+                        "source_modified":  false,
+                        "build_database_modified":  false,
+                        "build_media_modified":  false,
+                        "target_media_preserved":  true,
+                        "target_database_cluster_preserved":  true,
+                        "install_root_hard_coded":  false,
+                        "inno_checks_post_install_exit_code":  true,
+                        "inno_checks_status_pass":  true,
+                        "api_login_required":  true,
+                        "admin_seed_required":  true,
+                        "edge_app_shortcut":  true
+                    },
+    "warnings":  [
+                     "Removing build-machine backend environment file: D:\\archive-management\\release-v4\\one-click-final-v13\\stage-server\\app\\api\\.env"
+                 ]
+}

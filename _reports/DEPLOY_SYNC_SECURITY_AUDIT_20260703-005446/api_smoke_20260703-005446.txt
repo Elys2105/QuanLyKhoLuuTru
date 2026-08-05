@@ -1,0 +1,46 @@
+﻿
+LOGIN_FAIL|Admin|Unable to connect to the remote server
+LOGIN_FAIL|user_test|Unable to connect to the remote server
+
+===== NO_AUTH_PERMISSION_CHECK =====
+API_GET|NO_AUTH|/api/search/profiles/|STATUS=0|LEN=0|SHA256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855|ERROR=Unable to connect to the remote server
+NO_AUTH_REVIEW_POSSIBLY_OPEN|/api/search/profiles/|STATUS=0
+API_GET|NO_AUTH|/api/search/profiles/?q=|STATUS=0|LEN=0|SHA256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855|ERROR=Unable to connect to the remote server
+NO_AUTH_REVIEW_POSSIBLY_OPEN|/api/search/profiles/?q=|STATUS=0
+API_GET|NO_AUTH|/api/dashboard/|STATUS=0|LEN=0|SHA256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855|ERROR=Unable to connect to the remote server
+NO_AUTH_REVIEW_POSSIBLY_OPEN|/api/dashboard/|STATUS=0
+API_GET|NO_AUTH|/api/dashboard/stats/|STATUS=0|LEN=0|SHA256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855|ERROR=Unable to connect to the remote server
+NO_AUTH_REVIEW_POSSIBLY_OPEN|/api/dashboard/stats/|STATUS=0
+API_GET|NO_AUTH|/api/fonds/|STATUS=0|LEN=0|SHA256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855|ERROR=Unable to connect to the remote server
+NO_AUTH_REVIEW_POSSIBLY_OPEN|/api/fonds/|STATUS=0
+API_GET|NO_AUTH|/api/catalogs/|STATUS=0|LEN=0|SHA256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855|ERROR=Unable to connect to the remote server
+NO_AUTH_REVIEW_POSSIBLY_OPEN|/api/catalogs/|STATUS=0
+API_GET|NO_AUTH|/api/warehouses/|STATUS=0|LEN=0|SHA256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855|ERROR=Unable to connect to the remote server
+NO_AUTH_REVIEW_POSSIBLY_OPEN|/api/warehouses/|STATUS=0
+API_GET|NO_AUTH|/api/storage-locations/|STATUS=0|LEN=0|SHA256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855|ERROR=Unable to connect to the remote server
+NO_AUTH_REVIEW_POSSIBLY_OPEN|/api/storage-locations/|STATUS=0
+API_GET|NO_AUTH|/api/storage-boxes/|STATUS=0|LEN=0|SHA256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855|ERROR=Unable to connect to the remote server
+NO_AUTH_REVIEW_POSSIBLY_OPEN|/api/storage-boxes/|STATUS=0
+API_GET|NO_AUTH|/api/storage-files/|STATUS=0|LEN=0|SHA256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855|ERROR=Unable to connect to the remote server
+NO_AUTH_REVIEW_POSSIBLY_OPEN|/api/storage-files/|STATUS=0
+API_GET|NO_AUTH|/api/profiles/|STATUS=0|LEN=0|SHA256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855|ERROR=Unable to connect to the remote server
+NO_AUTH_REVIEW_POSSIBLY_OPEN|/api/profiles/|STATUS=0
+API_GET|NO_AUTH|/api/documents/|STATUS=0|LEN=0|SHA256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855|ERROR=Unable to connect to the remote server
+NO_AUTH_REVIEW_POSSIBLY_OPEN|/api/documents/|STATUS=0
+API_GET|NO_AUTH|/api/digital-files/|STATUS=0|LEN=0|SHA256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855|ERROR=Unable to connect to the remote server
+NO_AUTH_REVIEW_POSSIBLY_OPEN|/api/digital-files/|STATUS=0
+
+===== ADMIN_USER_READ_COMPARE =====
+READ_COMPARE_REVIEW_STATUS|/api/search/profiles/|ADMIN=0|USER=0
+READ_COMPARE_REVIEW_STATUS|/api/search/profiles/?q=|ADMIN=0|USER=0
+READ_COMPARE_REVIEW_STATUS|/api/dashboard/|ADMIN=0|USER=0
+READ_COMPARE_REVIEW_STATUS|/api/dashboard/stats/|ADMIN=0|USER=0
+READ_COMPARE_REVIEW_STATUS|/api/fonds/|ADMIN=0|USER=0
+READ_COMPARE_REVIEW_STATUS|/api/catalogs/|ADMIN=0|USER=0
+READ_COMPARE_REVIEW_STATUS|/api/warehouses/|ADMIN=0|USER=0
+READ_COMPARE_REVIEW_STATUS|/api/storage-locations/|ADMIN=0|USER=0
+READ_COMPARE_REVIEW_STATUS|/api/storage-boxes/|ADMIN=0|USER=0
+READ_COMPARE_REVIEW_STATUS|/api/storage-files/|ADMIN=0|USER=0
+READ_COMPARE_REVIEW_STATUS|/api/profiles/|ADMIN=0|USER=0
+READ_COMPARE_REVIEW_STATUS|/api/documents/|ADMIN=0|USER=0
+READ_COMPARE_REVIEW_STATUS|/api/digital-files/|ADMIN=0|USER=0

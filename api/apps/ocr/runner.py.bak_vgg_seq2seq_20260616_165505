@@ -1,0 +1,172 @@
+﻿import json
+import os
+import re
+import subprocess
+import threading
+import unicodedata
+from pathlib import Path
+
+from django.conf import settings
+from django.utils import timezone
+
+from apps.ocr.models import OcrJob
+
+
+BASE_DIR = Path(settings.BASE_DIR)
+OCR_PYTHON = BASE_DIR / ".venv_ocr_paddle" / "Scripts" / "python.exe"
+OCR_WORKER = BASE_DIR / "scripts" / "paddle_ocr_worker.py"
+
+
+def normalize_for_search(text: str) -> str:
+    if not text:
+        return ""
+    text = unicodedata.normalize("NFD", text)
+    text = "".join(ch for ch in text if unicodedata.category(ch) != "Mn")
+    text = text.replace("đ", "d").replace("Đ", "D")
+    text = text.lower()
+    text = re.sub(r"[^a-z0-9]+", " ", text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def get_pdf_page_count(pdf_path):
+    try:
+        import fitz
+        doc = fitz.open(str(pdf_path))
+        total = len(doc)
+        doc.close()
+        return total
+    except Exception:
+        return 0
+
+
+def run_worker_and_update_job(job_id, pdf_path, mode, dpi=120):
+    total_pages = get_pdf_page_count(pdf_path)
+
+    OcrJob.objects.filter(id=job_id).update(
+        status=OcrJob.Status.RUNNING,
+        started_at=timezone.now(),
+        error_message="",
+        page_count=total_pages,
+        current_page=1 if total_pages else 0,
+        progress_percent=1,
+        updated_at=timezone.now(),
+    )
+
+    env = os.environ.copy()
+    env["PYTHONIOENCODING"] = "utf-8"
+    env["PYTHONUTF8"] = "1"
+
+    command = [
+        str(OCR_PYTHON),
+        str(OCR_WORKER),
+        "--pdf",
+        str(pdf_path),
+        "--language",
+        "vi",
+        "--dpi",
+        str(dpi),
+        "--mode",
+        mode,
+    ]
+
+    stdout_lines = []
+    stderr_lines = []
+
+    try:
+        process = subprocess.Popen(
+            command,
+            cwd=str(BASE_DIR),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            env=env,
+            bufsize=1,
+        )
+
+        def read_stderr():
+            for line in process.stderr:
+                line = line.strip()
+                if line:
+                    stderr_lines.append(line)
+
+                match = re.search(r"(FAST|QUALITY) PAGE\s+(\d+)/(\d+)\s+done", line)
+                if match:
+                    done_page = int(match.group(2))
+                    total = int(match.group(3))
+                    next_page = min(done_page + 1, total)
+                    percent = int(done_page * 100 / max(total, 1))
+
+                    OcrJob.objects.filter(id=job_id).update(
+                        current_page=next_page,
+                        page_count=total,
+                        progress_percent=percent,
+                        updated_at=timezone.now(),
+                    )
+
+        stderr_thread = threading.Thread(target=read_stderr, daemon=True)
+        stderr_thread.start()
+
+        for line in process.stdout:
+            if line:
+                stdout_lines.append(line)
+
+        return_code = process.wait()
+        stderr_thread.join(timeout=2)
+
+        if return_code != 0:
+            raise RuntimeError(
+                "OCR worker failed with code "
+                + str(return_code)
+                + "\nCOMMAND: "
+                + " ".join(command)
+                + "\nSTDERR:\n"
+                + "\n".join(stderr_lines[-100:])
+                + "\nSTDOUT:\n"
+                + "\n".join(stdout_lines[-30:])
+            )
+
+        json_line = None
+        for line in reversed(stdout_lines):
+            line = line.strip()
+            if line.startswith("{") and line.endswith("}"):
+                json_line = line
+                break
+
+        if not json_line:
+            raise RuntimeError(
+                "Không tìm thấy JSON output từ OCR worker.\nSTDERR:\n"
+                + "\n".join(stderr_lines[-100:])
+            )
+
+        data = json.loads(json_line)
+
+        if not data.get("success"):
+            raise RuntimeError(data.get("error") or "OCR worker trả success=false.")
+
+        text = data.get("text") or ""
+        page_count = data.get("page_count") or total_pages
+
+        OcrJob.objects.filter(id=job_id).update(
+            status=OcrJob.Status.COMPLETED,
+            engine=data.get("engine") or f"paddle-{mode}",
+            language=data.get("language") or "vi",
+            page_count=page_count,
+            character_count=len(text),
+            extracted_text=text,
+            normalized_text=normalize_for_search(text),
+            current_page=page_count,
+            progress_percent=100,
+            error_message="",
+            finished_at=timezone.now(),
+            updated_at=timezone.now(),
+        )
+
+    except Exception as exc:
+        OcrJob.objects.filter(id=job_id).update(
+            status=OcrJob.Status.FAILED,
+            error_message=str(exc),
+            finished_at=timezone.now(),
+            updated_at=timezone.now(),
+        )

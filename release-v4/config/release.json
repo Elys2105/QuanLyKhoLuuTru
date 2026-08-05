@@ -1,0 +1,36 @@
+{
+    "product":  {
+                    "name":  "QuanLyKhoLuuTru",
+                    "display_name":  "Quản lý Kho Lưu trữ",
+                    "version":  "4.0.0-dev",
+                    "edition":  "V4",
+                    "channel":  "development"
+                },
+    "source":  {
+                   "project_root":  "D:\\archive-management",
+                   "backend":  "D:\\archive-management\\api",
+                   "frontend":  "D:\\archive-management\\web"
+               },
+    "storage":  {
+                    "current_media_root":  "D:\\archive-management\\api\\media",
+                    "storage_policy":  "KEEP_CURRENT_BEHAVIOR",
+                    "modify_storage":  false
+                },
+    "protection":  {
+                       "modify_backend":  false,
+                       "modify_frontend":  false,
+                       "modify_database":  false,
+                       "modify_ocr_pipeline":  false,
+                       "modify_media_files":  false,
+                       "packaging_area_only":  true
+                   },
+    "release":  {
+                    "root":  "D:\\archive-management\\release-v4",
+                    "server_payload":  "D:\\archive-management\\release-v4\\payload\\server",
+                    "client_payload":  "D:\\archive-management\\release-v4\\payload\\client",
+                    "package_output":  "D:\\archive-management\\release-v4\\packages",
+                    "installer":  "D:\\archive-management\\release-v4\\installer",
+                    "logs":  "D:\\archive-management\\release-v4\\logs"
+                },
+    "verified_at":  "2026-07-31T00:03:21+07:00"
+}

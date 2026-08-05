@@ -1,0 +1,68 @@
+{
+    "project":  "QuanLyKhoLuuTru",
+    "pack":  "V4-05",
+    "status":  "PASS",
+    "generated_at":  "2026-07-31T01:28:49.0935288+07:00",
+    "psql_version":  "psql (PostgreSQL) 18.4",
+    "service_detected":  true,
+    "service_name":  "postgresql-x64-18",
+    "service_state":  "Running",
+    "port_5432_listening":  true,
+    "postgres_ready":  true,
+    "files":  [
+                  {
+                      "relative_path":  "config\\database.json.template",
+                      "size_bytes":  1152,
+                      "sha256":  "64AB74F6462FC732AC81E923DB66BA0720FF7E718A0F5919FED03D9FCBB6D598"
+                  },
+                  {
+                      "relative_path":  "config\\django-database-audit.json",
+                      "size_bytes":  50,
+                      "sha256":  "959E4B1C32C6967237F637758DF7272CF028177D2F223F13C15574641AA37ACC"
+                  },
+                  {
+                      "relative_path":  "config\\migration-plan.txt",
+                      "size_bytes":  5969,
+                      "sha256":  "71304FAF3A10BDC68449C133913C2BAA9A88103519E58A25FC39773CD364F9B6"
+                  },
+                  {
+                      "relative_path":  "scripts\\BACKUP_DATABASE.ps1",
+                      "size_bytes":  1310,
+                      "sha256":  "B3BFD6E4EEBC7ED4E51E729A2041ED51FC48DF5CA91B756157507A2504285A39"
+                  },
+                  {
+                      "relative_path":  "scripts\\DATABASE_PRECHECK.ps1",
+                      "size_bytes":  871,
+                      "sha256":  "582DFE03516F7D3CA8822C6CE22525D656E9832C241A3E850447755E46C47DEC"
+                  },
+                  {
+                      "relative_path":  "scripts\\DATABASE_STATUS.ps1",
+                      "size_bytes":  914,
+                      "sha256":  "A28DE91F783C9D87B3DFB433A72DD05245C051B17CDCB018B373F87B78B9F51E"
+                  },
+                  {
+                      "relative_path":  "scripts\\INITIALIZE_DATABASE.ps1",
+                      "size_bytes":  1565,
+                      "sha256":  "85EF314A60B71B16A22E090272CEFC2738A17CCD8C6B6A53DB207103BC7A4658"
+                  },
+                  {
+                      "relative_path":  "scripts\\INSTALL_DATABASE_CONFIG.ps1",
+                      "size_bytes":  941,
+                      "sha256":  "894F58FBCC71966DA44352F69A2DB41E2606B84BD836C19DF9F86E5800A63237"
+                  },
+                  {
+                      "relative_path":  "scripts\\MIGRATE_DATABASE.ps1",
+                      "size_bytes":  1228,
+                      "sha256":  "5899442FDFFD4F894B6CE7624507E5F1196754CF7228A8F960E7376BEAC1FAE0"
+                  },
+                  {
+                      "relative_path":  "scripts\\RESTORE_DATABASE.ps1",
+                      "size_bytes":  1434,
+                      "sha256":  "E6CA41C8D2D7042A619F08EB07A68917FC9C2C9FD5192FEA15A6921806EC234E"
+                  }
+              ],
+    "warnings":  [
+                     "Django database audit that bai",
+                     "Khong doc duoc migration plan vi PostgreSQL chua san sang. ExitCode=1"
+                 ]
+}

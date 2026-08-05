@@ -1,0 +1,20 @@
+{
+    "pack":  "V4-06",
+    "status":  "PASS",
+    "generated_at":  "2026-07-31T01:29:42.1057897+07:00",
+    "nssm_detected":  false,
+    "service_config_created":  true,
+    "install_script_created":  true,
+    "uninstall_script_created":  true,
+    "start_stop_restart_created":  true,
+    "status_health_created":  true,
+    "parser_check_passed":  true,
+    "service_registration_performed":  false,
+    "source_modified":  false,
+    "database_modified":  false,
+    "current_media_modified":  false,
+    "warnings":  [
+                     "Chua co NSSM. Script se tao bo cai NSSM rieng."
+                 ],
+    "log":  "D:\\archive-management\\release-v4\\logs\\PACK_V4_06_20260731_012941.log"
+}

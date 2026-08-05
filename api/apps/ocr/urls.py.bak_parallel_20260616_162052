@@ -1,0 +1,26 @@
+from django.urls import path
+
+from apps.ocr.views import (
+    OcrDigitalFileTextView,
+    OcrJobDetailView,
+    OcrJobListView,
+    OcrRunDigitalFileView,
+    OcrSearchView,
+)
+
+urlpatterns = [
+    path("", OcrJobListView.as_view(), name="ocr-job-list-root"),
+    path("jobs/", OcrJobListView.as_view(), name="ocr-job-list"),
+    path("jobs/<int:pk>/", OcrJobDetailView.as_view(), name="ocr-job-detail"),
+    path(
+        "digital-files/<int:digital_file_id>/run/",
+        OcrRunDigitalFileView.as_view(),
+        name="ocr-run-digital-file",
+    ),
+    path(
+        "digital-files/<int:digital_file_id>/text/",
+        OcrDigitalFileTextView.as_view(),
+        name="ocr-digital-file-text",
+    ),
+    path("search/", OcrSearchView.as_view(), name="ocr-search"),
+]

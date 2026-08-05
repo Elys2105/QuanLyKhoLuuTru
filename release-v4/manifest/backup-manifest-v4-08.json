@@ -1,0 +1,54 @@
+{
+    "project":  "QuanLyKhoLuuTru",
+    "pack":  "V4-08",
+    "status":  "PASS",
+    "generated_at":  "2026-07-31T01:30:44.1942610+07:00",
+    "backup_root":  "D:\\archive-management\\release-v4\\backup",
+    "backup_performed":  false,
+    "restore_performed":  false,
+    "files":  [
+                  {
+                      "relative_path":  "config\\backup.json",
+                      "size_bytes":  1188,
+                      "sha256":  "D84FC4E06A7572F9D4ED36831CAA79090D60FD03CC225414EB8801EC3A45218C"
+                  },
+                  {
+                      "relative_path":  "docs\\BACKUP_RESTORE_GUIDE.txt",
+                      "size_bytes":  960,
+                      "sha256":  "26B24A04C94DBEA9E840BC6D6D552DE29FED774759D03530AFB540CB4DEBC33D"
+                  },
+                  {
+                      "relative_path":  "scripts\\BACKUP_FULL.ps1",
+                      "size_bytes":  5381,
+                      "sha256":  "BA671C0071995CB20CB251ED28C4CD8B6A719BAE1221967FBC11D1748C09C9F4"
+                  },
+                  {
+                      "relative_path":  "scripts\\BACKUP_STATUS.ps1",
+                      "size_bytes":  1086,
+                      "sha256":  "886C8CC25593851D1FEF9A6CBD33EAEDEBAA7CC8F07EA51E5C6C63D0DE711484"
+                  },
+                  {
+                      "relative_path":  "scripts\\CLEANUP_BACKUPS.ps1",
+                      "size_bytes":  1335,
+                      "sha256":  "1C17BD98DF252C046483940EAB84854C3B0DE0F9C1C83BC62770797774775A29"
+                  },
+                  {
+                      "relative_path":  "scripts\\DEPLOY_BACKUP_TOOLS.ps1",
+                      "size_bytes":  816,
+                      "sha256":  "E3E2A1AD31A6DBB77DED8C34E8C8B9AC082F5BACE36B85D27F76FD14FFDD4B90"
+                  },
+                  {
+                      "relative_path":  "scripts\\RESTORE_FULL.ps1",
+                      "size_bytes":  4520,
+                      "sha256":  "5EA82E1BD6907B74AE6DD735ECD36A4C889CAE1CAE2A0E86F3533B4160B2AE92"
+                  },
+                  {
+                      "relative_path":  "scripts\\VERIFY_BACKUP.ps1",
+                      "size_bytes":  1352,
+                      "sha256":  "05B9129555586A2ACB85B749EFE45E15CB1B07BDBA2B04B94BE3C992071C693C"
+                  }
+              ],
+    "warnings":  [
+
+                 ]
+}

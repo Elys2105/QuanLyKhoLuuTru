@@ -1,0 +1,48 @@
+{
+    "project":  "QuanLyKhoLuuTru",
+    "pack":  "V4-07",
+    "status":  "PASS",
+    "generated_at":  "2026-07-31T01:30:11.3044075+07:00",
+    "desktop_root":  "D:\\archive-management\\release-v4\\desktop",
+    "shortcut_registration_performed":  false,
+    "files":  [
+                  {
+                      "relative_path":  "config\\desktop.json",
+                      "size_bytes":  735,
+                      "sha256":  "FC99C4168DCC5D406FDB501FF3B5C77604BE7846C79D68E48198931261B8780D"
+                  },
+                  {
+                      "relative_path":  "scripts\\CONFIGURE_CLIENT.ps1",
+                      "size_bytes":  887,
+                      "sha256":  "F80934744F25EB0A264865772BF6B7AB400E0CEF598AF4C1BD3D25185F32F725"
+                  },
+                  {
+                      "relative_path":  "scripts\\DEPLOY_DESKTOP.ps1",
+                      "size_bytes":  1006,
+                      "sha256":  "4D7295E4C4624D87769B7925765B2DAA2F7F92F164814AD666AD26CB7C01AFA7"
+                  },
+                  {
+                      "relative_path":  "scripts\\INSTALL_SHORTCUTS.ps1",
+                      "size_bytes":  3813,
+                      "sha256":  "A526F796C4552FFC030DE49F36A8664BFA023EB7776C8DA94F86A8F19D79110C"
+                  },
+                  {
+                      "relative_path":  "scripts\\OPEN_QUAN_LY_KHO.ps1",
+                      "size_bytes":  1049,
+                      "sha256":  "91B83E15B5400B1D752624BF006569D1BCED2B7CFE51085DBCEA1A0EABEBDB45"
+                  },
+                  {
+                      "relative_path":  "scripts\\REMOVE_SHORTCUTS.ps1",
+                      "size_bytes":  736,
+                      "sha256":  "EF082C07C7814197640F81E77F1A4EADCE7B85F76BF44818C4CCBC975AD3D344"
+                  },
+                  {
+                      "relative_path":  "scripts\\SERVER_CONTROL_PANEL.ps1",
+                      "size_bytes":  1516,
+                      "sha256":  "3900298478EAF28D4BF238DC895EB907E2831369FA9D49EDC2E63E2AED3EC509"
+                  }
+              ],
+    "warnings":  [
+
+                 ]
+}

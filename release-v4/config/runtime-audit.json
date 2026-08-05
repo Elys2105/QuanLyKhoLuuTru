@@ -1,0 +1,204 @@
+{
+    "schema_version":  1,
+    "pack":  "V4-02",
+    "name":  "Runtime Audit \u0026 Installer Preparation",
+    "generated_at":  "2026-07-31T00:05:55+07:00",
+    "operating_system":  {
+                             "computer_name":  "MSI",
+                             "user_name":  "chaun",
+                             "caption":  "Microsoft Windows 11 Home",
+                             "version":  "10.0.26200",
+                             "build_number":  "26200",
+                             "architecture":  "AMD64",
+                             "is_64_bit_os":  true,
+                             "is_64_bit_process":  true,
+                             "powershell_version":  "5.1.26100.8875",
+                             "administrator":  true,
+                             "ram_gb":  31.78
+                         },
+    "disk":  {
+                 "drive":  "D:",
+                 "used_bytes":  190600204288,
+                 "free_bytes":  453853552640,
+                 "used_gb":  177.51,
+                 "free_gb":  422.68,
+                 "project_size_bytes":  11437475084,
+                 "project_size_gb":  10.65,
+                 "estimated_required_bytes":  28593687710,
+                 "estimated_required_gb":  26.63
+             },
+    "writable_paths":  [
+                           {
+                               "path":  "D:\\archive-management",
+                               "writable":  true
+                           },
+                           {
+                               "path":  "D:\\archive-management\\release-v4",
+                               "writable":  true
+                           },
+                           {
+                               "path":  "D:\\archive-management\\release-v4\\config",
+                               "writable":  true
+                           },
+                           {
+                               "path":  "D:\\archive-management\\release-v4\\manifest",
+                               "writable":  true
+                           },
+                           {
+                               "path":  "D:\\archive-management\\release-v4\\scripts",
+                               "writable":  true
+                           },
+                           {
+                               "path":  "D:\\archive-management\\release-v4\\logs",
+                               "writable":  true
+                           },
+                           {
+                               "path":  "D:\\archive-management\\release-v4\\rollback",
+                               "writable":  true
+                           },
+                           {
+                               "path":  "D:\\archive-management\\release-v4\\temp",
+                               "writable":  true
+                           }
+                       ],
+    "runtimes":  [
+                     {
+                         "runtime":  "Python System",
+                         "path":  "C:\\Users\\chaun\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+                         "version":  "Python 3.11.9",
+                         "found":  true
+                     },
+                     {
+                         "runtime":  "Python Virtual Environment",
+                         "path":  "D:\\archive-management\\api\\.venv\\Scripts\\python.exe",
+                         "version":  "Python 3.11.9",
+                         "found":  true
+                     },
+                     {
+                         "runtime":  "pip",
+                         "path":  "D:\\archive-management\\api\\.venv\\Scripts\\pip.exe",
+                         "version":  "pip 24.0 from D:\\archive-management\\api\\.venv\\Lib\\site-packages\\pip (python 3.11)",
+                         "found":  true
+                     },
+                     {
+                         "runtime":  "Node.js",
+                         "path":  "C:\\Program Files\\nodejs\\node.exe",
+                         "version":  "v22.21.0",
+                         "found":  true
+                     },
+                     {
+                         "runtime":  "npm",
+                         "path":  "C:\\Program Files\\nodejs\\npm.ps1",
+                         "version":  "11.7.0",
+                         "found":  true
+                     },
+                     {
+                         "runtime":  "PostgreSQL psql",
+                         "path":  "C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe",
+                         "version":  "psql (PostgreSQL) 18.4",
+                         "found":  true
+                     },
+                     {
+                         "runtime":  "pg_dump",
+                         "path":  "C:\\Program Files\\PostgreSQL\\18\\bin\\pg_dump.exe",
+                         "version":  "",
+                         "found":  true
+                     },
+                     {
+                         "runtime":  "pg_restore",
+                         "path":  "C:\\Program Files\\PostgreSQL\\18\\bin\\pg_restore.exe",
+                         "version":  "",
+                         "found":  true
+                     },
+                     {
+                         "runtime":  "Git",
+                         "path":  "C:\\Program Files\\Git\\cmd\\git.exe",
+                         "version":  "",
+                         "found":  true
+                     }
+                 ],
+    "postgresql_services":  [
+                                {
+                                    "name":  "postgresql-x64-18",
+                                    "display_name":  "postgresql-x64-18",
+                                    "status":  "Running",
+                                    "start_type":  "Automatic"
+                                }
+                            ],
+    "ports":  [
+                  {
+                      "name":  "Backend",
+                      "port":  8000,
+                      "available":  true,
+                      "owner":  null
+                  },
+                  {
+                      "name":  "Frontend",
+                      "port":  3000,
+                      "available":  true,
+                      "owner":  null
+                  },
+                  {
+                      "name":  "PostgreSQL",
+                      "port":  5432,
+                      "available":  false,
+                      "owner":  {
+                                    "port":  5432,
+                                    "process_id":  10492,
+                                    "process_name":  "postgres",
+                                    "local_address":  "::1"
+                                }
+                  },
+                  {
+                      "name":  "HTTP",
+                      "port":  80,
+                      "available":  false,
+                      "owner":  {
+                                    "port":  80,
+                                    "process_id":  4,
+                                    "process_name":  "System",
+                                    "local_address":  "::"
+                                }
+                  },
+                  {
+                      "name":  "HTTPS",
+                      "port":  443,
+                      "available":  true,
+                      "owner":  null
+                  }
+              ],
+    "django":  {
+                   "version":  "5.2.14",
+                   "check_success":  true,
+                   "check_exit_code":  0,
+                   "check_output":  "System check identified no issues (0 silenced)."
+               },
+    "frontend":  {
+                     "package_json_exists":  true,
+                     "package_lock_exists":  true,
+                     "node_modules_exists":  true,
+                     "npm_list_success":  true,
+                     "npm_list_exit_code":  0
+                 },
+    "installer_preparation":  {
+                                  "common_module":  "D:\\archive-management\\release-v4\\scripts\\common\\V4.Common.psm1",
+                                  "precheck_script":  "D:\\archive-management\\release-v4\\scripts\\installer\\INSTALL_PRECHECK.ps1",
+                                  "rollback_state_script":  "D:\\archive-management\\release-v4\\scripts\\installer\\NEW_ROLLBACK_STATE.ps1",
+                                  "rollback_script":  "D:\\archive-management\\release-v4\\scripts\\installer\\ROLLBACK.ps1",
+                                  "prepare_script":  "D:\\archive-management\\release-v4\\scripts\\installer\\PREPARE_INSTALLER.ps1",
+                                  "installer_config":  "D:\\archive-management\\release-v4\\config\\installer.json",
+                                  "precheck_test_success":  true,
+                                  "rollback_state_test_success":  true
+                              },
+    "manifest":  {
+                     "path":  "D:\\archive-management\\release-v4\\manifest\\installer-source-manifest.csv",
+                     "file_count":  131453
+                 },
+    "warnings":  [
+
+                 ],
+    "failures":  [
+
+                 ],
+    "passed":  true
+}

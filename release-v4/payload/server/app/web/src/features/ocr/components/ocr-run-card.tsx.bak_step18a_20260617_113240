@@ -1,0 +1,177 @@
+"use client";
+
+import type { DigitalFile } from "@/features/digital-files/types";
+import type { OcrRunResult } from "@/features/ocr/types";
+import {
+  getOcrMessage,
+  getOcrStatus,
+} from "@/features/ocr/utils/ocr-utils";
+import { getApiErrorMessage } from "@/lib/api/client";
+import { formatFileSize } from "@/lib/utils/format";
+import { FileText, Play } from "lucide-react";
+
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+interface OcrRunCardProps {
+  digitalFiles: DigitalFile[];
+  selectedDigitalFileId: string;
+  onSelectedDigitalFileIdChange: (id: string) => void;
+  onRunOcr: () => Promise<void>;
+  isRunning?: boolean;
+  runResult?: OcrRunResult | null;
+  error?: unknown;
+}
+
+function getDigitalFileName(file: DigitalFile): string {
+  return file.original_name || `File #${file.id}`;
+}
+
+
+function getDigitalFileProfileText(file: DigitalFile): string {
+  const profileCode = file.profile_code || "";
+  const profileTitle = file.profile_title || "";
+
+  if (profileCode && profileTitle) {
+    return `${profileCode} - ${profileTitle}`;
+  }
+
+  return profileCode || profileTitle || "";
+}
+
+export function OcrRunCard({
+  digitalFiles,
+  selectedDigitalFileId,
+  onSelectedDigitalFileIdChange,
+  onRunOcr,
+  isRunning,
+  runResult,
+  error,
+}: OcrRunCardProps) {
+  const selectedFile = digitalFiles.find(
+    (file) => String(file.id) === selectedDigitalFileId,
+  );
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Chạy OCR cho PDF</CardTitle>
+        <p className="text-sm text-muted-foreground">
+          Chọn file PDF đã upload, sau đó bấm chạy OCR để backend đọc chữ trong PDF.
+        </p>
+      </CardHeader>
+
+      <CardContent className="space-y-5">
+        {error ? (
+          <Alert variant="destructive">
+            <AlertDescription>
+              {getApiErrorMessage(
+                error,
+                "Không chạy được OCR. Kiểm tra lại backend OCR.",
+              )}
+            </AlertDescription>
+          </Alert>
+        ) : null}
+
+        <div className="space-y-2">
+          <Label>File PDF</Label>
+
+          <Select
+            value={selectedDigitalFileId}
+            onValueChange={onSelectedDigitalFileIdChange}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Chọn file PDF để OCR" />
+            </SelectTrigger>
+
+            <SelectContent>
+              {digitalFiles.map((file) => (
+                <SelectItem key={file.id} value={String(file.id)}>
+                  {`#${file.id} - ${getDigitalFileName(file)} - ${file.profile_code || "Không rõ hồ sơ"}`}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {selectedFile ? (
+          <div className="rounded-md border bg-muted/30 p-4 text-sm">
+            <div className="flex flex-wrap gap-2">
+              <Badge variant="secondary">
+                ID: {selectedFile.id}
+              </Badge>
+
+              {selectedFile.file_size ? (
+                <Badge variant="outline">
+                  {formatFileSize(selectedFile.file_size)}
+                </Badge>
+              ) : null}
+
+              {selectedFile.mime_type ? (
+                <Badge variant="outline">
+                  {selectedFile.mime_type}
+                </Badge>
+              ) : null}
+            </div>
+
+            <div className="mt-3 flex items-start gap-2">
+              <FileText className="mt-0.5 h-4 w-4 text-muted-foreground" />
+              <div>
+                <div className="font-medium">
+                  {getDigitalFileName(selectedFile)}
+                </div>
+
+                {getDigitalFileProfileText(selectedFile) ? (
+                  <div className="text-muted-foreground">
+                    Hồ sơ: {getDigitalFileProfileText(selectedFile)}
+                  </div>
+                ) : null}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <Alert>
+            <AlertDescription>
+              Chưa có file PDF nào để chạy OCR.
+            </AlertDescription>
+          </Alert>
+        )}
+
+        <Button
+          type="button"
+          onClick={onRunOcr}
+          disabled={!selectedDigitalFileId || isRunning}
+        >
+          <Play className="mr-2 h-4 w-4" />
+          {isRunning ? "Đang chạy OCR..." : "Chạy OCR"}
+        </Button>
+
+        {runResult ? (
+          <Alert>
+            <AlertDescription>
+              Trạng thái: <strong>{getOcrStatus(runResult)}</strong>
+              {getOcrMessage(runResult)
+                ? ` — ${getOcrMessage(runResult)}`
+                : ""}
+            </AlertDescription>
+          </Alert>
+        ) : null}
+      </CardContent>
+    </Card>
+  );
+}

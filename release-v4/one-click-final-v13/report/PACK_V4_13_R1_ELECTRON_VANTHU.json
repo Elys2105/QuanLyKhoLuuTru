@@ -1,0 +1,29 @@
+{
+    "schema_version":  1,
+    "pack":  "V4-13-R1-ELECTRON-VANTHU",
+    "status":  "PASS",
+    "created_at":  "2026-07-31T14:40:32.2828457+07:00",
+    "source_build":  "D:\\archive-management\\release-v4\\one-click-final-v13",
+    "output":  "D:\\archive-management\\release-v4\\one-click-final-v13\\output-complete-r1",
+    "server_exe":  "D:\\archive-management\\release-v4\\one-click-final-v13\\output-complete-r1\\KhoLuuTru_V4_Server_Setup_COMPLETE.exe",
+    "server_slice_count":  5,
+    "electron_wrapper":  "INCLUDED",
+    "electron_url":  "http://127.0.0.1:3000",
+    "accounts":  [
+                     {
+                         "username":  "Admin",
+                         "initial_password":  "Admin@123456789",
+                         "superuser":  true
+                     },
+                     {
+                         "username":  "vanthuluutru",
+                         "initial_password":  "123456789",
+                         "display_name":  "Van thu",
+                         "superuser":  true
+                     }
+                 ],
+    "clean_machine_status":  "NOT_YET_EXECUTED",
+    "backup":  "D:\\archive-management\\release-v4\\one-click-final-v13\\backup-v13-r1-electron-20260731_141540",
+    "build_stdout":  "D:\\archive-management\\release-v4\\one-click-final-v13\\logs\\V13_R1_ISCC_STDOUT_20260731_141540.log",
+    "build_stderr":  "D:\\archive-management\\release-v4\\one-click-final-v13\\logs\\V13_R1_ISCC_STDERR_20260731_141540.log"
+}

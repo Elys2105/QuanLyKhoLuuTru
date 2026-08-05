@@ -1,0 +1,29 @@
+{
+    "project":  "QuanLyKhoLuuTru",
+    "pack":  "V4-10",
+    "generated_at":  "2026-07-31T01:31:57.5917575+07:00",
+    "install_root":  "C:\\Program Files\\QuanLyKhoLuuTru\\Server",
+    "data_root":  "C:\\ProgramData\\QuanLyKhoLuuTru\\Server",
+    "endpoints":  {
+                      "frontend":  "http://127.0.0.1:3000",
+                      "backend":  "http://127.0.0.1:8000"
+                  },
+    "ports":  {
+                  "frontend":  3000,
+                  "backend":  8000,
+                  "postgresql":  5432
+              },
+    "services":  [
+                     "QuanLyKhoLuuTru-Backend",
+                     "QuanLyKhoLuuTru-Frontend"
+                 ],
+    "thresholds":  {
+                       "minimum_free_disk_gb":  10,
+                       "maximum_response_seconds":  15,
+                       "maximum_log_size_mb":  100,
+                       "backup_max_age_hours":  24
+                   },
+    "detected_server_ip":  "26.65.199.10",
+    "detected_interface":  "Radmin VPN",
+    "vpn_adapter_detected":  true
+}

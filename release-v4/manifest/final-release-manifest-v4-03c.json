@@ -1,0 +1,76 @@
+{
+    "project":  "QuanLyKhoLuuTru",
+    "pack":  "V4-03C",
+    "status":  "PASS",
+    "generated_at":  "2026-07-31T01:16:43.8504715+07:00",
+    "release_root":  "D:\\archive-management\\release-v4\\final",
+    "server":  {
+                   "directory":  "D:\\archive-management\\release-v4\\final\\server",
+                   "setup_exe":  "QuanLyKhoLuuTru_Server_V4_03B_Setup.exe",
+                   "data_slice_count":  4,
+                   "total_size_bytes":  6670379302,
+                   "total_size_gb":  6.21
+               },
+    "client":  {
+                   "directory":  "D:\\archive-management\\release-v4\\final\\client",
+                   "setup_exe":  "QuanLyKhoLuuTru_Client_V4_03B_Setup.exe",
+                   "total_size_bytes":  2100203,
+                   "total_size_mb":  2
+               },
+    "checksum_file":  "D:\\archive-management\\release-v4\\final\\SHA256SUMS.txt",
+    "install_guide":  "D:\\archive-management\\release-v4\\final\\docs\\INSTALL_GUIDE.txt",
+    "files":  [
+                  {
+                      "name":  "QuanLyKhoLuuTru_Client_V4_03B_Setup.exe",
+                      "relative_path":  "client\\QuanLyKhoLuuTru_Client_V4_03B_Setup.exe",
+                      "size_bytes":  2100203,
+                      "size_mb":  2,
+                      "sha256":  "BF83BCD66AF698812BC906605F8DBF7C4D56C93B649B0D0D1938DF510A0B056A",
+                      "last_write_time":  "2026-07-31T01:16:22.5196620+07:00"
+                  },
+                  {
+                      "name":  "QuanLyKhoLuuTru_Server_V4_03B_Setup.exe",
+                      "relative_path":  "server\\QuanLyKhoLuuTru_Server_V4_03B_Setup.exe",
+                      "size_bytes":  5118907,
+                      "size_mb":  4.88,
+                      "sha256":  "991DA7BED934E48B76AB4046B6306FFB03908B10A9A7AD59F668E7812C10BB3E",
+                      "last_write_time":  "2026-07-31T01:00:20.3414122+07:00"
+                  },
+                  {
+                      "name":  "QuanLyKhoLuuTru_Server_V4_03B_Setup-1.bin",
+                      "relative_path":  "server\\QuanLyKhoLuuTru_Server_V4_03B_Setup-1.bin",
+                      "size_bytes":  1994881024,
+                      "size_mb":  1902.47,
+                      "sha256":  "9CCDB89B01FEFEA1C7ED8AE26D794E8600BAB3F4C3A3282D4D3E18955531E706",
+                      "last_write_time":  "2026-07-31T00:56:16.3182269+07:00"
+                  },
+                  {
+                      "name":  "QuanLyKhoLuuTru_Server_V4_03B_Setup-2.bin",
+                      "relative_path":  "server\\QuanLyKhoLuuTru_Server_V4_03B_Setup-2.bin",
+                      "size_bytes":  2000000000,
+                      "size_mb":  1907.35,
+                      "sha256":  "777634A56051A5A3A62935106857DE2D97F7A188ADC202FC64CF55CDA05F9B65",
+                      "last_write_time":  "2026-07-31T00:59:39.6661978+07:00"
+                  },
+                  {
+                      "name":  "QuanLyKhoLuuTru_Server_V4_03B_Setup-3.bin",
+                      "relative_path":  "server\\QuanLyKhoLuuTru_Server_V4_03B_Setup-3.bin",
+                      "size_bytes":  2000000000,
+                      "size_mb":  1907.35,
+                      "sha256":  "FB88C9EC7F45B845707E828858CE33532C6E6783A6B330EDFF703527D7CC6169",
+                      "last_write_time":  "2026-07-31T01:00:01.9993852+07:00"
+                  },
+                  {
+                      "name":  "QuanLyKhoLuuTru_Server_V4_03B_Setup-4.bin",
+                      "relative_path":  "server\\QuanLyKhoLuuTru_Server_V4_03B_Setup-4.bin",
+                      "size_bytes":  670379371,
+                      "size_mb":  639.32,
+                      "sha256":  "AF320A1F4A4F21FE120465FEA70548155E675706717638EB40CDE615006F3507",
+                      "last_write_time":  "2026-07-31T01:00:19.7365302+07:00"
+                  }
+              ],
+    "warnings":  [
+                     "Khong co Vietnamese.isl; tu dong dung English de compile Client",
+                     "Checksum cu khong co: QuanLyKhoLuuTru_Client_V4_03B_Setup.exe"
+                 ]
+}

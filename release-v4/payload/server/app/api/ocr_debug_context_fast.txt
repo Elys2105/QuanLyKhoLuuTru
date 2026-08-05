@@ -1,0 +1,1617 @@
+﻿===== OCR DEBUG CONTEXT FAST =====
+TIME: 06/17/2026 09:56:43
+PWD: D:\archive-management\api
+
+
+===== WORKER HELP =====
+
+usage: paddle_ocr_worker.py [-h] --pdf PDF [--language LANGUAGE] [--dpi DPI]
+                            [--max-pages MAX_PAGES] [--mode {fast,quality}]
+                            [--page-timeout PAGE_TIMEOUT]
+                            [--vietocr-model VIETOCR_MODEL]
+
+options:
+  -h, --help            show this help message and exit
+  --pdf PDF
+  --language LANGUAGE
+  --dpi DPI
+  --max-pages MAX_PAGES
+  --mode {fast,quality}
+  --page-timeout PAGE_TIMEOUT
+  --vietocr-model VIETOCR_MODEL
+
+
+
+===== paddle_ocr_worker.py =====
+
+import argparse
+import contextlib
+import json
+import os
+import sys
+import tempfile
+import time
+import traceback
+from pathlib import Path
+
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+os.environ["FLAGS_use_mkldnn"] = "0"
+os.environ["OMP_NUM_THREADS"] = "6"
+
+try:
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+except Exception:
+    pass
+
+import fitz
+from paddleocr import PaddleOCR
+
+
+def write_json(payload, exit_code=0):
+    data = json.dumps(payload, ensure_ascii=False)
+    sys.stdout.write(data)
+    sys.stdout.write("\n")
+    sys.stdout.flush()
+    sys.exit(exit_code)
+
+
+def extract_text_layer_first(pdf_path: Path):
+    doc = fitz.open(str(pdf_path))
+    pages = []
+
+    for page_index in range(len(doc)):
+        page = doc.load_page(page_index)
+        text = (page.get_text("text") or "").strip()
+
+        if text:
+            pages.append({
+                "page": page_index + 1,
+                "text": text,
+            })
+
+    doc.close()
+
+    final_text = "\n\n".join(
+        f"===== PAGE {item['page']} =====\n{item['text']}"
+        for item in pages
+    ).strip()
+
+    return pages, final_text
+
+
+def render_pdf_pages(pdf_path: Path, output_dir: Path, dpi: int, max_pages: int = 0):
+    doc = fitz.open(str(pdf_path))
+    total_pages = len(doc)
+
+    if max_pages and max_pages > 0:
+        page_limit = min(total_pages, max_pages)
+    else:
+        page_limit = total_pages
+
+    image_paths = []
+
+    for page_index in range(page_limit):
+        page = doc.load_page(page_index)
+        pix = page.get_pixmap(dpi=dpi, alpha=False)
+
+        image_path = output_dir / f"page_{page_index + 1}.png"
+        pix.save(str(image_path))
+
+        image_paths.append(image_path)
+
+    doc.close()
+    return total_pages, image_paths
+
+
+def build_fast_ocr():
+    return PaddleOCR(
+        use_angle_cls=False,
+        lang="vi",
+        use_gpu=False,
+        enable_mkldnn=False,
+        show_log=False,
+        det_limit_side_len=960,
+        det_limit_type="max",
+        rec_batch_num=16,
+        cpu_threads=6,
+    )
+
+
+def build_quality_detector():
+    return PaddleOCR(
+        use_angle_cls=False,
+        lang="vi",
+        use_gpu=False,
+        enable_mkldnn=False,
+        show_log=False,
+        det_limit_side_len=960,
+        det_limit_type="max",
+        rec=False,
+        cpu_threads=6,
+    )
+
+
+def extract_paddle_text(result):
+    lines = []
+
+    if not isinstance(result, list):
+        return ""
+
+    for page_result in result:
+        if not isinstance(page_result, list):
+            continue
+
+        for item in page_result:
+            try:
+                text = str(item[1][0]).strip()
+                if text:
+                    lines.append(text)
+            except Exception:
+                pass
+
+    return "\n".join(lines).strip()
+
+
+def run_fast_page(ocr, image_path: Path):
+    result = ocr.ocr(str(image_path), cls=False)
+    return extract_paddle_text(result)
+
+
+def run_quality_pages(image_paths, args):
+    try:
+        from PIL import Image
+        from vietocr.tool.config import Cfg
+        from vietocr.tool.predictor import Predictor
+    except Exception as exc:
+        raise RuntimeError(
+            "Thiáº¿u thÆ° viá»‡n VietOCR/Pillow. Cháº¡y: "
+            ".\\.venv_ocr_paddle\\Scripts\\pip.exe install vietocr pillow"
+        ) from exc
+
+    config = Cfg.load_config_from_name(args.vietocr_model)
+    config["cnn"]["pretrained"] = False
+    config["device"] = "cpu"
+    config["predictor"]["beamsearch"] = False
+    config["dataset"]["image_height"] = 32
+    config["dataset"]["image_min_width"] = 32
+    config["dataset"]["image_max_width"] = 512
+
+    with contextlib.redirect_stdout(sys.stderr):
+        detector = build_quality_detector()
+        recognizer = Predictor(config)
+
+    page_texts = []
+
+    for page_number, image_path in enumerate(image_paths, start=1):
+        page_started = time.time()
+
+        import cv2
+
+        image = Image.open(image_path).convert("RGB")
+        image_cv = cv2.imread(str(image_path))
+
+        with contextlib.redirect_stdout(sys.stderr):
+            det_output = detector.text_detector(image_cv)
+
+        lines = []
+
+        boxes = []
+        if isinstance(det_output, tuple):
+            boxes = det_output[0]
+        else:
+            boxes = det_output
+
+        if boxes is None:
+            boxes = []
+
+        boxes = sorted(
+            boxes,
+            key=lambda box: (
+                min(p[1] for p in box),
+                min(p[0] for p in box),
+            ),
+        )
+
+        for box in boxes:
+            try:
+                xs = [p[0] for p in box]
+                ys = [p[1] for p in box]
+
+                left = max(0, int(min(xs)) - 3)
+                top = max(0, int(min(ys)) - 3)
+                right = min(image.width, int(max(xs)) + 3)
+                bottom = min(image.height, int(max(ys)) + 3)
+
+                if right <= left or bottom <= top:
+                    continue
+
+                crop = image.crop((left, top, right, bottom))
+                text = recognizer.predict(crop).strip()
+
+                if text:
+                    lines.append(text)
+            except Exception:
+                continue
+
+        text = "\n".join(lines).strip()
+        seconds = round(time.time() - page_started, 2)
+
+        page_texts.append({
+            "page": page_number,
+            "text": text,
+            "seconds": seconds,
+        })
+
+        print(
+            f"QUALITY PAGE {page_number}/{len(image_paths)} done in {seconds}s",
+            file=sys.stderr,
+            flush=True,
+        )
+
+    return page_texts
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--pdf", required=True)
+    parser.add_argument("--language", default="vi")
+    parser.add_argument("--dpi", type=int, default=120)
+    parser.add_argument("--max-pages", type=int, default=0)
+    parser.add_argument("--mode", default="fast", choices=["fast", "quality"])
+    parser.add_argument("--page-timeout", type=int, default=120)
+    parser.add_argument("--vietocr-model", default="vgg_transformer")
+
+    args = parser.parse_args()
+
+    pdf_path = Path(args.pdf)
+
+    if not pdf_path.exists():
+        write_json({
+            "success": False,
+            "error": f"PDF khĂ´ng tá»“n táº¡i: {pdf_path}",
+        }, 2)
+
+    started = time.time()
+
+    try:
+        text_pages, text_layer = extract_text_layer_first(pdf_path)
+
+        if text_layer:
+            write_json({
+                "success": True,
+                "engine": "pymupdf-text-layer",
+                "requested_language": args.language,
+                "language": "vi",
+                "dpi": 0,
+                "page_count": len(text_pages),
+                "character_count": len(text_layer),
+                "text": text_layer,
+                "raw_text": text_layer,
+                "pages": text_pages,
+            })
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+
+            total_pages, image_paths = render_pdf_pages(
+                pdf_path=pdf_path,
+                output_dir=temp_path,
+                dpi=args.dpi,
+                max_pages=args.max_pages,
+            )
+
+            if args.mode == "fast":
+                page_texts = []
+
+                with contextlib.redirect_stdout(sys.stderr):
+                    ocr = build_fast_ocr()
+
+                for page_number, image_path in enumerate(image_paths, start=1):
+                    page_started = time.time()
+
+                    with contextlib.redirect_stdout(sys.stderr):
+                        text = run_fast_page(ocr, image_path)
+
+                    seconds = round(time.time() - page_started, 2)
+
+                    page_texts.append({
+                        "page": page_number,
+                        "text": text,
+                        "seconds": seconds,
+                    })
+
+                    print(
+                        f"FAST PAGE {page_number}/{len(image_paths)} done in {seconds}s",
+                        file=sys.stderr,
+                        flush=True,
+                    )
+
+                engine = "paddle-fast"
+
+            else:
+                page_texts = run_quality_pages(image_paths, args)
+                engine = f"paddle-det+vietocr-rec:{args.vietocr_model}"
+
+            final_text = "\n\n".join(
+                f"===== PAGE {item['page']} =====\n{item['text']}"
+                for item in page_texts
+            ).strip()
+
+            write_json({
+                "success": True,
+                "engine": engine,
+                "requested_language": args.language,
+                "language": "vi",
+                "mode": args.mode,
+                "dpi": args.dpi,
+                "total_pdf_pages": total_pages,
+                "page_count": len(image_paths),
+                "character_count": len(final_text),
+                "seconds": round(time.time() - started, 2),
+                "text": final_text,
+                "pages": page_texts,
+            }, 0)
+
+    except Exception as exc:
+        write_json({
+            "success": False,
+            "error": str(exc),
+            "traceback": traceback.format_exc(),
+        }, 1)
+
+
+if __name__ == "__main__":
+    main()
+
+
+
+===== paddle_subprocess.py =====
+
+import json
+import os
+import subprocess
+from pathlib import Path
+from typing import Any
+
+from django.conf import settings
+
+
+def _find_json_payload(stdout: str) -> dict[str, Any]:
+    lines = stdout.splitlines()
+
+    for line in reversed(lines):
+        line = line.strip()
+
+        if not line:
+            continue
+
+        if line.startswith("{") and line.endswith("}"):
+            return json.loads(line)
+
+    raise RuntimeError(
+        "Worker khĂ´ng tráº£ JSON há»£p lá»‡. STDOUT: "
+        + stdout[-2000:]
+    )
+
+
+def run_paddle_ocr_worker(
+    pdf_path: str,
+    language: str = "vi",
+    dpi: int = 300,
+    timeout_seconds: int = 1800,
+    vietocr_model: str = "vgg_transformer",
+) -> dict[str, Any]:
+    base_dir = Path(settings.BASE_DIR)
+
+    worker_python = base_dir / ".venv_ocr_paddle" / "Scripts" / "python.exe"
+    worker_script = base_dir / "scripts" / "paddle_ocr_worker.py"
+
+    if not worker_python.exists():
+        raise RuntimeError(f"KhĂ´ng tĂ¬m tháº¥y Python OCR worker: {worker_python}")
+
+    if not worker_script.exists():
+        raise RuntimeError(f"KhĂ´ng tĂ¬m tháº¥y script OCR worker: {worker_script}")
+
+    pdf_file = Path(pdf_path)
+
+    if not pdf_file.exists():
+        raise RuntimeError(f"PDF khĂ´ng tá»“n táº¡i: {pdf_file}")
+
+    env = os.environ.copy()
+    env["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+    env["FLAGS_use_mkldnn"] = "0"
+    env["OMP_NUM_THREADS"] = "1"
+    env["PYTHONUTF8"] = "1"
+    env["PYTHONIOENCODING"] = "utf-8"
+
+    command = [
+        str(worker_python),
+        str(worker_script),
+        "--pdf",
+        str(pdf_file),
+        "--language",
+        language or "vi",
+        "--dpi",
+        str(dpi or 300),
+        "--vietocr-model",
+        vietocr_model or "vgg_transformer",
+    ]
+
+    completed = subprocess.run(
+        command,
+        cwd=str(base_dir),
+        env=env,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        timeout=timeout_seconds,
+    )
+
+    if completed.returncode != 0:
+        raise RuntimeError(
+            "Paddle/VietOCR worker cháº¡y lá»—i. "
+            f"Return code: {completed.returncode}\n"
+            f"STDOUT:\n{completed.stdout[-4000:]}\n"
+            f"STDERR:\n{completed.stderr[-4000:]}"
+        )
+
+    payload = _find_json_payload(completed.stdout)
+
+    if not payload.get("success"):
+        raise RuntimeError(
+            payload.get("error")
+            or "Worker OCR tráº£ success=false nhÆ°ng khĂ´ng cĂ³ error."
+        )
+
+    return payload
+
+
+
+===== services.py =====
+
+import os
+import tempfile
+from dataclasses import dataclass
+from functools import lru_cache
+from typing import Any, Optional
+
+import fitz
+from django.utils import timezone
+
+from apps.common.utils import normalize_search_text
+from apps.files.models import DigitalFile
+from apps.ocr.models import OcrJob
+from apps.ocr.engines.paddle_subprocess import run_paddle_ocr_worker
+
+
+@dataclass
+class ExtractResult:
+    text: str
+    page_count: int
+    engine: str
+    warning: str = ""
+
+
+def is_pdf_file(digital_file: DigitalFile) -> bool:
+    mime_type = (digital_file.mime_type or "").lower()
+    original_name = (digital_file.original_name or "").lower()
+
+    try:
+        file_name = (digital_file.file.name or "").lower()
+    except Exception:
+        file_name = ""
+
+    return (
+        mime_type == "application/pdf"
+        or original_name.endswith(".pdf")
+        or file_name.endswith(".pdf")
+    )
+
+
+def get_file_path(digital_file: DigitalFile) -> str:
+    try:
+        return digital_file.file.path
+    except Exception:
+        return ""
+
+
+def extract_text_by_pymupdf(pdf_path: str) -> ExtractResult:
+    """
+    TrĂ­ch text tá»« PDF cĂ³ text sáºµn.
+
+    Náº¿u PDF lĂ  scan áº£nh thĂ¬ Ä‘oáº¡n nĂ y thÆ°á»ng tráº£ text rá»—ng.
+    """
+
+    document = fitz.open(pdf_path)
+    page_texts = []
+
+    for page_index in range(document.page_count):
+        page = document.load_page(page_index)
+        text = page.get_text("text") or ""
+
+        if text.strip():
+            page_texts.append(
+                f"\n\n===== PAGE {page_index + 1} =====\n{text.strip()}"
+            )
+
+    return ExtractResult(
+        text="\n".join(page_texts).strip(),
+        page_count=document.page_count,
+        engine="pymupdf",
+    )
+
+
+@lru_cache(maxsize=4)
+def get_paddle_ocr_engine(language: str = "vi"):
+    """
+    Khá»Ÿi táº¡o PaddleOCR.
+
+    CĂ³ fallback Ä‘á»ƒ tÆ°Æ¡ng thĂ­ch cáº£ PaddleOCR báº£n má»›i vĂ  báº£n cÅ©.
+    """
+
+    from paddleocr import PaddleOCR
+
+    init_attempts = [
+        {
+            "lang": language,
+            "use_doc_orientation_classify": False,
+            "use_doc_unwarping": False,
+            "use_textline_orientation": True,
+        },
+        {
+            "lang": language,
+            "use_doc_orientation_classify": False,
+            "use_doc_unwarping": False,
+            "use_textline_orientation": False,
+        },
+        {
+            "lang": language,
+            "use_angle_cls": True,
+            "show_log": False,
+        },
+        {
+            "lang": language,
+        },
+        {
+            "lang": "en",
+        },
+    ]
+
+    last_error = None
+
+    for kwargs in init_attempts:
+        try:
+            return PaddleOCR(**kwargs)
+        except Exception as exc:
+            last_error = exc
+
+    raise RuntimeError(f"KhĂ´ng khá»Ÿi táº¡o Ä‘Æ°á»£c PaddleOCR: {last_error}")
+
+
+def collect_text_from_paddle_result(result: Any) -> list[str]:
+    """
+    PaddleOCR cĂ³ nhiá»u format result giá»¯a cĂ¡c version.
+
+    HĂ m nĂ y cá»‘ gáº¯ng Ä‘á»c text tá»« cáº£:
+    - result kiá»ƒu list cá»• Ä‘iá»ƒn
+    - result kiá»ƒu dict má»›i cĂ³ rec_texts
+    - object cĂ³ .json hoáº·c .res
+    """
+
+    texts: list[str] = []
+
+    def walk(value: Any):
+        if value is None:
+            return
+
+        if isinstance(value, str):
+            return
+
+        if isinstance(value, dict):
+            if isinstance(value.get("rec_texts"), list):
+                for text in value["rec_texts"]:
+                    if isinstance(text, str) and text.strip():
+                        texts.append(text.strip())
+
+            if isinstance(value.get("texts"), list):
+                for text in value["texts"]:
+                    if isinstance(text, str) and text.strip():
+                        texts.append(text.strip())
+
+            if isinstance(value.get("text"), str) and value["text"].strip():
+                texts.append(value["text"].strip())
+
+            for item in value.values():
+                walk(item)
+
+            return
+
+        if isinstance(value, (list, tuple)):
+            # Format cá»• Ä‘iá»ƒn:
+            # [ box, ("text", score) ]
+            if (
+                len(value) >= 2
+                and isinstance(value[1], (list, tuple))
+                and len(value[1]) >= 1
+                and isinstance(value[1][0], str)
+            ):
+                text = value[1][0].strip()
+
+                if text:
+                    texts.append(text)
+
+                return
+
+            # Format:
+            # ("text", score)
+            if (
+                len(value) >= 2
+                and isinstance(value[0], str)
+                and isinstance(value[1], (int, float))
+            ):
+                text = value[0].strip()
+
+                if text:
+                    texts.append(text)
+
+                return
+
+            for item in value:
+                walk(item)
+
+            return
+
+        # PaddleOCR 3.x cĂ³ thá»ƒ tráº£ object cĂ³ json/res
+        for attr_name in ["json", "res"]:
+            if hasattr(value, attr_name):
+                try:
+                    walk(getattr(value, attr_name))
+                    return
+                except Exception:
+                    pass
+
+        if hasattr(value, "to_dict"):
+            try:
+                walk(value.to_dict())
+                return
+            except Exception:
+                pass
+
+    walk(result)
+
+    # Loáº¡i trĂ¹ng nhÆ°ng giá»¯ thá»© tá»±
+    unique_texts = []
+    seen = set()
+
+    for text in texts:
+        if text not in seen:
+            unique_texts.append(text)
+            seen.add(text)
+
+    return unique_texts
+
+
+def run_paddleocr_on_image(image_path: str, language: str = "vi") -> list[str]:
+    """
+    Cháº¡y PaddleOCR trĂªn má»™t áº£nh.
+    """
+
+    ocr = get_paddle_ocr_engine(language)
+
+    # PaddleOCR báº£n má»›i thÆ°á»ng cĂ³ predict()
+    if hasattr(ocr, "predict"):
+        try:
+            result = ocr.predict(input=image_path)
+            texts = collect_text_from_paddle_result(result)
+
+            if texts:
+                return texts
+        except Exception:
+            pass
+
+    # PaddleOCR báº£n cÅ© thÆ°á»ng dĂ¹ng ocr()
+    if hasattr(ocr, "ocr"):
+        try:
+            try:
+                result = ocr.ocr(image_path, cls=True)
+            except TypeError:
+                result = ocr.ocr(image_path)
+
+            texts = collect_text_from_paddle_result(result)
+
+            if texts:
+                return texts
+        except Exception as exc:
+            raise RuntimeError(f"PaddleOCR Ä‘á»c áº£nh lá»—i: {exc}") from exc
+
+    return []
+
+
+def extract_text_by_paddleocr(
+    pdf_path: str,
+    language: str = "vi",
+    zoom: float = 1.8,
+    max_pages: Optional[int] = None,
+) -> ExtractResult:
+    """
+    OCR PDF scan áº£nh báº±ng PaddleOCR v2 cháº¡y á»Ÿ mĂ´i trÆ°á»ng riĂªng.
+
+    Backend chĂ­nh khĂ´ng import PaddleOCR trá»±c tiáº¿p ná»¯a.
+    Django sáº½ gá»i:
+        .venv_ocr_paddle/Scripts/python.exe scripts/paddle_ocr_worker.py
+
+    CĂ¡ch nĂ y trĂ¡nh lá»—i PaddleOCR 3.x / oneDNN / PIR trĂªn Windows.
+    """
+
+    dpi = 180
+
+    try:
+        if zoom and zoom > 0:
+            dpi = max(150, min(220, int(zoom * 100)))
+    except Exception:
+        dpi = 180
+
+    worker_result = run_paddle_ocr_worker(
+        pdf_path=pdf_path,
+        language=language or "vi",
+        dpi=dpi,
+        timeout_seconds=900,
+    )
+
+    extracted_text = (worker_result.get("text") or "").strip()
+    page_count = int(worker_result.get("page_count") or 0)
+    engine = (
+        worker_result.get("engine")
+        or f"pymupdf+paddleocr-v2-subprocess:{language}"
+    )
+
+    warning = ""
+
+    if not extracted_text:
+        warning = (
+            "PaddleOCR worker cháº¡y xong nhÆ°ng khĂ´ng nháº­n Ä‘Æ°á»£c text. "
+            "CĂ³ thá»ƒ file scan má» hoáº·c cháº¥t lÆ°á»£ng áº£nh quĂ¡ tháº¥p."
+        )
+
+    return ExtractResult(
+        text=extracted_text,
+        page_count=page_count,
+        engine=engine,
+        warning=warning,
+    )
+
+def extract_text_from_pdf(
+    pdf_path: str,
+    language: str = "vi",
+    force_paddleocr: bool = False,
+) -> ExtractResult:
+    """
+    OCR thĂ´ng minh:
+
+    force_paddleocr=False:
+        1. Thá»­ PyMuPDF trÆ°á»›c.
+        2. Náº¿u PDF khĂ´ng cĂ³ text thĂ¬ dĂ¹ng PaddleOCR v2 worker.
+
+    force_paddleocr=True:
+        Bá» qua text sáºµn, luĂ´n render trang vĂ  cháº¡y PaddleOCR v2 worker.
+    """
+
+    if not force_paddleocr:
+        direct_result = extract_text_by_pymupdf(pdf_path)
+
+        if direct_result.text.strip():
+            return direct_result
+
+    try:
+        paddle_result = extract_text_by_paddleocr(
+            pdf_path=pdf_path,
+            language=language,
+        )
+
+        if paddle_result.text.strip():
+            return paddle_result
+
+        if not paddle_result.warning:
+            paddle_result.warning = (
+                "PaddleOCR worker cháº¡y xong nhÆ°ng khĂ´ng nháº­n Ä‘Æ°á»£c text. "
+                "CĂ³ thá»ƒ file scan má» hoáº·c model chÆ°a phĂ¹ há»£p."
+            )
+
+        return paddle_result
+
+    except Exception as exc:
+        if force_paddleocr:
+            return ExtractResult(
+                text="",
+                page_count=0,
+                engine=f"pymupdf+paddleocr-v2-subprocess:{language}",
+                warning=str(exc),
+            )
+
+        direct_result = extract_text_by_pymupdf(pdf_path)
+
+        direct_result.warning = (
+            "PDF khĂ´ng cĂ³ text sáºµn hoáº·c OCR áº£nh tháº¥t báº¡i báº±ng PaddleOCR v2 worker. "
+            f"Chi tiáº¿t: {exc}"
+        )
+
+        return direct_result
+
+def run_ocr_for_digital_file(
+    digital_file: DigitalFile,
+    user=None,
+    language: str = "vi",
+    force: bool = False,
+    force_paddleocr: bool = False,
+) -> OcrJob:
+    """
+    Cháº¡y OCR cho DigitalFile.
+
+    force=False:
+        Náº¿u Ä‘Ă£ cĂ³ job COMPLETED cĂ³ text thĂ¬ tráº£ láº¡i job má»›i nháº¥t.
+
+    force=True:
+        Cháº¡y láº¡i OCR vĂ  táº¡o job má»›i.
+    """
+
+    if not force:
+        existing_job = (
+            OcrJob.objects
+            .filter(
+                digital_file=digital_file,
+                status=OcrJob.Status.COMPLETED,
+            )
+            .exclude(extracted_text="")
+            .order_by("-created_at", "-id")
+            .first()
+        )
+
+        if existing_job:
+            return existing_job
+
+    job = OcrJob.objects.create(
+        digital_file=digital_file,
+        profile=digital_file.profile,
+        document=digital_file.document,
+        created_by=user if user and user.is_authenticated else None,
+        status=OcrJob.Status.PENDING,
+        language=language,
+    )
+
+    job.status = OcrJob.Status.RUNNING
+    job.started_at = timezone.now()
+    job.save(update_fields=["status", "started_at", "updated_at"])
+
+    try:
+        if getattr(digital_file, "is_deleted", False):
+            raise ValueError("File sá»‘ hĂ³a Ä‘Ă£ bá»‹ xĂ³a má»m, khĂ´ng thá»ƒ OCR.")
+
+        if not is_pdf_file(digital_file):
+            raise ValueError("OCR hiá»‡n chá»‰ há»— trá»£ file PDF.")
+
+        file_path = get_file_path(digital_file)
+
+        if not file_path:
+            raise FileNotFoundError("KhĂ´ng láº¥y Ä‘Æ°á»£c Ä‘Æ°á»ng dáº«n file váº­t lĂ½.")
+
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(f"File váº­t lĂ½ khĂ´ng tá»“n táº¡i: {file_path}")
+
+        result = extract_text_from_pdf(
+            pdf_path=file_path,
+            language=language,
+            force_paddleocr=force_paddleocr,
+        )
+
+        extracted_text = result.text.strip()
+        normalized_text = normalize_search_text(extracted_text)
+
+        if not extracted_text and result.warning:
+            job.status = OcrJob.Status.FAILED
+            job.engine = result.engine
+            job.page_count = result.page_count
+            job.character_count = 0
+            job.extracted_text = ""
+            job.normalized_text = ""
+            job.error_message = result.warning
+            job.finished_at = timezone.now()
+            job.save(
+                update_fields=[
+                    "status",
+                    "engine",
+                    "page_count",
+                    "character_count",
+                    "extracted_text",
+                    "normalized_text",
+                    "error_message",
+                    "finished_at",
+                    "updated_at",
+                ]
+            )
+
+            return job
+
+        job.status = OcrJob.Status.COMPLETED
+        job.engine = result.engine
+        job.page_count = result.page_count
+        job.character_count = len(extracted_text)
+        job.extracted_text = extracted_text
+        job.normalized_text = normalized_text
+        job.error_message = result.warning or ""
+        job.finished_at = timezone.now()
+        job.save(
+            update_fields=[
+                "status",
+                "engine",
+                "page_count",
+                "character_count",
+                "extracted_text",
+                "normalized_text",
+                "error_message",
+                "finished_at",
+                "updated_at",
+            ]
+        )
+
+        return job
+
+    except Exception as exc:
+        job.status = OcrJob.Status.FAILED
+        job.error_message = str(exc)
+        job.finished_at = timezone.now()
+        job.save(
+            update_fields=[
+                "status",
+                "error_message",
+                "finished_at",
+                "updated_at",
+            ]
+        )
+
+        return job
+
+def search_ocr_text(query: str, limit: int = 50):
+    normalized_query = normalize_search_text(query or "")
+
+    queryset = (
+        OcrJob.objects
+        .select_related("digital_file", "profile", "document", "created_by")
+        .filter(status=OcrJob.Status.COMPLETED)
+        .exclude(normalized_text="")
+    )
+
+    tokens = [token for token in normalized_query.split() if token]
+
+    for token in tokens:
+        queryset = queryset.filter(normalized_text__icontains=token)
+
+    return queryset.order_by("-created_at", "-id")[:limit]
+
+
+def get_latest_ocr_job_for_file(digital_file_id: int) -> Optional[OcrJob]:
+    """
+    Láº¥y OCR job má»›i nháº¥t cĂ³ text trÆ°á»›c.
+    Náº¿u chÆ°a cĂ³ job cĂ³ text thĂ¬ má»›i láº¥y job má»›i nháº¥t báº¥t ká»³.
+    """
+
+    good_job = (
+        OcrJob.objects
+        .select_related("digital_file", "profile", "document", "created_by")
+        .filter(
+            digital_file_id=digital_file_id,
+            status=OcrJob.Status.COMPLETED,
+        )
+        .exclude(extracted_text="")
+        .order_by("-created_at", "-id")
+        .first()
+    )
+
+    if good_job:
+        return good_job
+
+    return (
+        OcrJob.objects
+        .select_related("digital_file", "profile", "document", "created_by")
+        .filter(digital_file_id=digital_file_id)
+        .order_by("-created_at", "-id")
+        .first()
+    )
+
+
+
+===== runner.py =====
+
+import json
+import os
+import re
+import subprocess
+import threading
+import unicodedata
+from pathlib import Path
+
+from django.conf import settings
+from django.utils import timezone
+
+from apps.ocr.models import OcrJob
+
+
+BASE_DIR = Path(settings.BASE_DIR)
+OCR_PYTHON = BASE_DIR / ".venv_ocr_paddle" / "Scripts" / "python.exe"
+OCR_WORKER = BASE_DIR / "scripts" / "paddle_ocr_worker.py"
+
+
+def normalize_for_search(text: str) -> str:
+    if not text:
+        return ""
+    text = unicodedata.normalize("NFD", text)
+    text = "".join(ch for ch in text if unicodedata.category(ch) != "Mn")
+    text = text.replace("Ä‘", "d").replace("Ä", "D")
+    text = text.lower()
+    text = re.sub(r"[^a-z0-9]+", " ", text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def get_pdf_page_count(pdf_path):
+    try:
+        import fitz
+        doc = fitz.open(str(pdf_path))
+        total = len(doc)
+        doc.close()
+        return total
+    except Exception:
+        return 0
+
+
+def run_worker_and_update_job(job_id, pdf_path, mode, dpi=120):
+    total_pages = get_pdf_page_count(pdf_path)
+
+    OcrJob.objects.filter(id=job_id).update(
+        status=OcrJob.Status.RUNNING,
+        started_at=timezone.now(),
+        error_message="",
+        page_count=total_pages,
+        current_page=1 if total_pages else 0,
+        progress_percent=1,
+        updated_at=timezone.now(),
+    )
+
+    env = os.environ.copy()
+    env["PYTHONIOENCODING"] = "utf-8"
+    env["PYTHONUTF8"] = "1"
+
+    command = [
+        str(OCR_PYTHON),
+        str(OCR_WORKER),
+        "--pdf",
+        str(pdf_path),
+        "--language",
+        "vi",
+        "--dpi",
+        str(dpi),
+        "--mode",
+        mode,
+        "--vietocr-model",
+        ("vgg_seq2seq" if mode == "quality" else "vgg_transformer"),
+    ]
+
+    stdout_lines = []
+    stderr_lines = []
+
+    try:
+        process = subprocess.Popen(
+            command,
+            cwd=str(BASE_DIR),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            env=env,
+            bufsize=1,
+        )
+
+        def read_stderr():
+            for line in process.stderr:
+                line = line.strip()
+                if line:
+                    stderr_lines.append(line)
+
+                match = re.search(r"(FAST|QUALITY) PAGE\s+(\d+)/(\d+)\s+done", line)
+                if match:
+                    done_page = int(match.group(2))
+                    total = int(match.group(3))
+                    next_page = min(done_page + 1, total)
+                    percent = int(done_page * 100 / max(total, 1))
+
+                    OcrJob.objects.filter(id=job_id).update(
+                        current_page=next_page,
+                        page_count=total,
+                        progress_percent=percent,
+                        updated_at=timezone.now(),
+                    )
+
+        stderr_thread = threading.Thread(target=read_stderr, daemon=True)
+        stderr_thread.start()
+
+        for line in process.stdout:
+            if line:
+                stdout_lines.append(line)
+
+        return_code = process.wait()
+        stderr_thread.join(timeout=2)
+
+        if return_code != 0:
+            raise RuntimeError(
+                "OCR worker failed with code "
+                + str(return_code)
+                + "\nCOMMAND: "
+                + " ".join(command)
+                + "\nSTDERR:\n"
+                + "\n".join(stderr_lines[-100:])
+                + "\nSTDOUT:\n"
+                + "\n".join(stdout_lines[-30:])
+            )
+
+        json_line = None
+        for line in reversed(stdout_lines):
+            line = line.strip()
+            if line.startswith("{") and line.endswith("}"):
+                json_line = line
+                break
+
+        if not json_line:
+            raise RuntimeError(
+                "KhĂ´ng tĂ¬m tháº¥y JSON output tá»« OCR worker.\nSTDERR:\n"
+                + "\n".join(stderr_lines[-100:])
+            )
+
+        data = json.loads(json_line)
+
+        if not data.get("success"):
+            raise RuntimeError(data.get("error") or "OCR worker tráº£ success=false.")
+
+        text = data.get("text") or ""
+        page_count = data.get("page_count") or total_pages
+
+        OcrJob.objects.filter(id=job_id).update(
+            status=OcrJob.Status.COMPLETED,
+            engine=data.get("engine") or f"paddle-{mode}",
+            language=data.get("language") or "vi",
+            page_count=page_count,
+            character_count=len(text),
+            extracted_text=text,
+            normalized_text=normalize_for_search(text),
+            current_page=page_count,
+            progress_percent=100,
+            error_message="",
+            finished_at=timezone.now(),
+            updated_at=timezone.now(),
+        )
+
+    except Exception as exc:
+        OcrJob.objects.filter(id=job_id).update(
+            status=OcrJob.Status.FAILED,
+            error_message=str(exc),
+            finished_at=timezone.now(),
+            updated_at=timezone.now(),
+        )
+
+
+
+===== run_ocr_pipeline.py =====
+
+from django.core.management.base import BaseCommand
+from apps.ocr.models import OcrJob
+from apps.ocr.runner import run_worker_and_update_job
+
+
+class Command(BaseCommand):
+    help = "Run OCR fast then quality for one digital file."
+
+    def add_arguments(self, parser):
+        parser.add_argument("--fast-job-id", type=int, required=True)
+        parser.add_argument("--quality-job-id", type=int, required=True)
+        parser.add_argument("--pdf", required=True)
+
+    def handle(self, *args, **options):
+        fast_job_id = options["fast_job_id"]
+        quality_job_id = options["quality_job_id"]
+        pdf_path = options["pdf"]
+
+        run_worker_and_update_job(
+            job_id=fast_job_id,
+            pdf_path=pdf_path,
+            mode="fast",
+            dpi=120,
+        )
+
+        fast_job = OcrJob.objects.get(id=fast_job_id)
+
+        if fast_job.status == OcrJob.Status.COMPLETED:
+            run_worker_and_update_job(
+                job_id=quality_job_id,
+                pdf_path=pdf_path,
+                mode="quality",
+                dpi=120,
+            )
+        else:
+            OcrJob.objects.filter(id=quality_job_id).update(
+                status=OcrJob.Status.FAILED,
+                error_message="Quality OCR không chạy vì fast OCR thất bại.",
+            )
+
+
+
+===== SEARCH OCR CONFIG =====
+
+
+  apps\ocr\engines\paddle_subprocess.py:31:    dpi: int = 300,
+  apps\ocr\engines\paddle_subprocess.py:32:    timeout_seconds: int = 1800,
+> apps\ocr\engines\paddle_subprocess.py:33:    vietocr_model: str = "vgg_transformer",
+  apps\ocr\engines\paddle_subprocess.py:34:) -> dict[str, Any]:
+  apps\ocr\engines\paddle_subprocess.py:35:    base_dir = Path(settings.BASE_DIR)
+  apps\ocr\engines\paddle_subprocess.py:65:        "--dpi",
+  apps\ocr\engines\paddle_subprocess.py:66:        str(dpi or 300),
+> apps\ocr\engines\paddle_subprocess.py:67:        "--vietocr-model",
+> apps\ocr\engines\paddle_subprocess.py:68:        vietocr_model or "vgg_transformer",
+  apps\ocr\engines\paddle_subprocess.py:69:    ]
+  apps\ocr\engines\paddle_subprocess.py:70:
+  apps\ocr\engines\paddle_subprocess.py:82:    if completed.returncode != 0:
+  apps\ocr\engines\paddle_subprocess.py:83:        raise RuntimeError(
+> apps\ocr\engines\paddle_subprocess.py:84:            "Paddle/VietOCR worker chạy lỗi. "
+  apps\ocr\engines\paddle_subprocess.py:85:            f"Return code: {completed.returncode}\n"
+  apps\ocr\engines\paddle_subprocess.py:86:            f"STDOUT:\n{completed.stdout[-4000:]}\n"
+  apps\ocr\management\commands\run_ocr_pipeline.py:5:
+  apps\ocr\management\commands\run_ocr_pipeline.py:6:class Command(BaseCommand):
+> apps\ocr\management\commands\run_ocr_pipeline.py:7:    help = "Run OCR fast then quality for one digital file."
+  apps\ocr\management\commands\run_ocr_pipeline.py:8:
+  apps\ocr\management\commands\run_ocr_pipeline.py:9:    def add_arguments(self, parser):
+> apps\ocr\management\commands\run_ocr_pipeline.py:10:        parser.add_argument("--fast-job-id", type=int, 
+required=True)
+> apps\ocr\management\commands\run_ocr_pipeline.py:11:        parser.add_argument("--quality-job-id", type=int, 
+required=True)
+  apps\ocr\management\commands\run_ocr_pipeline.py:12:        parser.add_argument("--pdf", required=True)
+  apps\ocr\management\commands\run_ocr_pipeline.py:13:
+  apps\ocr\management\commands\run_ocr_pipeline.py:14:    def handle(self, *args, **options):
+> apps\ocr\management\commands\run_ocr_pipeline.py:15:        fast_job_id = options["fast_job_id"]
+> apps\ocr\management\commands\run_ocr_pipeline.py:16:        quality_job_id = options["quality_job_id"]
+  apps\ocr\management\commands\run_ocr_pipeline.py:17:        pdf_path = options["pdf"]
+  apps\ocr\management\commands\run_ocr_pipeline.py:18:
+  apps\ocr\management\commands\run_ocr_pipeline.py:19:        run_worker_and_update_job(
+> apps\ocr\management\commands\run_ocr_pipeline.py:20:            job_id=fast_job_id,
+  apps\ocr\management\commands\run_ocr_pipeline.py:21:            pdf_path=pdf_path,
+> apps\ocr\management\commands\run_ocr_pipeline.py:22:            mode="fast",
+  apps\ocr\management\commands\run_ocr_pipeline.py:23:            dpi=120,
+  apps\ocr\management\commands\run_ocr_pipeline.py:24:        )
+  apps\ocr\management\commands\run_ocr_pipeline.py:25:
+> apps\ocr\management\commands\run_ocr_pipeline.py:26:        fast_job = OcrJob.objects.get(id=fast_job_id)
+  apps\ocr\management\commands\run_ocr_pipeline.py:27:
+> apps\ocr\management\commands\run_ocr_pipeline.py:28:        if fast_job.status == OcrJob.Status.COMPLETED:
+  apps\ocr\management\commands\run_ocr_pipeline.py:29:            run_worker_and_update_job(
+> apps\ocr\management\commands\run_ocr_pipeline.py:30:                job_id=quality_job_id,
+  apps\ocr\management\commands\run_ocr_pipeline.py:31:                pdf_path=pdf_path,
+> apps\ocr\management\commands\run_ocr_pipeline.py:32:                mode="quality",
+  apps\ocr\management\commands\run_ocr_pipeline.py:33:                dpi=120,
+  apps\ocr\management\commands\run_ocr_pipeline.py:34:            )
+  apps\ocr\management\commands\run_ocr_pipeline.py:35:        else:
+> apps\ocr\management\commands\run_ocr_pipeline.py:36:            OcrJob.objects.filter(id=quality_job_id).update(
+  apps\ocr\management\commands\run_ocr_pipeline.py:37:                status=OcrJob.Status.FAILED,
+> apps\ocr\management\commands\run_ocr_pipeline.py:38:                error_message="Quality OCR không chạy vì fast 
+OCR thất bại.",
+  apps\ocr\management\commands\run_ocr_pipeline.py:39:            )
+  apps\ocr\migrations\0001_initial.py:23:                ('id', models.BigAutoField(auto_created=True, 
+primary_key=True, serialize=False, verbose_name='ID')),
+  apps\ocr\migrations\0001_initial.py:24:                ('status', models.CharField(choices=[('PENDING', 'Đang chờ'), 
+('RUNNING', 'Đang xử lý'), ('COMPLETED', 'Hoàn thành'), ('FAILED', 'Thất bại')], default='PENDING', max_length=20, 
+verbose_name='Trạng thái')),
+> apps\ocr\migrations\0001_initial.py:25:                ('engine', models.CharField(blank=True, 
+default='pymupdf+paddleocr', max_length=100, verbose_name='Công cụ OCR')),
+  apps\ocr\migrations\0001_initial.py:26:                ('language', models.CharField(blank=True, default='vi', 
+max_length=50, verbose_name='Ngôn ngữ OCR')),
+  apps\ocr\migrations\0001_initial.py:27:                ('page_count', models.PositiveIntegerField(default=0, 
+verbose_name='Số trang')),
+  apps\ocr\migrations\0002_ocrjob_current_page_ocrjob_ocr_mode_and_more.py:24:            model_name='ocrjob',
+  apps\ocr\migrations\0002_ocrjob_current_page_ocrjob_ocr_mode_and_more.py:25:            name='ocr_mode',
+> apps\ocr\migrations\0002_ocrjob_current_page_ocrjob_ocr_mode_and_more.py:26:            
+field=models.CharField(choices=[('fast', 'Nhanh'), ('quality', 'Chất lượng cao')], default='fast', max_length=20, 
+verbose_name='Chế độ OCR'),
+  apps\ocr\migrations\0002_ocrjob_current_page_ocrjob_ocr_mode_and_more.py:27:        ),
+  apps\ocr\migrations\0002_ocrjob_current_page_ocrjob_ocr_mode_and_more.py:28:        migrations.AddField(
+  apps\ocr\migrations\0002_ocrjob_current_page_ocrjob_ocr_mode_and_more.py:33:        migrations.AlterField(
+  apps\ocr\migrations\0002_ocrjob_current_page_ocrjob_ocr_mode_and_more.py:34:            model_name='ocrjob',
+> apps\ocr\migrations\0002_ocrjob_current_page_ocrjob_ocr_mode_and_more.py:35:            name='engine',
+  apps\ocr\migrations\0002_ocrjob_current_page_ocrjob_ocr_mode_and_more.py:36:            
+field=models.CharField(blank=True, default='paddle', max_length=100, verbose_name='Công cụ OCR'),
+  apps\ocr\migrations\0002_ocrjob_current_page_ocrjob_ocr_mode_and_more.py:37:        ),
+  apps\ocr\models.py:11:
+  apps\ocr\models.py:12:    class Mode(models.TextChoices):
+> apps\ocr\models.py:13:        FAST = "fast", "Nhanh"
+> apps\ocr\models.py:14:        QUALITY = "quality", "Chất lượng cao"
+  apps\ocr\models.py:15:
+  apps\ocr\models.py:16:    digital_file = models.ForeignKey(
+  apps\ocr\models.py:58:        max_length=20,
+  apps\ocr\models.py:59:        choices=Mode.choices,
+> apps\ocr\models.py:60:        default=Mode.FAST,
+  apps\ocr\models.py:61:        verbose_name="Chế độ OCR",
+  apps\ocr\models.py:62:    )
+  apps\ocr\models.py:72:    )
+  apps\ocr\models.py:73:
+> apps\ocr\models.py:74:    engine = models.CharField(
+  apps\ocr\models.py:75:        max_length=100,
+  apps\ocr\models.py:76:        blank=True,
+  apps\ocr\runner.py:66:        "--dpi",
+  apps\ocr\runner.py:67:        str(dpi),
+> apps\ocr\runner.py:68:        "--mode",
+  apps\ocr\runner.py:69:        mode,
+> apps\ocr\runner.py:70:        "--vietocr-model",
+> apps\ocr\runner.py:71:        ("vgg_seq2seq" if mode == "quality" else "vgg_transformer"),
+  apps\ocr\runner.py:72:    ]
+  apps\ocr\runner.py:73:
+  apps\ocr\runner.py:94:                    stderr_lines.append(line)
+  apps\ocr\runner.py:95:
+> apps\ocr\runner.py:96:                match = re.search(r"(FAST|QUALITY) PAGE\s+(\d+)/(\d+)\s+done", line)
+  apps\ocr\runner.py:97:                if match:
+  apps\ocr\runner.py:98:                    done_page = int(match.group(2))
+  apps\ocr\runner.py:153:        OcrJob.objects.filter(id=job_id).update(
+  apps\ocr\runner.py:154:            status=OcrJob.Status.COMPLETED,
+> apps\ocr\runner.py:155:            engine=data.get("engine") or f"paddle-{mode}",
+  apps\ocr\runner.py:156:            language=data.get("language") or "vi",
+  apps\ocr\runner.py:157:            page_count=page_count,
+  apps\ocr\serializers.py:33:            "current_page",
+  apps\ocr\serializers.py:34:            "progress_percent",
+> apps\ocr\serializers.py:35:            "engine",
+  apps\ocr\serializers.py:36:            "language",
+  apps\ocr\serializers.py:37:            "page_count",
+  apps\ocr\services.py:11:from apps.files.models import DigitalFile
+  apps\ocr\services.py:12:from apps.ocr.models import OcrJob
+> apps\ocr\services.py:13:from apps.ocr.engines.paddle_subprocess import run_paddle_ocr_worker
+  apps\ocr\services.py:14:
+  apps\ocr\services.py:15:
+  apps\ocr\services.py:18:    text: str
+  apps\ocr\services.py:19:    page_count: int
+> apps\ocr\services.py:20:    engine: str
+  apps\ocr\services.py:21:    warning: str = ""
+  apps\ocr\services.py:22:
+  apps\ocr\services.py:67:        text="\n".join(page_texts).strip(),
+  apps\ocr\services.py:68:        page_count=document.page_count,
+> apps\ocr\services.py:69:        engine="pymupdf",
+  apps\ocr\services.py:70:    )
+  apps\ocr\services.py:71:
+  apps\ocr\services.py:72:
+  apps\ocr\services.py:73:@lru_cache(maxsize=4)
+> apps\ocr\services.py:74:def get_paddle_ocr_engine(language: str = "vi"):
+  apps\ocr\services.py:75:    """
+  apps\ocr\services.py:76:    Khởi tạo PaddleOCR.
+  apps\ocr\services.py:226:    """
+  apps\ocr\services.py:227:
+> apps\ocr\services.py:228:    ocr = get_paddle_ocr_engine(language)
+  apps\ocr\services.py:229:
+  apps\ocr\services.py:230:    # PaddleOCR bản mới thường có predict()
+  apps\ocr\services.py:290:    extracted_text = (worker_result.get("text") or "").strip()
+  apps\ocr\services.py:291:    page_count = int(worker_result.get("page_count") or 0)
+> apps\ocr\services.py:292:    engine = (
+> apps\ocr\services.py:293:        worker_result.get("engine")
+  apps\ocr\services.py:294:        or f"pymupdf+paddleocr-v2-subprocess:{language}"
+  apps\ocr\services.py:295:    )
+  apps\ocr\services.py:306:        text=extracted_text,
+  apps\ocr\services.py:307:        page_count=page_count,
+> apps\ocr\services.py:308:        engine=engine,
+  apps\ocr\services.py:309:        warning=warning,
+  apps\ocr\services.py:310:    )
+  apps\ocr\services.py:354:                text="",
+  apps\ocr\services.py:355:                page_count=0,
+> apps\ocr\services.py:356:                engine=f"pymupdf+paddleocr-v2-subprocess:{language}",
+  apps\ocr\services.py:357:                warning=str(exc),
+  apps\ocr\services.py:358:            )
+  apps\ocr\services.py:438:        if not extracted_text and result.warning:
+  apps\ocr\services.py:439:            job.status = OcrJob.Status.FAILED
+> apps\ocr\services.py:440:            job.engine = result.engine
+  apps\ocr\services.py:441:            job.page_count = result.page_count
+  apps\ocr\services.py:442:            job.character_count = 0
+  apps\ocr\services.py:448:                update_fields=[
+  apps\ocr\services.py:449:                    "status",
+> apps\ocr\services.py:450:                    "engine",
+  apps\ocr\services.py:451:                    "page_count",
+  apps\ocr\services.py:452:                    "character_count",
+  apps\ocr\services.py:462:
+  apps\ocr\services.py:463:        job.status = OcrJob.Status.COMPLETED
+> apps\ocr\services.py:464:        job.engine = result.engine
+  apps\ocr\services.py:465:        job.page_count = result.page_count
+  apps\ocr\services.py:466:        job.character_count = len(extracted_text)
+  apps\ocr\services.py:472:            update_fields=[
+  apps\ocr\services.py:473:                "status",
+> apps\ocr\services.py:474:                "engine",
+  apps\ocr\services.py:475:                "page_count",
+  apps\ocr\services.py:476:                "character_count",
+  apps\ocr\urls.py:8:    OcrJobProgressView,
+  apps\ocr\urls.py:9:    OcrRunDigitalFileView,
+> apps\ocr\urls.py:10:    OcrRunQualityDigitalFileView,
+  apps\ocr\urls.py:11:    OcrSearchView,
+  apps\ocr\urls.py:12:)
+  apps\ocr\urls.py:18:    path("jobs/<int:pk>/progress/", OcrJobProgressView.as_view(), name="ocr-job-progress"),
+  apps\ocr\urls.py:19:    path("digital-files/<int:digital_file_id>/run/", OcrRunDigitalFileView.as_view(), 
+name="ocr-run-digital-file"),
+> apps\ocr\urls.py:20:    path("digital-files/<int:digital_file_id>/run-quality/", 
+OcrRunQualityDigitalFileView.as_view(), name="ocr-run-quality-digital-file"),
+  apps\ocr\urls.py:21:    path("digital-files/<int:digital_file_id>/progress/", OcrDigitalFileProgressView.as_view(), 
+name="ocr-digital-file-progress"),
+  apps\ocr\urls.py:22:    path("digital-files/<int:digital_file_id>/text/", OcrDigitalFileTextView.as_view(), 
+name="ocr-digital-file-text"),
+  apps\ocr\views.py:47:        status=OcrJob.Status.PENDING,
+  apps\ocr\views.py:48:        ocr_mode=mode,
+> apps\ocr\views.py:49:        engine="paddle-pending",
+  apps\ocr\views.py:50:        language="vi",
+  apps\ocr\views.py:51:        current_page=0,
+  apps\ocr\views.py:57:
+  apps\ocr\views.py:58:
+> apps\ocr\views.py:59:def start_ocr_pipeline_process(fast_job, quality_job, pdf_path):
+  apps\ocr\views.py:60:    command = [
+  apps\ocr\views.py:61:        sys.executable,
+  apps\ocr\views.py:62:        str(BASE_DIR / "manage.py"),
+  apps\ocr\views.py:63:        "run_ocr_pipeline",
+> apps\ocr\views.py:64:        "--fast-job-id",
+> apps\ocr\views.py:65:        str(fast_job.id),
+> apps\ocr\views.py:66:        "--quality-job-id",
+> apps\ocr\views.py:67:        str(quality_job.id),
+  apps\ocr\views.py:68:        "--pdf",
+  apps\ocr\views.py:69:        str(pdf_path),
+  apps\ocr\views.py:86:
+  apps\ocr\views.py:87:def get_best_ocr_job_for_file(digital_file_id):
+> apps\ocr\views.py:88:    quality = (
+  apps\ocr\views.py:89:        OcrJob.objects
+  apps\ocr\views.py:90:        .filter(
+  apps\ocr\views.py:91:            digital_file_id=digital_file_id,
+> apps\ocr\views.py:92:            ocr_mode=OcrJob.Mode.QUALITY,
+  apps\ocr\views.py:93:            status=OcrJob.Status.COMPLETED,
+  apps\ocr\views.py:94:        )
+  apps\ocr\views.py:96:        .first()
+  apps\ocr\views.py:97:    )
+> apps\ocr\views.py:98:    if quality:
+> apps\ocr\views.py:99:        return quality
+  apps\ocr\views.py:100:
+> apps\ocr\views.py:101:    fast = (
+  apps\ocr\views.py:102:        OcrJob.objects
+  apps\ocr\views.py:103:        .filter(
+  apps\ocr\views.py:104:            digital_file_id=digital_file_id,
+> apps\ocr\views.py:105:            ocr_mode=OcrJob.Mode.FAST,
+  apps\ocr\views.py:106:            status=OcrJob.Status.COMPLETED,
+  apps\ocr\views.py:107:        )
+  apps\ocr\views.py:109:        .first()
+  apps\ocr\views.py:110:    )
+> apps\ocr\views.py:111:    if fast:
+> apps\ocr\views.py:112:        return fast
+  apps\ocr\views.py:113:
+  apps\ocr\views.py:114:    return (
+  apps\ocr\views.py:281:            )
+  apps\ocr\views.py:282:
+> apps\ocr\views.py:283:        fast_job = create_job(digital_file, request.user, OcrJob.Mode.FAST)
+> apps\ocr\views.py:284:        quality_job = create_job(digital_file, request.user, OcrJob.Mode.QUALITY)
+  apps\ocr\views.py:285:
+> apps\ocr\views.py:286:        start_ocr_pipeline_process(fast_job, quality_job, digital_file.file.path)
+  apps\ocr\views.py:287:
+  apps\ocr\views.py:288:        return success_response(
+  apps\ocr\views.py:289:            message="Đã bắt đầu OCR nhanh. OCR chất lượng cao sẽ tự chạy sau khi OCR nhanh 
+hoàn tất.",
+  apps\ocr\views.py:290:            data={
+> apps\ocr\views.py:291:                "fast_job": OcrJobSerializer(fast_job).data,
+> apps\ocr\views.py:292:                "quality_job": OcrJobSerializer(quality_job).data,
+  apps\ocr\views.py:293:                "progress_url": f"/api/ocr/digital-files/{digital_file.id}/progress/",
+  apps\ocr\views.py:294:                "best_text_url": f"/api/ocr/digital-files/{digital_file.id}/text/",
+  apps\ocr\views.py:297:
+  apps\ocr\views.py:298:
+> apps\ocr\views.py:299:class OcrRunQualityDigitalFileView(APIView):
+  apps\ocr\views.py:300:    permission_classes = [IsAuthenticated, CanUploadDigitalFile]
+  apps\ocr\views.py:301:
+  apps\ocr\views.py:302:    def post(self, request, digital_file_id):
+  apps\ocr\views.py:303:        return error_response(
+> apps\ocr\views.py:304:            "Quality OCR hiện chạy tự động sau fast OCR. Hãy gọi endpoint /run/.",
+  apps\ocr\views.py:305:            status.HTTP_400_BAD_REQUEST,
+  apps\ocr\views.py:306:        )
+  scripts\paddle_ocr_worker.py:79:
+  scripts\paddle_ocr_worker.py:80:
+> scripts\paddle_ocr_worker.py:81:def build_fast_ocr():
+  scripts\paddle_ocr_worker.py:82:    return PaddleOCR(
+  scripts\paddle_ocr_worker.py:83:        use_angle_cls=False,
+  scripts\paddle_ocr_worker.py:93:
+  scripts\paddle_ocr_worker.py:94:
+> scripts\paddle_ocr_worker.py:95:def build_quality_detector():
+  scripts\paddle_ocr_worker.py:96:    return PaddleOCR(
+  scripts\paddle_ocr_worker.py:97:        use_angle_cls=False,
+  scripts\paddle_ocr_worker.py:128:
+  scripts\paddle_ocr_worker.py:129:
+> scripts\paddle_ocr_worker.py:130:def run_fast_page(ocr, image_path: Path):
+  scripts\paddle_ocr_worker.py:131:    result = ocr.ocr(str(image_path), cls=False)
+  scripts\paddle_ocr_worker.py:132:    return extract_paddle_text(result)
+  scripts\paddle_ocr_worker.py:133:
+  scripts\paddle_ocr_worker.py:134:
+> scripts\paddle_ocr_worker.py:135:def run_quality_pages(image_paths, args):
+  scripts\paddle_ocr_worker.py:136:    try:
+  scripts\paddle_ocr_worker.py:137:        from PIL import Image
+> scripts\paddle_ocr_worker.py:138:        from vietocr.tool.config import Cfg
+> scripts\paddle_ocr_worker.py:139:        from vietocr.tool.predictor import Predictor
+  scripts\paddle_ocr_worker.py:140:    except Exception as exc:
+  scripts\paddle_ocr_worker.py:141:        raise RuntimeError(
+> scripts\paddle_ocr_worker.py:142:            "Thiếu thư viện VietOCR/Pillow. Chạy: "
+> scripts\paddle_ocr_worker.py:143:            ".\\.venv_ocr_paddle\\Scripts\\pip.exe install vietocr pillow"
+  scripts\paddle_ocr_worker.py:144:        ) from exc
+  scripts\paddle_ocr_worker.py:145:
+> scripts\paddle_ocr_worker.py:146:    config = Cfg.load_config_from_name(args.vietocr_model)
+  scripts\paddle_ocr_worker.py:147:    config["cnn"]["pretrained"] = False
+  scripts\paddle_ocr_worker.py:148:    config["device"] = "cpu"
+  scripts\paddle_ocr_worker.py:153:
+  scripts\paddle_ocr_worker.py:154:    with contextlib.redirect_stdout(sys.stderr):
+> scripts\paddle_ocr_worker.py:155:        detector = build_quality_detector()
+  scripts\paddle_ocr_worker.py:156:        recognizer = Predictor(config)
+  scripts\paddle_ocr_worker.py:157:
+  scripts\paddle_ocr_worker.py:219:
+  scripts\paddle_ocr_worker.py:220:        print(
+> scripts\paddle_ocr_worker.py:221:            f"QUALITY PAGE {page_number}/{len(image_paths)} done in {seconds}s",
+  scripts\paddle_ocr_worker.py:222:            file=sys.stderr,
+  scripts\paddle_ocr_worker.py:223:            flush=True,
+  scripts\paddle_ocr_worker.py:233:    parser.add_argument("--dpi", type=int, default=120)
+  scripts\paddle_ocr_worker.py:234:    parser.add_argument("--max-pages", type=int, default=0)
+> scripts\paddle_ocr_worker.py:235:    parser.add_argument("--mode", default="fast", choices=["fast", "quality"])
+  scripts\paddle_ocr_worker.py:236:    parser.add_argument("--page-timeout", type=int, default=120)
+> scripts\paddle_ocr_worker.py:237:    parser.add_argument("--vietocr-model", default="vgg_transformer")
+  scripts\paddle_ocr_worker.py:238:
+  scripts\paddle_ocr_worker.py:239:    args = parser.parse_args()
+  scripts\paddle_ocr_worker.py:255:            write_json({
+  scripts\paddle_ocr_worker.py:256:                "success": True,
+> scripts\paddle_ocr_worker.py:257:                "engine": "pymupdf-text-layer",
+  scripts\paddle_ocr_worker.py:258:                "requested_language": args.language,
+  scripts\paddle_ocr_worker.py:259:                "language": "vi",
+  scripts\paddle_ocr_worker.py:276:            )
+  scripts\paddle_ocr_worker.py:277:
+> scripts\paddle_ocr_worker.py:278:            if args.mode == "fast":
+  scripts\paddle_ocr_worker.py:279:                page_texts = []
+  scripts\paddle_ocr_worker.py:280:
+  scripts\paddle_ocr_worker.py:281:                with contextlib.redirect_stdout(sys.stderr):
+> scripts\paddle_ocr_worker.py:282:                    ocr = build_fast_ocr()
+  scripts\paddle_ocr_worker.py:283:
+  scripts\paddle_ocr_worker.py:284:                for page_number, image_path in enumerate(image_paths, start=1):
+  scripts\paddle_ocr_worker.py:286:
+  scripts\paddle_ocr_worker.py:287:                    with contextlib.redirect_stdout(sys.stderr):
+> scripts\paddle_ocr_worker.py:288:                        text = run_fast_page(ocr, image_path)
+  scripts\paddle_ocr_worker.py:289:
+  scripts\paddle_ocr_worker.py:290:                    seconds = round(time.time() - page_started, 2)
+  scripts\paddle_ocr_worker.py:297:
+  scripts\paddle_ocr_worker.py:298:                    print(
+> scripts\paddle_ocr_worker.py:299:                        f"FAST PAGE {page_number}/{len(image_paths)} done in 
+{seconds}s",
+  scripts\paddle_ocr_worker.py:300:                        file=sys.stderr,
+  scripts\paddle_ocr_worker.py:301:                        flush=True,
+  scripts\paddle_ocr_worker.py:302:                    )
+  scripts\paddle_ocr_worker.py:303:
+> scripts\paddle_ocr_worker.py:304:                engine = "paddle-fast"
+  scripts\paddle_ocr_worker.py:305:
+  scripts\paddle_ocr_worker.py:306:            else:
+> scripts\paddle_ocr_worker.py:307:                page_texts = run_quality_pages(image_paths, args)
+> scripts\paddle_ocr_worker.py:308:                engine = f"paddle-det+vietocr-rec:{args.vietocr_model}"
+  scripts\paddle_ocr_worker.py:309:
+  scripts\paddle_ocr_worker.py:310:            final_text = "\n\n".join(
+  scripts\paddle_ocr_worker.py:315:            write_json({
+  scripts\paddle_ocr_worker.py:316:                "success": True,
+> scripts\paddle_ocr_worker.py:317:                "engine": engine,
+  scripts\paddle_ocr_worker.py:318:                "requested_language": args.language,
+  scripts\paddle_ocr_worker.py:319:                "language": "vi",
+
+
+
+
+
+===== DJANGO OCR JOBS FILE 7 =====
+
+19 objects imported automatically (use -v 2 for details).
+
+38 quality FAILED 2 7 14 paddle-pending 
+
+
+
+===== DIGITAL FILE 7 INFO =====
+
+19 objects imported automatically (use -v 2 for details).
+
+7 BC.13-VP�U.pdf D:\archive-management\api\media\profile_files\profile_5\BC.13-VP�U.pdf
+

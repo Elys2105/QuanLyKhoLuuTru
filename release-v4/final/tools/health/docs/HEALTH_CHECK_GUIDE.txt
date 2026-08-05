@@ -1,0 +1,34 @@
+QUAN LY KHO LUU TRU - HEALTH CHECK
+
+1. FAST CHECK
+HEALTH_CHECK_FAST.ps1
+
+Kiem tra nhanh:
+- Windows Services
+- Port 3000, 8000, 5432
+- HTTP Frontend va Backend
+
+2. FULL CHECK
+HEALTH_CHECK_FULL.ps1
+
+Kiem tra:
+- File va thu muc bat buoc
+- Services
+- Ports
+- HTTP
+- Disk free
+- Backup moi nhat
+- Log qua lon
+- Tao health-report.json
+
+3. CLIENT CHECK
+HEALTH_CHECK_CLIENT.ps1
+
+Kiem tra Client co ket noi duoc Server hay khong.
+
+4. MONITOR LIEN TUC
+HEALTH_MONITOR.ps1 -IntervalSeconds 30
+
+5. LUU Y IP SERVER
+Neu Server IP bi lay tu Radmin VPN, Hamachi, Tailscale, ZeroTier hoac adapter ao,
+hay chon lai dia chi LAN/Wi-Fi/Ethernet that va cap nhat client.json.

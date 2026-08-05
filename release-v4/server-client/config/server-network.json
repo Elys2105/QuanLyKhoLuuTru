@@ -1,0 +1,29 @@
+{
+    "product":  "QuanLyKhoLuuTru",
+    "pack":  "V4-09",
+    "generated_at":  "2026-07-31T01:31:24.7278985+07:00",
+    "server":  {
+                   "computer_name":  "MSI",
+                   "detected_ipv4":  "26.65.199.10",
+                   "interface":  "Radmin VPN",
+                   "frontend_bind_host":  "0.0.0.0",
+                   "frontend_port":  3000,
+                   "backend_bind_host":  "0.0.0.0",
+                   "backend_port":  8000,
+                   "database_bind_host":  "127.0.0.1",
+                   "database_port":  5432,
+                   "client_url":  "http://26.65.199.10:3000"
+               },
+    "firewall":  {
+                     "frontend_rule":  "QuanLyKhoLuuTru Frontend 3000",
+                     "backend_rule":  "QuanLyKhoLuuTru Backend 8000",
+                     "allow_frontend_lan":  true,
+                     "allow_backend_lan":  false,
+                     "allow_database_lan":  false
+                 },
+    "security":  {
+                     "expose_postgresql":  false,
+                     "expose_backend_directly":  false,
+                     "client_uses_frontend_only":  true
+                 }
+}

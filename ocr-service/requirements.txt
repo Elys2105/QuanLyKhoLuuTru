@@ -1,0 +1,15 @@
+﻿fastapi==0.115.6
+uvicorn[standard]==0.34.0
+python-multipart==0.0.20
+pymupdf==1.25.1
+pillow==10.4.0
+numpy==1.26.4
+opencv-python-headless==4.10.0.84
+
+torch
+torchvision
+easyocr==1.7.2
+vietocr==0.3.13
+
+paddlepaddle==2.6.2
+paddleocr==2.7.3

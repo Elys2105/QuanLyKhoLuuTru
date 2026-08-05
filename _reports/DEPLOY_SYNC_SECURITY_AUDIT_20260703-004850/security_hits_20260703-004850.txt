@@ -1,0 +1,15 @@
+﻿
+
+===== DJANGO_ALLOW_ANY =====
+api\.venv_ocr_paddle\Lib\site-packages\narwhals\translate.py:46: AllowAny,
+api\.venv_ocr_paddle\Lib\site-packages\narwhals\translate.py:155: native_object: IntoDataFrameT | IntoLazyFrameT | IntoSeriesT, **kwds: Unpack[AllowAny]
+api\.venv_ocr_paddle\Lib\site-packages\narwhals\_translate.py:286: class _AllowAny(TypedDict, total=False):
+api\.venv_ocr_paddle\Lib\site-packages\narwhals\_translate.py:292: class AllowAny(_AllowAny, total=False):
+api\.venv_ocr_paddle\Lib\site-packages\narwhals\_translate.py:296: class AllowAnyV1(_AllowAny, total=False):
+api\.venv_ocr_paddle\Lib\site-packages\narwhals\_translate.py:301: class AllowAnyStrictV1(_AllowAny, total=False):
+api\.venv_ocr_paddle\Lib\site-packages\narwhals\stable\v1\__init__.py:82: AllowAnyStrictV1 as AllowAnyStrict,
+api\.venv_ocr_paddle\Lib\site-packages\narwhals\stable\v1\__init__.py:83: AllowAnyV1 as AllowAny,
+api\.venv_ocr_paddle\Lib\site-packages\narwhals\stable\v1\__init__.py:598: native_object: IntoDataFrameT | IntoLazyFrameT | IntoSeriesT, **kwds: Unpack[AllowAny]
+api\.venv_ocr_paddle\Lib\site-packages\narwhals\stable\v1\__init__.py:603: **kwds: Unpack[AllowAnyStrict],
+api\.venv_ocr_paddle\Lib\site-packages\narwhals\stable\v2\__init__.py:79: AllowAny,
+api\.venv_ocr_paddle\Lib\site-packages\narwhals\stable\v2\__init__.py:421: native_object: IntoDataFrameT | IntoLazyFrameT | IntoSeriesT, **kwds: Unpack[AllowAny]

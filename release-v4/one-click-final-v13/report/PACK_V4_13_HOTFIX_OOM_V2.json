@@ -1,0 +1,15 @@
+{
+    "schema_version":  13,
+    "hotfix":  "OOM_AND_TRANSCRIPT_LOCK_V2",
+    "status":  "PASS",
+    "oom_patch":  "PASS",
+    "transcript_lock_fix":  "PASS",
+    "server_recompiled":  false,
+    "server_exe":  "D:\\archive-management\\release-v4\\one-click-final-v13\\output\\KhoLuuTru_V4_Server_Setup_FIXED.exe",
+    "server_slice_count":  4,
+    "client_exe":  "D:\\archive-management\\release-v4\\one-click-final-v13\\output\\KhoLuuTru_V4_Client_Setup_FIXED.exe",
+    "sha256_file":  "D:\\archive-management\\release-v4\\one-click-final-v13\\output\\SHA256SUMS.txt",
+    "iscc_stdout":  "D:\\archive-management\\release-v4\\one-click-final-v13\\logs\\PACK_V4_13_HOTFIX_ISCC_STDOUT_20260731_124023.log",
+    "iscc_stderr":  "D:\\archive-management\\release-v4\\one-click-final-v13\\logs\\PACK_V4_13_HOTFIX_ISCC_STDERR_20260731_124023.log",
+    "completed_at":  "2026-07-31T12:40:32.2236046+07:00"
+}

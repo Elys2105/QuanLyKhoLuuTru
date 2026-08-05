@@ -1,0 +1,9 @@
+{
+    "product":  "QuanLyKhoLuuTru",
+    "pack":  "V4-09",
+    "server_url":  "http://26.65.199.10:3000",
+    "backend_url":  "http://26.65.199.10:8000",
+    "open_mode":  "browser",
+    "timeout_seconds":  10,
+    "generated_at":  "2026-07-31T01:31:24.7502966+07:00"
+}

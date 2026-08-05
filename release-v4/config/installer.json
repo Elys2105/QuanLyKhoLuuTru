@@ -1,0 +1,65 @@
+{
+    "schema_version":  1,
+    "pack":  "V4-02",
+    "generated_at":  "2026-07-31T00:05:55+07:00",
+    "product":  {
+                    "name":  "Quan Ly Kho Luu Tru",
+                    "display_name":  "Quản lý Kho Lưu trữ",
+                    "publisher":  "QuanLyKhoLuuTru",
+                    "version":  "4.0.0-dev",
+                    "executable_name":  "QuanLyKhoLuuTru.exe",
+                    "app_id":  "QuanLyKhoLuuTru.V4"
+                },
+    "source":  {
+                   "project_root":  "D:\\archive-management",
+                   "api_root":  "D:\\archive-management\\api",
+                   "web_root":  "D:\\archive-management\\web",
+                   "release_root":  "D:\\archive-management\\release-v4"
+               },
+    "installation":  {
+                         "default_install_root":  "C:\\Program Files\\QuanLyKhoLuuTru",
+                         "default_data_root":  "C:\\ProgramData\\QuanLyKhoLuuTru",
+                         "allow_custom_install_drive":  true,
+                         "require_administrator":  true,
+                         "minimum_free_space_gb":  15,
+                         "architecture":  "x64",
+                         "supported_windows":  [
+                                                   "Windows 10 x64",
+                                                   "Windows 11 x64"
+                                               ]
+                     },
+    "ports":  {
+                  "backend":  8000,
+                  "frontend":  3000,
+                  "postgresql":  5432,
+                  "http":  80,
+                  "https":  443
+              },
+    "runtime":  {
+                    "python_required":  "3.11.x",
+                    "node_required":  "22.x",
+                    "postgresql_required":  "18.x",
+                    "install_missing_runtime":  true,
+                    "use_existing_runtime_when_supported":  true
+                },
+    "rollback":  {
+                     "enabled":  true,
+                     "state_file":  "rollback\\install-state.json",
+                     "restore_previous_files":  true,
+                     "remove_created_services":  true,
+                     "remove_created_shortcuts":  true,
+                     "remove_created_firewall_rules":  true,
+                     "preserve_user_data":  true
+                 },
+    "logging":  {
+                    "enabled":  true,
+                    "directory":  "logs",
+                    "installer_log":  "installer.log",
+                    "rollback_log":  "rollback.log"
+                },
+    "status":  {
+                   "runtime_audit_completed":  true,
+                   "warning_count":  0,
+                   "failure_count":  0
+               }
+}

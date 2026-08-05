@@ -1,0 +1,33 @@
+HUONG DAN CHAY LOCAL - QuanLyKhoLuuTru
+
+1. Mo Windows PowerShell.
+
+2. Chay lenh:
+
+   cd D:\archive-management
+   powershell -ExecutionPolicy Bypass -File .\scripts\start-quanlykholuutru-local.ps1
+
+3. Doi backend va frontend mo xong.
+
+   Backend dung dia chi:
+   http://127.0.0.1:8000
+
+   Frontend dung dia chi:
+   http://localhost:3000
+
+4. Neu trinh duyet khong tu mo, mo Chrome/Edge va truy cap:
+
+   http://localhost:3000
+
+5. Dang nhap bang tai khoan admin:
+
+   username: Admin
+   password: Admin@123456789
+
+6. Neu app khong mo duoc, kiem tra port bang lenh:
+
+   powershell -ExecutionPolicy Bypass -File D:\archive-management\scripts\check-ports.ps1
+
+7. Neu port 8000 hoac 3000 dang bi chiem, dong cac cua so PowerShell backend/frontend cu roi chay lai script.
+
+8. Khi su dung xong, co the dong cac cua so PowerShell backend va frontend.

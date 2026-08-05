@@ -1,0 +1,238 @@
+﻿   1: from django.db.models import Q
+   2: from rest_framework import status
+   3: from rest_framework.permissions import IsAuthenticated
+   4: from rest_framework.response import Response
+   5: from rest_framework.views import APIView
+   6: 
+   7: from apps.common.responses import success_response
+   8: from apps.files.models import DigitalFile
+   9: from apps.ocr.models import OcrJob
+  10: from apps.ocr.serializers import OcrJobSerializer
+  11: from apps.ocr.services import (
+  12:     get_latest_ocr_job_for_file,
+  13:     run_ocr_for_digital_file,
+  14:     search_ocr_text,
+  15: )
+  16: from apps.permissions.permissions import CanUploadDigitalFile, CanViewArchive
+  17: 
+  18: 
+  19: def error_response(message, status_code=status.HTTP_400_BAD_REQUEST, details=None):
+  20:     return Response(
+  21:         {
+  22:             "success": False,
+  23:             "error": {
+  24:                 "code": "OCR_ERROR",
+  25:                 "message": message,
+  26:                 "details": details or {},
+  27:             },
+  28:         },
+  29:         status=status_code,
+  30:     )
+  31: 
+  32: 
+  33: class OcrJobListView(APIView):
+  34:     """
+  35:     GET /api/ocr/
+  36:     GET /api/ocr/jobs/
+  37:     """
+  38: 
+  39:     permission_classes = [IsAuthenticated, CanViewArchive]
+  40: 
+  41:     def get(self, request):
+  42:         queryset = (
+  43:             OcrJob.objects
+  44:             .select_related("digital_file", "profile", "document", "created_by")
+  45:             .all()
+  46:         )
+  47: 
+  48:         q = request.query_params.get("q")
+  49:         status_value = request.query_params.get("status")
+  50:         digital_file_id = request.query_params.get("digital_file")
+  51:         profile_id = request.query_params.get("profile")
+  52:         document_id = request.query_params.get("document")
+  53: 
+  54:         if q:
+  55:             queryset = queryset.filter(
+  56:                 Q(extracted_text__icontains=q)
+  57:                 | Q(normalized_text__icontains=q)
+  58:                 | Q(digital_file__original_name__icontains=q)
+  59:                 | Q(profile__profile_code__icontains=q)
+  60:                 | Q(profile__title__icontains=q)
+  61:                 | Q(document__document_code__icontains=q)
+  62:                 | Q(document__title__icontains=q)
+  63:             )
+  64: 
+  65:         if status_value:
+  66:             queryset = queryset.filter(status=status_value)
+  67: 
+  68:         if digital_file_id:
+  69:             queryset = queryset.filter(digital_file_id=digital_file_id)
+  70: 
+  71:         if profile_id:
+  72:             queryset = queryset.filter(profile_id=profile_id)
+  73: 
+  74:         if document_id:
+  75:             queryset = queryset.filter(document_id=document_id)
+  76: 
+  77:         page = int(request.query_params.get("page", 1))
+  78:         page_size = int(request.query_params.get("page_size", 20))
+  79: 
+  80:         if page < 1:
+  81:             page = 1
+  82: 
+  83:         if page_size < 1:
+  84:             page_size = 20
+  85: 
+  86:         if page_size > 100:
+  87:             page_size = 100
+  88: 
+  89:         total = queryset.count()
+  90:         start = (page - 1) * page_size
+  91:         end = start + page_size
+  92: 
+  93:         serializer = OcrJobSerializer(queryset[start:end], many=True)
+  94: 
+  95:         return success_response(
+  96:             message="Láº¥y danh sĂ¡ch OCR job thĂ nh cĂ´ng.",
+  97:             data={
+  98:                 "results": serializer.data,
+  99:                 "pagination": {
+ 100:                     "page": page,
+ 101:                     "page_size": page_size,
+ 102:                     "total": total,
+ 103:                     "total_pages": (total + page_size - 1) // page_size,
+ 104:                     "has_next": end < total,
+ 105:                     "has_previous": page > 1,
+ 106:                 },
+ 107:             },
+ 108:         )
+ 109: 
+ 110: 
+ 111: class OcrJobDetailView(APIView):
+ 112:     """
+ 113:     GET /api/ocr/jobs/{id}/
+ 114:     """
+ 115: 
+ 116:     permission_classes = [IsAuthenticated, CanViewArchive]
+ 117: 
+ 118:     def get(self, request, pk):
+ 119:         try:
+ 120:             job = (
+ 121:                 OcrJob.objects
+ 122:                 .select_related("digital_file", "profile", "document", "created_by")
+ 123:                 .get(pk=pk)
+ 124:             )
+ 125:         except OcrJob.DoesNotExist:
+ 126:             return error_response(
+ 127:                 message="KhĂ´ng tĂ¬m tháº¥y OCR job.",
+ 128:                 status_code=status.HTTP_404_NOT_FOUND,
+ 129:             )
+ 130: 
+ 131:         serializer = OcrJobSerializer(job)
+ 132: 
+ 133:         return success_response(
+ 134:             message="Láº¥y chi tiáº¿t OCR job thĂ nh cĂ´ng.",
+ 135:             data=serializer.data,
+ 136:         )
+ 137: 
+ 138: 
+ 139: class OcrRunDigitalFileView(APIView):
+ 140:     """
+ 141:     POST /api/ocr/digital-files/{digital_file_id}/run/
+ 142: 
+ 143:     Body:
+ 144:     {
+ 145:         "language": "vi",
+ 146:         "force": true,
+ 147:         "force_paddleocr": false
+ 148:     }
+ 149:     """
+ 150: 
+ 151:     permission_classes = [IsAuthenticated, CanUploadDigitalFile]
+ 152: 
+ 153:     def post(self, request, digital_file_id):
+ 154:         try:
+ 155:             digital_file = DigitalFile.objects.select_related(
+ 156:                 "profile",
+ 157:                 "document",
+ 158:             ).get(
+ 159:                 pk=digital_file_id,
+ 160:                 is_deleted=False,
+ 161:             )
+ 162:         except DigitalFile.DoesNotExist:
+ 163:             return error_response(
+ 164:                 message="KhĂ´ng tĂ¬m tháº¥y file sá»‘ hĂ³a hoáº·c file Ä‘Ă£ bá»‹ xĂ³a.",
+ 165:                 status_code=status.HTTP_404_NOT_FOUND,
+ 166:             )
+ 167: 
+ 168:         language = request.data.get("language") or "vi"
+ 169:         force = bool(request.data.get("force", False))
+ 170:         force_paddleocr = bool(request.data.get("force_paddleocr", False))
+ 171: 
+ 172:         job = run_ocr_for_digital_file(
+ 173:             digital_file=digital_file,
+ 174:             user=request.user,
+ 175:             language=language,
+ 176:             force=force,
+ 177:             force_paddleocr=force_paddleocr,
+ 178:         )
+ 179: 
+ 180:         serializer = OcrJobSerializer(job)
+ 181: 
+ 182:         return success_response(
+ 183:             message="Cháº¡y OCR hoĂ n táº¥t.",
+ 184:             data=serializer.data,
+ 185:         )
+ 186: 
+ 187: 
+ 188: class OcrDigitalFileTextView(APIView):
+ 189:     """
+ 190:     GET /api/ocr/digital-files/{digital_file_id}/text/
+ 191:     """
+ 192: 
+ 193:     permission_classes = [IsAuthenticated, CanViewArchive]
+ 194: 
+ 195:     def get(self, request, digital_file_id):
+ 196:         job = get_latest_ocr_job_for_file(digital_file_id)
+ 197: 
+ 198:         if not job:
+ 199:             return error_response(
+ 200:                 message="File nĂ y chÆ°a cĂ³ káº¿t quáº£ OCR.",
+ 201:                 status_code=status.HTTP_404_NOT_FOUND,
+ 202:             )
+ 203: 
+ 204:         serializer = OcrJobSerializer(job)
+ 205: 
+ 206:         return success_response(
+ 207:             message="Láº¥y text OCR thĂ nh cĂ´ng.",
+ 208:             data=serializer.data,
+ 209:         )
+ 210: 
+ 211: 
+ 212: class OcrSearchView(APIView):
+ 213:     """
+ 214:     GET /api/ocr/search/?q=...
+ 215:     """
+ 216: 
+ 217:     permission_classes = [IsAuthenticated, CanViewArchive]
+ 218: 
+ 219:     def get(self, request):
+ 220:         q = request.query_params.get("q", "")
+ 221: 
+ 222:         if not q.strip():
+ 223:             return error_response(
+ 224:                 message="Vui lĂ²ng nháº­p tá»« khĂ³a q.",
+ 225:                 status_code=status.HTTP_400_BAD_REQUEST,
+ 226:             )
+ 227: 
+ 228:         jobs = search_ocr_text(q, limit=50)
+ 229:         serializer = OcrJobSerializer(jobs, many=True)
+ 230: 
+ 231:         return success_response(
+ 232:             message="TĂ¬m kiáº¿m OCR thĂ nh cĂ´ng.",
+ 233:             data={
+ 234:                 "q": q,
+ 235:                 "results": serializer.data,
+ 236:                 "total": len(serializer.data),
+ 237:             },
+ 238:         )

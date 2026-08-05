@@ -1,0 +1,354 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+/* STEP21_13C6_FIX_OCR_SELECT_OVERFLOW_ONLY_START */
+.record-ocr-panel-safe {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.record-ocr-panel-safe select,
+.record-ocr-panel-safe [role="combobox"],
+.record-ocr-panel-safe button {
+  max-width: 100%;
+}
+
+.record-ocr-panel-safe select,
+.record-ocr-panel-safe [role="combobox"] {
+  min-width: 0 !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.record-ocr-panel-safe .flex:has(select),
+.record-ocr-panel-safe .flex:has([role="combobox"]) {
+  flex-wrap: wrap;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.record-ocr-panel-safe .flex:has(select) > select,
+.record-ocr-panel-safe .flex:has([role="combobox"]) > [role="combobox"] {
+  flex: 1 1 240px;
+  width: 100%;
+  min-width: 0;
+}
+
+.record-ocr-panel-safe .flex:has(select) > button,
+.record-ocr-panel-safe .flex:has([role="combobox"]) > button {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.record-ocr-panel-safe option {
+  max-width: 100%;
+}
+/* STEP21_13C6_FIX_OCR_SELECT_OVERFLOW_ONLY_END */
+
+/* FIX_EXACT_OCR_FILE_SELECT_ROW_START */
+.record-ocr-panel-safe {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.record-ocr-panel-safe .ocr-file-select-row {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto auto auto !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: visible !important;
+}
+
+.record-ocr-panel-safe .ocr-file-select {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.record-ocr-panel-safe .ocr-file-select-row button {
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
+
+@media (max-width: 900px) {
+  .record-ocr-panel-safe .ocr-file-select-row {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .record-ocr-panel-safe .ocr-file-select-row button {
+    width: fit-content !important;
+  }
+}
+/* FIX_EXACT_OCR_FILE_SELECT_ROW_END */
+
+/* FIX_RECORD_OCR_SELECT_ROW_ONLY_START */
+.record-ocr-panel-safe .ocr-file-select-row {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+.record-ocr-panel-safe .ocr-file-select {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.record-ocr-panel-safe .ocr-file-select-row button {
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
+/* FIX_RECORD_OCR_SELECT_ROW_ONLY_END */
+
+/* === QUANLYKHO_FORCE_PRIMARY_DARK_BLUE_START === */
+/*
+  Chỉ đổi màu chủ đạo đen -> xanh biển đậm.
+  Không đổi layout, không đổi nền, không đổi card.
+*/
+:root {
+  --primary: 205 74% 22%;
+  --primary-foreground: 0 0% 100%;
+
+  --sidebar-primary: 205 74% 22%;
+  --sidebar-primary-foreground: 0 0% 100%;
+
+  --ring: 205 74% 34%;
+}
+
+/* Tailwind/shadcn primary classes */
+.bg-primary,
+[class~="bg-primary"],
+.bg-sidebar-primary,
+[class~="bg-sidebar-primary"],
+.bg-black,
+[class~="bg-black"],
+.bg-neutral-950,
+[class~="bg-neutral-950"],
+.bg-zinc-950,
+[class~="bg-zinc-950"],
+.bg-slate-950,
+[class~="bg-slate-950"],
+.bg-stone-950,
+[class~="bg-stone-950"] {
+  background-color: #0f3d63 !important;
+  color: #ffffff !important;
+}
+
+/* Hover của nút/active */
+.hover\:bg-primary\/90:hover,
+[class~="hover:bg-primary/90"]:hover,
+.hover\:bg-black:hover,
+[class~="hover:bg-black"]:hover,
+.hover\:bg-neutral-950:hover,
+[class~="hover:bg-neutral-950"]:hover,
+.hover\:bg-zinc-950:hover,
+[class~="hover:bg-zinc-950"]:hover,
+.hover\:bg-slate-950:hover,
+[class~="hover:bg-slate-950"]:hover {
+  background-color: #0b3354 !important;
+  color: #ffffff !important;
+}
+
+/* Text/icon trên nền primary */
+.text-primary-foreground,
+[class~="text-primary-foreground"],
+.text-sidebar-primary-foreground,
+[class~="text-sidebar-primary-foreground"] {
+  color: #ffffff !important;
+}
+
+/* Border đen -> xanh biển đậm */
+.border-primary,
+[class~="border-primary"],
+.border-black,
+[class~="border-black"],
+.border-neutral-950,
+[class~="border-neutral-950"],
+.border-zinc-950,
+[class~="border-zinc-950"],
+.border-slate-950,
+[class~="border-slate-950"] {
+  border-color: #0f3d63 !important;
+}
+
+/* Sidebar active item: ép đúng chỗ đang bị đen */
+aside [data-active="true"],
+aside [aria-current="page"],
+nav [data-active="true"],
+nav [aria-current="page"],
+[data-sidebar] [data-active="true"],
+[data-sidebar] [aria-current="page"] {
+  background-color: #0f3d63 !important;
+  color: #ffffff !important;
+}
+
+aside [data-active="true"] svg,
+aside [aria-current="page"] svg,
+nav [data-active="true"] svg,
+nav [aria-current="page"] svg,
+[data-sidebar] [data-active="true"] svg,
+[data-sidebar] [aria-current="page"] svg {
+  color: #ffffff !important;
+}
+
+/* Nếu menu active dùng class aria/data variant */
+aside [class~="data-[active=true]:bg-primary"][data-active="true"],
+aside [class~="aria-[current=page]:bg-primary"][aria-current="page"],
+nav [class~="data-[active=true]:bg-primary"][data-active="true"],
+nav [class~="aria-[current=page]:bg-primary"][aria-current="page"] {
+  background-color: #0f3d63 !important;
+  color: #ffffff !important;
+}
+
+/* Logo tile bên trái nếu đang dùng primary/black */
+aside .bg-primary,
+aside [class~="bg-primary"],
+aside .bg-black,
+aside [class~="bg-black"],
+[data-sidebar] .bg-primary,
+[data-sidebar] [class~="bg-primary"],
+[data-sidebar] .bg-black,
+[data-sidebar] [class~="bg-black"] {
+  background-color: #0f3d63 !important;
+  color: #ffffff !important;
+}
+/* === QUANLYKHO_FORCE_PRIMARY_DARK_BLUE_END === */

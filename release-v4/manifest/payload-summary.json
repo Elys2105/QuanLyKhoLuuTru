@@ -1,0 +1,15 @@
+{
+    "schema_version":  1,
+    "generated_at":  "2026-07-31T00:10:14+07:00",
+    "total_files":  30662,
+    "total_bytes":  6665138799,
+    "server":  {
+                   "files":  30658,
+                   "bytes":  6665137699
+               },
+    "client":  {
+                   "files":  4,
+                   "bytes":  1100
+               },
+    "checksum_policy":  "Deferred to final package build"
+}

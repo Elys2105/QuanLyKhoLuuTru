@@ -1,0 +1,51 @@
+{
+    "project":  "QuanLyKhoLuuTru",
+    "pack":  "V4-10",
+    "status":  "PASS",
+    "generated_at":  "2026-07-31T01:31:57.7707068+07:00",
+    "health_root":  "D:\\archive-management\\release-v4\\health",
+    "detected_server_ip":  "26.65.199.10",
+    "detected_interface":  "Radmin VPN",
+    "vpn_adapter_detected":  true,
+    "runtime_health_executed":  false,
+    "files":  [
+                  {
+                      "relative_path":  "config\\health.json",
+                      "size_bytes":  1085,
+                      "sha256":  "330049121F53DB11940995F206BABB72FDA898032F0BB3A8E6D4B5792F41B44E"
+                  },
+                  {
+                      "relative_path":  "docs\\HEALTH_CHECK_GUIDE.txt",
+                      "size_bytes":  652,
+                      "sha256":  "0D949CF1A9B6BFD7283C8ED14D5D5E5EF4D10CB0951E52D4F2B95BE8BEDEBE49"
+                  },
+                  {
+                      "relative_path":  "scripts\\DEPLOY_HEALTH_TOOLS.ps1",
+                      "size_bytes":  966,
+                      "sha256":  "534A3F12B72EF6CC0C7AD549C8C27B456360238FCCB4BC668126DB56B47D936A"
+                  },
+                  {
+                      "relative_path":  "scripts\\HEALTH_CHECK_CLIENT.ps1",
+                      "size_bytes":  1460,
+                      "sha256":  "9CFE742DE676294AE42DAF6E931E02464EB13CCA3B187DC49A232D9CE22EFB67"
+                  },
+                  {
+                      "relative_path":  "scripts\\HEALTH_CHECK_FAST.ps1",
+                      "size_bytes":  2557,
+                      "sha256":  "9E3C0B2D4E11C5B38E344E32D348E69FBA774B72802EAC7A9577EDF47E131D2F"
+                  },
+                  {
+                      "relative_path":  "scripts\\HEALTH_CHECK_FULL.ps1",
+                      "size_bytes":  5683,
+                      "sha256":  "378106E22460F19B407714D8CDD4F3C72507252646174535F5234AE748C5FFB3"
+                  },
+                  {
+                      "relative_path":  "scripts\\HEALTH_MONITOR.ps1",
+                      "size_bytes":  812,
+                      "sha256":  "ABF292710A5564834AB53896C1B292136F564FFEA211D87E822857D99A5543DD"
+                  }
+              ],
+    "warnings":  [
+                     "Server IP dang lay tu adapter ao/VPN: Radmin VPN - 26.65.199.10"
+                 ]
+}

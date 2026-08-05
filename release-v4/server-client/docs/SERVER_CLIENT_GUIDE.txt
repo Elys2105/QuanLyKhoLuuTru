@@ -1,0 +1,37 @@
+QUAN LY KHO LUU TRU - SERVER / CLIENT
+
+1. SERVER
+- Server chay Frontend tren port 3000.
+- Backend chay tren port 8000.
+- PostgreSQL chi bind localhost 127.0.0.1:5432.
+- Client truy cap qua http://SERVER_IP:3000.
+
+2. FIREWALL
+Mo PowerShell Administrator va chay:
+
+CONFIGURE_FIREWALL.ps1
+
+Mac dinh chi mo TCP 3000 tren Private network.
+Port 8000 khong mo ra LAN neu khong dung -AllowBackendLan.
+Port 5432 khong duoc mo ra LAN.
+
+3. XEM DIA CHI SERVER
+Chay:
+
+SHOW_SERVER_ADDRESS.ps1
+
+4. CAU HINH CLIENT
+Chay:
+
+CONFIGURE_CLIENT.ps1 -ServerAddress 192.168.1.10
+
+5. KIEM TRA CLIENT
+Chay:
+
+TEST_CLIENT_CONNECTION.ps1
+
+6. AN TOAN
+- Khong expose PostgreSQL ra mang.
+- Uu tien mang Private.
+- Server nen dung IP tinh hoac DHCP reservation.
+- Neu IP Server thay doi, chay lai CONFIGURE_CLIENT.ps1 tren Client.

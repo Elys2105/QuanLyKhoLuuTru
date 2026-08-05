@@ -1,0 +1,41 @@
+{
+    "schema_version":  1,
+    "pack":  "V4-03A",
+    "name":  "Installer Builder Framework",
+    "generated_at":  "2026-07-31T00:09:49+07:00",
+    "passed":  true,
+    "builder_config":  "D:\\archive-management\\release-v4\\config\\builder-v4-03.json",
+    "package_layout":  "D:\\archive-management\\release-v4\\config\\package-layout-v4-03.json",
+    "scripts":  {
+                    "build_server":  "D:\\archive-management\\release-v4\\builder\\scripts\\BUILD_SERVER_PAYLOAD.ps1",
+                    "build_client":  "D:\\archive-management\\release-v4\\builder\\scripts\\BUILD_CLIENT_PAYLOAD.ps1",
+                    "build_manifest":  "D:\\archive-management\\release-v4\\builder\\scripts\\BUILD_PAYLOAD_MANIFEST.ps1",
+                    "verify_payload":  "D:\\archive-management\\release-v4\\builder\\scripts\\VERIFY_PAYLOAD.ps1",
+                    "build_all":  "D:\\archive-management\\release-v4\\builder\\scripts\\BUILD_ALL.ps1"
+                },
+    "payload":  {
+                    "server":  {
+                                   "files":  30658,
+                                   "bytes":  6665137699,
+                                   "size_mb":  6356.37
+                               },
+                    "client":  {
+                                   "files":  4,
+                                   "bytes":  1100,
+                                   "size_mb":  0
+                               }
+                },
+    "source_protection":  {
+                              "source_modified":  false,
+                              "current_media_included":  false,
+                              "virtual_environment_included":  false,
+                              "node_modules_included":  false,
+                              "next_build_included":  false
+                          },
+    "warnings":  [
+
+                 ],
+    "failures":  [
+
+                 ]
+}

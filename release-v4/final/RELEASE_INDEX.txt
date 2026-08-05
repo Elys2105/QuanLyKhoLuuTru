@@ -1,0 +1,18 @@
+QUAN LY KHO LUU TRU - RELEASE V4-03C
+Generated: 2026-07-31 01:16:43
+
+SERVER:
+  QuanLyKhoLuuTru_Server_V4_03B_Setup.exe  4.88 MB
+  QuanLyKhoLuuTru_Server_V4_03B_Setup-1.bin  1902.47 MB
+  QuanLyKhoLuuTru_Server_V4_03B_Setup-2.bin  1907.35 MB
+  QuanLyKhoLuuTru_Server_V4_03B_Setup-3.bin  1907.35 MB
+  QuanLyKhoLuuTru_Server_V4_03B_Setup-4.bin  639.32 MB
+
+CLIENT:
+  QuanLyKhoLuuTru_Client_V4_03B_Setup.exe  2 MB
+
+Server total: 6.21 GB
+Client total: 2 MB
+
+Checksum: SHA256SUMS.txt
+Guide: docs\INSTALL_GUIDE.txt

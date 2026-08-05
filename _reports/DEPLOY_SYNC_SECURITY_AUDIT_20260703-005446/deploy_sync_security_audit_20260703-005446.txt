@@ -1,0 +1,633 @@
+﻿
+================================================================
+00_INFO
+================================================================
+ROOT=D:\archive-management
+API=D:\archive-management\api
+WEB=D:\archive-management\web
+REPORT_DIR=D:\archive-management\_reports\DEPLOY_SYNC_SECURITY_AUDIT_20260703-005446
+REPORT=D:\archive-management\_reports\DEPLOY_SYNC_SECURITY_AUDIT_20260703-005446\deploy_sync_security_audit_20260703-005446.txt
+SECURITY_HITS=D:\archive-management\_reports\DEPLOY_SYNC_SECURITY_AUDIT_20260703-005446\security_hits_20260703-005446.txt
+API_SMOKE=D:\archive-management\_reports\DEPLOY_SYNC_SECURITY_AUDIT_20260703-005446\api_smoke_20260703-005446.txt
+TIME=2026-07-03 00:54:47
+
+================================================================
+01_PATH_CHECK
+================================================================
+D:\archive-management=True
+D:\archive-management\api=True
+D:\archive-management\web=True
+D:\archive-management\api\manage.py=True
+D:\archive-management\api\.venv\Scripts\python.exe=True
+D:\archive-management\web\package.json=True
+
+================================================================
+02_PORT_AND_RUNTIME_CHECK
+================================================================
+BACKEND_PORT_8000_LISTENING=False
+FRONTEND_PORT_3000_LISTENING=False
+BACKEND_LOGIN_GET_STATUS=0
+FRONTEND_LOGIN_STATUS=0
+
+================================================================
+03_BACKEND_DJANGO_CHECKS
+================================================================
+
+================================================================
+03_01_PYTHON_VERSION
+================================================================
+WORKDIR=D:\archive-management\api
+CMD="D:\archive-management\api\.venv\Scripts\python.exe" --version
+LOG_FILE=D:\archive-management\_reports\DEPLOY_SYNC_SECURITY_AUDIT_20260703-005446\03_01_PYTHON_VERSION.log
+EXIT_CODE=1
+
+================================================================
+03_02_DJANGO_CHECK
+================================================================
+WORKDIR=D:\archive-management\api
+CMD="D:\archive-management\api\.venv\Scripts\python.exe" manage.py check
+LOG_FILE=D:\archive-management\_reports\DEPLOY_SYNC_SECURITY_AUDIT_20260703-005446\03_02_DJANGO_CHECK.log
+EXIT_CODE=1
+
+================================================================
+03_03_DJANGO_DEPLOY_CHECK_REVIEW
+================================================================
+WORKDIR=D:\archive-management\api
+CMD="D:\archive-management\api\.venv\Scripts\python.exe" manage.py check --deploy
+LOG_FILE=D:\archive-management\_reports\DEPLOY_SYNC_SECURITY_AUDIT_20260703-005446\03_03_DJANGO_DEPLOY_CHECK_REVIEW.log
+EXIT_CODE=1
+
+================================================================
+03_04_MAKEMIGRATIONS_DRY_RUN
+================================================================
+WORKDIR=D:\archive-management\api
+CMD="D:\archive-management\api\.venv\Scripts\python.exe" manage.py makemigrations --check --dry-run
+LOG_FILE=D:\archive-management\_reports\DEPLOY_SYNC_SECURITY_AUDIT_20260703-005446\03_04_MAKEMIGRATIONS_DRY_RUN.log
+EXIT_CODE=1
+
+================================================================
+03_05_SHOWMIGRATIONS
+================================================================
+WORKDIR=D:\archive-management\api
+CMD="D:\archive-management\api\.venv\Scripts\python.exe" manage.py showmigrations
+LOG_FILE=D:\archive-management\_reports\DEPLOY_SYNC_SECURITY_AUDIT_20260703-005446\03_05_SHOWMIGRATIONS.log
+EXIT_CODE=1
+
+================================================================
+03_06_MIGRATE_PLAN
+================================================================
+WORKDIR=D:\archive-management\api
+CMD="D:\archive-management\api\.venv\Scripts\python.exe" manage.py migrate --plan
+LOG_FILE=D:\archive-management\_reports\DEPLOY_SYNC_SECURITY_AUDIT_20260703-005446\03_06_MIGRATE_PLAN.log
+EXIT_CODE=1
+
+================================================================
+04_DJANGO_DB_AND_DATA_PROBE
+================================================================
+
+================================================================
+04_01_DB_DATA_PROBE
+================================================================
+WORKDIR=D:\archive-management\api
+CMD="D:\archive-management\api\.venv\Scripts\python.exe" manage.py shell < "D:\archive-management\_reports\DEPLOY_SYNC_SECURITY_AUDIT_20260703-005446\django_db_probe.py"
+LOG_FILE=D:\archive-management\_reports\DEPLOY_SYNC_SECURITY_AUDIT_20260703-005446\04_01_DB_DATA_PROBE.log
+EXIT_CODE=1
+
+================================================================
+05_MEDIA_STORAGE_CHECK
+================================================================
+MEDIA_DIR=D:\archive-management\api\media
+MEDIA_EXISTS=True
+MEDIA_FILE_COUNT=22
+MEDIA_SIZE_MB=102.25
+
+================================================================
+06_FRONTEND_CHECKS
+================================================================
+
+================================================================
+06_01_NODE_VERSION
+================================================================
+WORKDIR=D:\archive-management\web
+CMD=node --version
+LOG_FILE=D:\archive-management\_reports\DEPLOY_SYNC_SECURITY_AUDIT_20260703-005446\06_01_NODE_VERSION.log
+EXIT_CODE=0
+--- LOG TAIL ---
+v22.21.0
+
+================================================================
+06_02_NPM_VERSION
+================================================================
+WORKDIR=D:\archive-management\web
+CMD=npm --version
+LOG_FILE=D:\archive-management\_reports\DEPLOY_SYNC_SECURITY_AUDIT_20260703-005446\06_02_NPM_VERSION.log
+EXIT_CODE=0
+--- LOG TAIL ---
+11.7.0
+
+================================================================
+06_03_NPM_BUILD
+================================================================
+WORKDIR=D:\archive-management\web
+CMD=npm run build
+LOG_FILE=D:\archive-management\_reports\DEPLOY_SYNC_SECURITY_AUDIT_20260703-005446\06_03_NPM_BUILD.log
+EXIT_CODE=0
+--- LOG TAIL ---
+
+> web@0.1.0 build
+> next build
+
+▲ Next.js 16.2.9 (Turbopack)
+- Environments: .env.local
+
+  Creating an optimized production build ...
+Found 1 warning while optimizing generated CSS:
+
+[2m│   }[22m
+[2m│   .has-\[\>img\:fir�\1 s\]\:pt-0 {[22m
+[2m│[22m     &:has(>img:fir�s) {
+[2m┆[22m                [33m[2m^--[22m 'fir�' is not recognized as a valid pseudo-class. Did you mean '::fir�' (pseudo-element) or is this a typo?[39m
+[2m┆[22m
+[2m│       padding-top: 0;[22m
+[2m│     }[22m
+
+✓ Compiled successfully in 8.9s
+  Running TypeScript ...
+  Finished TypeScript in 5.3s ...
+  Collecting page data using 15 workers ...
+  Generating static pages using 15 workers (0/20) ...
+  Generating static pages using 15 workers (5/20) 
+  Generating static pages using 15 workers (10/20) 
+  Generating static pages using 15 workers (15/20) 
+✓ Generating static pages using 15 workers (20/20) in 604ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /bao-cao
+├ ○ /cay-luu-tru
+├ ○ /danh-muc
+├ ○ /dashboard
+├ ○ /ho-so
+├ ƒ /ho-so/[id]
+├ ○ /hop-cap
+├ ○ /kho
+├ ○ /login
+├ ○ /muc-luc
+├ ○ /nhap-lieu
+├ ○ /nhat-ky
+├ ○ /nhat-ky-he-thong
+├ ○ /ocr
+├ ○ /phong
+├ ○ /tai-lieu
+├ ƒ /tai-lieu/[id]
+└ ○ /tim-kiem
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+
+================================================================
+07_ENV_AND_SYNC_CONFIG_SCAN
+================================================================
+ENV_SYNC_REPORT=D:\archive-management\_reports\DEPLOY_SYNC_SECURITY_AUDIT_20260703-005446\env_sync_scan_20260703-005446.txt
+
+
+===== .env =====
+
+===== api\.env =====
+api\.env:4: DEBUG=True
+api\.env:6: ALLOWED_HOSTS=localhost,127.0.0.1
+api\.env:9: # DATABASE
+api\.env:10: # Bước 2 tạm thời vẫn dùng SQLite.
+api\.env:11: # Bước 3 sẽ đổi sang PostgreSQL.
+api\.env:13: DB_ENGINE=postgres
+api\.env:17: DB_HOST=localhost
+api\.env:18: DB_PORT=5432
+api\.env:21: # CORS
+api\.env:24: CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+api\.env:36: MEDIA_URL=/media/
+api\.env:42: APP_NAME=Archive Management API
+
+===== api\.env.example =====
+api\.env.example:1: DEBUG=True
+api\.env.example:3: ALLOWED_HOSTS=localhost,127.0.0.1
+api\.env.example:5: DB_ENGINE=sqlite
+api\.env.example:6: DB_NAME=db.sqlite3
+api\.env.example:9: DB_HOST=
+api\.env.example:10: DB_PORT=
+api\.env.example:12: CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+api\.env.example:18: MEDIA_URL=/media/
+api\.env.example:21: APP_NAME=Archive Management API
+
+===== api\.venv_ocr_paddle\Lib\site-packages\cssutils\settings.py =====
+api\.venv_ocr_paddle\Lib\site-packages\cssutils\settings.py:8: enable support for parsing special MS only filter values
+api\.venv_ocr_paddle\Lib\site-packages\cssutils\settings.py:13: from . import cssproductions, tokenize2
+
+===== api\.venv_ocr_paddle\Lib\site-packages\docx\settings.py =====
+api\.venv_ocr_paddle\Lib\site-packages\docx\settings.py:3: from __future__ import annotations
+api\.venv_ocr_paddle\Lib\site-packages\docx\settings.py:5: from typing import TYPE_CHECKING, cast
+api\.venv_ocr_paddle\Lib\site-packages\docx\settings.py:7: from docx.shared import ElementProxy
+api\.venv_ocr_paddle\Lib\site-packages\docx\settings.py:10: import docx.types as t
+api\.venv_ocr_paddle\Lib\site-packages\docx\settings.py:11: from docx.oxml.settings import CT_Settings
+api\.venv_ocr_paddle\Lib\site-packages\docx\settings.py:12: from docx.oxml.xmlchemy import BaseOxmlElement
+
+===== api\.venv_ocr_paddle\Lib\site-packages\docx\oxml\settings.py =====
+api\.venv_ocr_paddle\Lib\site-packages\docx\oxml\settings.py:3: from __future__ import annotations
+api\.venv_ocr_paddle\Lib\site-packages\docx\oxml\settings.py:5: from typing import TYPE_CHECKING, Callable
+api\.venv_ocr_paddle\Lib\site-packages\docx\oxml\settings.py:7: from docx.oxml.xmlchemy import BaseOxmlElement, ZeroOrOne
+api\.venv_ocr_paddle\Lib\site-packages\docx\oxml\settings.py:10: from docx.oxml.shared import CT_OnOff
+api\.venv_ocr_paddle\Lib\site-packages\docx\oxml\settings.py:119: evenAndOddHeaders: CT_OnOff | None = ZeroOrOne(  # pyright: ignore[reportAssignmentType]
+
+===== api\.venv_ocr_paddle\Lib\site-packages\docx\parts\settings.py =====
+api\.venv_ocr_paddle\Lib\site-packages\docx\parts\settings.py:3: from __future__ import annotations
+api\.venv_ocr_paddle\Lib\site-packages\docx\parts\settings.py:5: import os
+api\.venv_ocr_paddle\Lib\site-packages\docx\parts\settings.py:6: from typing import TYPE_CHECKING, cast
+api\.venv_ocr_paddle\Lib\site-packages\docx\parts\settings.py:8: from docx.opc.constants import CONTENT_TYPE as CT
+api\.venv_ocr_paddle\Lib\site-packages\docx\parts\settings.py:9: from docx.opc.packuri import PackURI
+api\.venv_ocr_paddle\Lib\site-packages\docx\parts\settings.py:10: from docx.opc.part import XmlPart
+api\.venv_ocr_paddle\Lib\site-packages\docx\parts\settings.py:11: from docx.oxml.parser import parse_xml
+api\.venv_ocr_paddle\Lib\site-packages\docx\parts\settings.py:12: from docx.settings import Settings
+api\.venv_ocr_paddle\Lib\site-packages\docx\parts\settings.py:15: from docx.oxml.settings import CT_Settings
+api\.venv_ocr_paddle\Lib\site-packages\docx\parts\settings.py:16: from docx.package import Package
+
+===== api\.venv_ocr_paddle\Lib\site-packages\scipy\_lib\cobyqa\settings.py =====
+api\.venv_ocr_paddle\Lib\site-packages\scipy\_lib\cobyqa\settings.py:1: import sys
+api\.venv_ocr_paddle\Lib\site-packages\scipy\_lib\cobyqa\settings.py:2: from enum import Enum
+api\.venv_ocr_paddle\Lib\site-packages\scipy\_lib\cobyqa\settings.py:4: import numpy as np
+api\.venv_ocr_paddle\Lib\site-packages\scipy\_lib\cobyqa\settings.py:29: DEBUG = "debug"
+api\.venv_ocr_paddle\Lib\site-packages\scipy\_lib\cobyqa\settings.py:73: Options.DEBUG.value: False,
+
+===== api\config\settings.py =====
+api\config\settings.py:13: from pathlib import Path
+api\config\settings.py:14: from datetime import timedelta
+api\config\settings.py:15: from dotenv import load_dotenv
+api\config\settings.py:16: import os
+api\config\settings.py:28: # SECURITY WARNING: don't run with debug turned on in production!
+api\config\settings.py:29: DEBUG = os.getenv("DEBUG", "False") == "True"
+api\config\settings.py:31: ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+api\config\settings.py:47: "corsheaders",
+api\config\settings.py:63: "apps.imports",
+api\config\settings.py:64: "apps.exports",
+api\config\settings.py:66: "apps.reports",
+api\config\settings.py:72: "corsheaders.middleware.CorsMiddleware",
+api\config\settings.py:103: # Database
+api\config\settings.py:104: # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+api\config\settings.py:106: DB_ENGINE = os.getenv("DB_ENGINE", "sqlite")
+api\config\settings.py:108: if DB_ENGINE == "postgres":
+api\config\settings.py:109: DATABASES = {
+api\config\settings.py:111: "ENGINE": "django.db.backends.postgresql",
+api\config\settings.py:115: "HOST": os.getenv("DB_HOST"),
+api\config\settings.py:116: "PORT": os.getenv("DB_PORT"),
+api\config\settings.py:120: DATABASES = {
+api\config\settings.py:122: "ENGINE": "django.db.backends.sqlite3",
+api\config\settings.py:123: "NAME": BASE_DIR / os.getenv("DB_NAME", "db.sqlite3"),
+api\config\settings.py:170: "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+api\config\settings.py:188: "TITLE": os.getenv("APP_NAME", "Archive Management API"),
+api\config\settings.py:189: "DESCRIPTION": "API quản lý kho lưu trữ hồ sơ, tài liệu số hóa",
+api\config\settings.py:194: CORS_ALLOWED_ORIGINS = os.getenv(
+api\config\settings.py:195: "CORS_ALLOWED_ORIGINS",
+api\config\settings.py:196: "http://localhost:3000,http://127.0.0.1:3000",
+api\config\settings.py:212: MEDIA_URL = os.getenv("MEDIA_URL", "/media/")
+api\config\settings.py:235: MEDIA_URL = os.environ.get("MEDIA_URL", "/media/")
+
+===== web\.env.local =====
+web\.env.local:1: NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000
+
+===== web\next.config.ts =====
+web\next.config.ts:1: import type { NextConfig } from "next";
+web\next.config.ts:7: export default nextConfig;
+
+===== web\package.json =====
+
+================================================================
+08_SECURITY_CODE_SCAN
+================================================================
+SCAN_FILE_COUNT=15045
+SECURITY_HITS_TOTAL=363
+SECURITY_HITS_FILE=D:\archive-management\_reports\DEPLOY_SYNC_SECURITY_AUDIT_20260703-005446\security_hits_20260703-005446.txt
+web\src\features\profiles\components\offline-profiles-card.tsx:278: const pendingItems = getOfflineProfiles();
+web\src\features\profiles\components\offline-profiles-card.tsx:286: const ok = window.confirm("Xóa hồ sơ offline này khỏi hàng chờ?");
+web\src\features\profiles\components\offline-profiles-card.tsx:290: removeOfflineProfile(id);
+web\src\features\profiles\components\offline-profiles-card.tsx:291: reloadOfflineItems();
+web\src\features\profiles\components\offline-profiles-card.tsx:294: const canSync = offlineItems.length > 0 && !isSyncing && !syncingId;
+web\src\features\profiles\offline\offline-profile-storage.ts:3: export type OfflineProfileStatus = "pending" | "failed";
+web\src\features\profiles\offline\offline-profile-storage.ts:5: export interface OfflineProfileItem {
+web\src\features\profiles\offline\offline-profile-storage.ts:10: status: OfflineProfileStatus;
+web\src\features\profiles\offline\offline-profile-storage.ts:14: export interface OfflineProfileCache {
+web\src\features\profiles\offline\offline-profile-storage.ts:21: const OFFLINE_PROFILES_KEY = "archive_management_offline_profiles_v1";
+web\src\features\profiles\offline\offline-profile-storage.ts:22: const OFFLINE_CACHE_KEY = "archive_management_offline_profile_cache_v1";
+web\src\features\profiles\offline\offline-profile-storage.ts:28: function createOfflineId(): string {
+web\src\features\profiles\offline\offline-profile-storage.ts:33: return `offline-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+web\src\features\profiles\offline\offline-profile-storage.ts:39: const raw = window.localStorage.getItem(key);
+web\src\features\profiles\offline\offline-profile-storage.ts:46: window.localStorage.removeItem(key);
+web\src\features\profiles\offline\offline-profile-storage.ts:54: window.localStorage.setItem(key, JSON.stringify(value));
+web\src\features\profiles\offline\offline-profile-storage.ts:57: export function getOfflineProfiles(): OfflineProfileItem[] {
+web\src\features\profiles\offline\offline-profile-storage.ts:58: return readJson<OfflineProfileItem[]>(OFFLINE_PROFILES_KEY, []);
+web\src\features\profiles\offline\offline-profile-storage.ts:61: export function saveOfflineProfiles(items: OfflineProfileItem[]): void {
+web\src\features\profiles\offline\offline-profile-storage.ts:62: writeJson(OFFLINE_PROFILES_KEY, items);
+web\src\features\profiles\offline\offline-profile-storage.ts:65: export function addOfflineProfile(payload: ProfilePayload): OfflineProfileItem {
+web\src\features\profiles\offline\offline-profile-storage.ts:68: const item: OfflineProfileItem = {
+web\src\features\profiles\offline\offline-profile-storage.ts:69: id: createOfflineId(),
+web\src\features\profiles\offline\offline-profile-storage.ts:76: const items = getOfflineProfiles();
+web\src\features\profiles\offline\offline-profile-storage.ts:77: saveOfflineProfiles([item, ...items]);
+web\src\features\profiles\offline\offline-profile-storage.ts:82: export function removeOfflineProfile(id: string): void {
+web\src\features\profiles\offline\offline-profile-storage.ts:83: const items = getOfflineProfiles().filter((item) => item.id !== id);
+web\src\features\profiles\offline\offline-profile-storage.ts:84: saveOfflineProfiles(items);
+web\src\features\profiles\offline\offline-profile-storage.ts:87: export function updateOfflineProfile(
+web\src\features\profiles\offline\offline-profile-storage.ts:89: patch: Partial<OfflineProfileItem>,
+web\src\features\profiles\offline\offline-profile-storage.ts:93: const items = getOfflineProfiles().map((item) => {
+web\src\features\profiles\offline\offline-profile-storage.ts:103: saveOfflineProfiles(items);
+web\src\features\profiles\offline\offline-profile-storage.ts:106: export function getOfflineProfileCache(): OfflineProfileCache {
+web\src\features\profiles\offline\offline-profile-storage.ts:107: return readJson<OfflineProfileCache>(OFFLINE_CACHE_KEY, {
+web\src\features\profiles\offline\offline-profile-storage.ts:114: export function saveOfflineProfileCache(
+web\src\features\profiles\offline\offline-profile-storage.ts:115: patch: Partial<OfflineProfileCache>,
+web\src\features\profiles\offline\offline-profile-storage.ts:116: ): OfflineProfileCache {
+web\src\features\profiles\offline\offline-profile-storage.ts:117: const currentCache = getOfflineProfileCache();
+web\src\features\profiles\offline\offline-profile-storage.ts:119: const nextCache: OfflineProfileCache = {
+web\src\features\profiles\offline\offline-profile-storage.ts:125: writeJson(OFFLINE_CACHE_KEY, nextCache);
+web\src\lib\api\client.ts:31: return window.localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
+web\src\lib\api\client.ts:36: window.localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, token);
+web\src\lib\api\client.ts:41: window.localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+web\src\lib\api\client.ts:46: return window.localStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN);
+web\src\lib\api\client.ts:51: window.localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, token);
+web\src\lib\api\client.ts:57: window.localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+web\src\lib\api\client.ts:58: window.localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
+web\src\lib\api\client.ts:59: window.localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+web\src\stores\auth-store.ts:21: return window.localStorage.getItem(key);
+web\src\stores\auth-store.ts:26: window.localStorage.setItem(key, value);
+web\src\stores\auth-store.ts:31: window.localStorage.removeItem(key);
+
+===== FETCH_CALL_REVIEW_AUTH =====
+.venv_ocr_paddle\Lib\site-packages\pip\_internal\vcs\git.py:178: def _should_fetch(cls, dest: str, rev: str) -> bool:
+.venv_ocr_paddle\Lib\site-packages\pip\_internal\vcs\git.py:232: if not cls._should_fetch(dest, rev):
+.venv_ocr_paddle\Lib\site-packages\pip\_vendor\distlib\locators.py:729: def _fetch(self):
+.venv_ocr_paddle\Lib\site-packages\pip\_vendor\urllib3\contrib\appengine.py:147: response = urlfetch.fetch(
+.venv_ocr_paddle\Lib\site-packages\setuptools\package_index.py:657: def fetch(self, requirement, tmpdir, force_scan=False, source=False):
+api\.venv_ocr_paddle\Lib\site-packages\baidubce\services\cdn\cdn_client.py:1677: def prefetch(self, tasks, config=None):
+api\.venv_ocr_paddle\Lib\site-packages\click\parser.py:68: def _fetch(c: deque[str]) -> str | T_UNSET:
+api\.venv_ocr_paddle\Lib\site-packages\click\parser.py:84: rv.append(_fetch(args))
+api\.venv_ocr_paddle\Lib\site-packages\click\parser.py:86: x: list[str | T_UNSET] = [_fetch(args) for _ in range(nargs)]
+api\.venv_ocr_paddle\Lib\site-packages\cssutils\_fetchgae.py:23: fetch(url, payload=None, method=GET, headers={}, allow_truncated=False)
+api\.venv_ocr_paddle\Lib\site-packages\cssutils\_fetchgae.py:29: True if the allow_truncated parameter to fetch() was True and
+api\.venv_ocr_paddle\Lib\site-packages\cssutils\_fetchgae.py:50: allow_truncated parameter passed to fetch() was False.
+api\.venv_ocr_paddle\Lib\site-packages\cssutils\_fetchgae.py:53: r = urlfetch.fetch(url, method=urlfetch.GET)
+api\.venv_ocr_paddle\Lib\site-packages\Cython\Compiler\Buffer.py:389: code.putln('PyErr_Fetch(&%s, &%s, &%s);' % exc_temps)
+api\.venv_ocr_paddle\Lib\site-packages\Cython\Compiler\ModuleNode.py:1840: code.putln("PyErr_Fetch(&etype, &eval, &etb);")
+api\.venv_ocr_paddle\Lib\site-packages\Cython\Compiler\ModuleNode.py:2020: code.putln("PyErr_Fetch(&etype, &eval, &etb);")
+api\.venv_ocr_paddle\Lib\site-packages\Cython\Compiler\ModuleNode.py:3316: code.putln("PyErr_Fetch(&tp, &value, &tb);")
+api\.venv_ocr_paddle\Lib\site-packages\Cython\Compiler\Nodes.py:2350: code.putln("__Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);")
+api\.venv_ocr_paddle\Lib\site-packages\Cython\Compiler\Nodes.py:8438: code.putln("__Pyx_ErrFetch(&%s, &%s, &%s);" % tuple(exc_vars))
+api\.venv_ocr_paddle\Lib\site-packages\Cython\Compiler\Nodes.py:8795: "__Pyx_ErrFetch(&%s, &%s, &%s);" % (exc_vars[:3] * 2))
+api\.venv_ocr_paddle\Lib\site-packages\Cython\Debugger\libpython.py:2706: gdb.parse_and_eval("PyErr_Fetch(%d, %d, %d)" % self.errstate)
+api\.venv_ocr_paddle\Lib\site-packages\fsspec\caching.py:62: def _fetch(self, start: int | None, stop: int | None) -> bytes:
+api\.venv_ocr_paddle\Lib\site-packages\fsspec\caching.py:165: def _fetch(self, start: int | None, end: int | None) -> bytes:
+api\.venv_ocr_paddle\Lib\site-packages\fsspec\caching.py:255: def _fetch(self, start: int | None, end: int | None) -> bytes:
+api\.venv_ocr_paddle\Lib\site-packages\fsspec\caching.py:301: def _fetch(self, start: int | None, end: int | None) -> bytes:
+api\.venv_ocr_paddle\Lib\site-packages\fsspec\caching.py:386: def _fetch(self, start: int | None, end: int | None) -> bytes:
+api\.venv_ocr_paddle\Lib\site-packages\fsspec\caching.py:413: block_contents = super()._fetch(start, end)
+api\.venv_ocr_paddle\Lib\site-packages\fsspec\caching.py:483: def _fetch(self, start: int | None, end: int | None) -> bytes:
+api\.venv_ocr_paddle\Lib\site-packages\fsspec\caching.py:579: def _fetch(self, start: int | None, stop: int | None) -> bytes:
+api\.venv_ocr_paddle\Lib\site-packages\fsspec\caching.py:655: def _fetch(self, start: int | None, stop: int | None) -> bytes:
+api\.venv_ocr_paddle\Lib\site-packages\fsspec\caching.py:831: def _fetch(self, start: int | None, end: int | None) -> bytes:
+api\.venv_ocr_paddle\Lib\site-packages\fsspec\caching.py:922: block_contents = super()._fetch(start, end)
+api\.venv_ocr_paddle\Lib\site-packages\fsspec\spec.py:883: """Fetch (potentially multiple) paths' contents
+api\.venv_ocr_paddle\Lib\site-packages\fsspec\spec.py:2125: out = self.cache._fetch(self.loc, self.loc + length)
+api\.venv_ocr_paddle\Lib\site-packages\future\backports\urllib\robotparser.py:133: def can_fetch(self, useragent, url):
+api\.venv_ocr_paddle\Lib\site-packages\numpy\f2py\rules.py:1134: PyErr_Fetch(&exc, &val, &tb);
+api\.venv_ocr_paddle\Lib\site-packages\paddle\base\executor.py:531: out = paddle._pir_ops.fetch(
+api\.venv_ocr_paddle\Lib\site-packages\paddle\dataset\cifar.py:174: def fetch():
+api\.venv_ocr_paddle\Lib\site-packages\paddle\dataset\common.py:149: importlib.import_module('paddle.dataset.%s' % module_name).fetch()
+api\.venv_ocr_paddle\Lib\site-packages\paddle\dataset\conll05.py:269: def fetch():
+api\.venv_ocr_paddle\Lib\site-packages\paddle\dataset\flowers.py:240: def fetch():
+api\.venv_ocr_paddle\Lib\site-packages\paddle\dataset\imdb.py:175: def fetch():
+api\.venv_ocr_paddle\Lib\site-packages\paddle\dataset\imikolov.py:176: def fetch():
+api\.venv_ocr_paddle\Lib\site-packages\paddle\dataset\mnist.py:152: def fetch():
+api\.venv_ocr_paddle\Lib\site-packages\paddle\dataset\movielens.py:317: def fetch():
+api\.venv_ocr_paddle\Lib\site-packages\paddle\dataset\uci_housing.py:189: def fetch():
+api\.venv_ocr_paddle\Lib\site-packages\paddle\dataset\wmt14.py:199: def fetch():
+api\.venv_ocr_paddle\Lib\site-packages\paddle\dataset\wmt16.py:367: def fetch():
+api\.venv_ocr_paddle\Lib\site-packages\paddle\distributed\auto_parallel\interface.py:311: def fetch(tensor, name=None, logging=False):
+api\.venv_ocr_paddle\Lib\site-packages\paddle\distributed\auto_parallel\static\dist_loader.py:168: batch = self.dataset_fetcher.fetch(indices)
+api\.venv_ocr_paddle\Lib\site-packages\paddle\distributed\auto_parallel\static\engine.py:465: def _prepare_fetch(self, user_fetches, mode):
+api\.venv_ocr_paddle\Lib\site-packages\paddle\distributed\auto_parallel\static\engine.py:496: fetch(var_name)
+api\.venv_ocr_paddle\Lib\site-packages\paddle\distributed\auto_parallel\static\engine.py:1012: fetch_names, fetch_indices = self._prepare_fetch(None, mode=self._mode)
+api\.venv_ocr_paddle\Lib\site-packages\paddle\distributed\auto_parallel\static\engine.py:1191: fetch_names, fetch_indices = self._prepare_fetch(None, mode=self._mode)
+api\.venv_ocr_paddle\Lib\site-packages\paddle\distributed\auto_parallel\static\engine.py:1322: fetch_names, fetch_indices = self._prepare_fetch(None, mode=self._mode)
+api\.venv_ocr_paddle\Lib\site-packages\paddle\distributed\auto_parallel\static\engine.py:1510: fetch_names, fetch_indices = self._prepare_fetch(fetch_list, self._mode)
+api\.venv_ocr_paddle\Lib\site-packages\paddle\distributed\fleet\meta_optimizers\sharding\offload_helper.py:148: (p,) = prefetch(p@offload)
+api\.venv_ocr_paddle\Lib\site-packages\paddle\distributed\fleet\meta_optimizers\sharding\offload_helper.py:318: (m1, m2) = prefetch(m1@offload, m2@offload)
+api\.venv_ocr_paddle\Lib\site-packages\paddle\distributed\transpiler\distribute_transpiler.py:1031: self._replace_lookup_table_op_with_prefetch(
+api\.venv_ocr_paddle\Lib\site-packages\paddle\distributed\transpiler\distribute_transpiler.py:1958: def _replace_lookup_table_op_with_prefetch(
+api\.venv_ocr_paddle\Lib\site-packages\paddle\incubate\optimizer\recompute.py:592: def _check_offload_fetch(self):
+api\.venv_ocr_paddle\Lib\site-packages\paddle\incubate\optimizer\recompute.py:641: self._check_offload_fetch()
+api\.venv_ocr_paddle\Lib\site-packages\paddle\io\dataloader\dataloader_iter.py:235: batch = self._dataset_fetcher.fetch(
+api\.venv_ocr_paddle\Lib\site-packages\paddle\io\dataloader\fetcher.py:32: def fetch(self, batch_indices, done_event=None):
+api\.venv_ocr_paddle\Lib\site-packages\paddle\io\dataloader\fetcher.py:43: def fetch(self, batch_indices, done_event=None):
+api\.venv_ocr_paddle\Lib\site-packages\paddle\io\dataloader\fetcher.py:72: def fetch(self, batch_indices, done_event=None):
+api\.venv_ocr_paddle\Lib\site-packages\paddle\io\dataloader\worker.py:372: batch = fetcher.fetch(indices)
+api\.venv_ocr_paddle\Lib\site-packages\paddle\jit\api.py:1836: fetch (list[int], optional): the output variable indices of the
+api\.venv_ocr_paddle\Lib\site-packages\paddle\jit\api.py:1929: def get_feed_fetch(all_vars, partial_vars):
+api\.venv_ocr_paddle\Lib\site-packages\paddle\jit\api.py:1936: feeded_var_names = get_feed_fetch(self._feed_names, feed)
+api\.venv_ocr_paddle\Lib\site-packages\paddle\jit\api.py:1937: target_var_names = get_feed_fetch(self._fetch_names, fetch)
+api\.venv_ocr_paddle\Lib\site-packages\pip\_internal\self_outdated_check.py:206: def pip_self_version_check_fetch(
+api\.venv_ocr_paddle\Lib\site-packages\pip\_internal\cli\index_command.py:140: def _pip_self_version_check_fetch(
+api\.venv_ocr_paddle\Lib\site-packages\pip\_internal\cli\index_command.py:145: return pip_self_version_check_fetch(session, options)
+api\.venv_ocr_paddle\Lib\site-packages\pip\_internal\cli\index_command.py:200: upgrade_prompt = _pip_self_version_check_fetch(session, options)
+api\.venv_ocr_paddle\Lib\site-packages\pip\_internal\vcs\git.py:190: def _should_fetch(cls, dest: str, rev: str) -> bool:
+api\.venv_ocr_paddle\Lib\site-packages\pip\_internal\vcs\git.py:244: if not cls._should_fetch(dest, rev):
+api\.venv_ocr_paddle\Lib\site-packages\pip\_vendor\urllib3\contrib\emscripten\emscripten_fetch_worker.js:70: const response = await fetch(event.data.url, event.data.fetchParams);
+api\.venv_ocr_paddle\Lib\site-packages\pip\_vendor\urllib3\contrib\emscripten\fetch.py:579: # Call JavaScript fetch (async api, returns a promise)
+api\.venv_ocr_paddle\Lib\site-packages\pip\_vendor\urllib3\contrib\emscripten\fetch.py:580: fetcher_promise_js = js.fetch(request.url, _obj_from_dict(fetch_data))
+api\.venv_ocr_paddle\Lib\site-packages\scipy\datasets\_fetchers.py:39: return data_fetcher.fetch(dataset_name, downloader=downloader)
+api\.venv_ocr_paddle\Lib\site-packages\setuptools\package_index.py:685: def fetch(self, requirement, tmpdir, force_scan=False, source=False):
+api\.venv_ocr_paddle\Lib\site-packages\skimage\data\_fetchers.py:185: def _fetch(data_filename, prefix=None):
+api\.venv_ocr_paddle\Lib\site-packages\skimage\data\_fetchers.py:249: cached_file_path = _image_fetcher.fetch(data_filename)
+api\.venv_ocr_paddle\Lib\site-packages\skimage\data\_fetchers.py:312: file_path = _fetch(data_filename)
+api\.venv_ocr_paddle\Lib\site-packages\skimage\data\_fetchers.py:335: return _fetch('data/lbpcascade_frontalface_opencv.xml')
+api\.venv_ocr_paddle\Lib\site-packages\skimage\data\_fetchers.py:357: return imread(_fetch(f), as_gray=as_gray)
+api\.venv_ocr_paddle\Lib\site-packages\skimage\data\_fetchers.py:1130: filename = _fetch("data/motorcycle_disp.npz")
+api\.venv_ocr_paddle\Lib\site-packages\skimage\data\_fetchers.py:1166: return np.load(_fetch('data/lfw_subset.npy'))
+api\.venv_ocr_paddle\Lib\site-packages\skimage\_shared\testing.py:196: def fetch(data_filename, prefix=None):
+api\.venv_ocr_paddle\Lib\site-packages\skimage\_shared\testing.py:216: return _fetch(data_filename, prefix=prefix)
+api\.venv_ocr_paddle\Lib\site-packages\sklearn\datasets\tests\test_california_housing.py:12: def test_fetch(fetch_california_housing_fxt):
+api\.venv_ocr_paddle\Lib\site-packages\sklearn\datasets\tests\test_covtype.py:12: def test_fetch(fetch_covtype_fxt, global_random_seed):
+api\.venv_ocr_paddle\Lib\site-packages\torch\distributed\fsdp\api.py:72: class BackwardPrefetch(Enum):
+api\.venv_ocr_paddle\Lib\site-packages\torch\distributed\fsdp\fully_sharded_data_parallel.py:300: backward_prefetch (Optional[BackwardPrefetch]):
+api\.venv_ocr_paddle\Lib\site-packages\torch\distributed\fsdp\fully_sharded_data_parallel.py:367: forward_prefetch (bool): If ``True``, then FSDP *explicitly* prefetches
+api\.venv_ocr_paddle\Lib\site-packages\torch\distributed\fsdp\_exec_order_utils.py:88: def get_handle_to_backward_prefetch(
+api\.venv_ocr_paddle\Lib\site-packages\torch\distributed\fsdp\_exec_order_utils.py:109: def get_handle_to_forward_prefetch(
+api\.venv_ocr_paddle\Lib\site-packages\torch\distributed\fsdp\_runtime_utils.py:1163: handle = _get_handle_to_prefetch(state, current_handle)
+api\.venv_ocr_paddle\Lib\site-packages\torch\distributed\fsdp\_runtime_utils.py:1183: def _get_handle_to_prefetch(
+api\.venv_ocr_paddle\Lib\site-packages\torch\distributed\fsdp\_runtime_utils.py:1215: target_handle_candidate = eod.get_handle_to_backward_prefetch(current_handle)
+api\.venv_ocr_paddle\Lib\site-packages\torch\distributed\fsdp\_runtime_utils.py:1225: target_handle_candidate = eod.get_handle_to_forward_prefetch(current_handle)
+api\.venv_ocr_paddle\Lib\site-packages\torch\onnx\_internal\onnxruntime.py:408: def _run_onnx_session_with_fetch(
+api\.venv_ocr_paddle\Lib\site-packages\torch\testing\_internal\common_fsdp.py:889: def _check_backward_prefetch(self, fsdp_model, backward_prefetch):
+api\.venv_ocr_paddle\Lib\site-packages\torch\testing\_internal\common_fsdp.py:892: def _check_forward_prefetch(self, fsdp_model, forward_prefetch):
+api\.venv_ocr_paddle\Lib\site-packages\torch\utils\data\dataloader.py:675: data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+api\.venv_ocr_paddle\Lib\site-packages\torch\utils\data\_utils\fetch.py:14: def fetch(self, possibly_batched_index):
+api\.venv_ocr_paddle\Lib\site-packages\torch\utils\data\_utils\fetch.py:24: def fetch(self, possibly_batched_index):
+api\.venv_ocr_paddle\Lib\site-packages\torch\utils\data\_utils\fetch.py:46: def fetch(self, possibly_batched_index):
+api\.venv_ocr_paddle\Lib\site-packages\torch\utils\data\_utils\worker.py:308: data = fetcher.fetch(index)
+api\.venv_ocr_paddle\Lib\site-packages\torch\utils\model_dump\code.js:635: fetch("./model_info.json").then(function(response) {
+api\.venv_ocr_paddle\Lib\site-packages\urllib3\contrib\emscripten\emscripten_fetch_worker.js:70: const response = await fetch(event.data.url, event.data.fetchParams);
+api\.venv_ocr_paddle\Lib\site-packages\urllib3\contrib\emscripten\fetch.py:579: # Call JavaScript fetch (async api, returns a promise)
+api\.venv_ocr_paddle\Lib\site-packages\urllib3\contrib\emscripten\fetch.py:580: fetcher_promise_js = js.fetch(request.url, _obj_from_dict(fetch_data))
+api\.venv_ocr_paddle\Lib\site-packages\werkzeug\debug\console.py:70: def fetch() -> str:
+api\.venv_ocr_paddle\Lib\site-packages\werkzeug\debug\console.py:172: output = ThreadedStream.fetch()
+api\.venv_ocr_paddle\Lib\site-packages\werkzeug\debug\shared\debugger.js:54: fetch(
+api\.venv_ocr_paddle\Lib\site-packages\werkzeug\debug\shared\debugger.js:84: fetch(makeDebugURL({cmd: "printpin"}));
+api\.venv_ocr_paddle\Lib\site-packages\werkzeug\debug\shared\debugger.js:267: fetch(makeDebugURL({cmd: command.value, frm: frameID}))
+chandra-local\.venv_chandra\lib\python3.12\site-packages\pip\_internal\self_outdated_check.py:206: def pip_self_version_check_fetch(
+chandra-local\.venv_chandra\lib\python3.12\site-packages\pip\_internal\cli\index_command.py:140: def _pip_self_version_check_fetch(
+chandra-local\.venv_chandra\lib\python3.12\site-packages\pip\_internal\cli\index_command.py:145: return pip_self_version_check_fetch(session, options)
+chandra-local\.venv_chandra\lib\python3.12\site-packages\pip\_internal\cli\index_command.py:200: upgrade_prompt = _pip_self_version_check_fetch(session, options)
+chandra-local\.venv_chandra\lib\python3.12\site-packages\pip\_internal\vcs\git.py:190: def _should_fetch(cls, dest: str, rev: str) -> bool:
+chandra-local\.venv_chandra\lib\python3.12\site-packages\pip\_internal\vcs\git.py:244: if not cls._should_fetch(dest, rev):
+chandra-local\.venv_chandra\lib\python3.12\site-packages\pip\_vendor\urllib3\contrib\emscripten\emscripten_fetch_worker.js:70: const response = await fetch(event.data.url, event.data.fetchParams);
+chandra-local\.venv_chandra\lib\python3.12\site-packages\pip\_vendor\urllib3\contrib\emscripten\fetch.py:579: # Call JavaScript fetch (async api, returns a promise)
+chandra-local\.venv_chandra\lib\python3.12\site-packages\pip\_vendor\urllib3\contrib\emscripten\fetch.py:580: fetcher_promise_js = js.fetch(request.url, _obj_from_dict(fetch_data))
+web\src\app\(protected)\bao-cao\page.tsx:75: onClick={() => dashboardQuery.refetch()}
+web\src\app\(protected)\cay-luu-tru\page.tsx:52: onClick={() => refetch()}
+web\src\app\(protected)\dashboard\page.tsx:117: onClick={() => refetch()}
+web\src\app\(protected)\ho-so\page.tsx:182: profilesQuery.refetch();
+web\src\app\(protected)\ho-so\page.tsx:183: digitalFilesQuery.refetch();
+web\src\app\(protected)\ho-so\page.tsx:184: fondsQuery.refetch();
+web\src\app\(protected)\ho-so\page.tsx:185: catalogsQuery.refetch();
+web\src\app\(protected)\ho-so\page.tsx:186: warehousesQuery.refetch();
+web\src\app\(protected)\ho-so\page.tsx:187: locationsQuery.refetch();
+web\src\app\(protected)\ho-so\page.tsx:188: boxesQuery.refetch();
+web\src\app\(protected)\ho-so\page.tsx:189: storageFilesQuery.refetch();
+web\src\app\(protected)\ho-so\page.tsx:258: await profilesQuery.refetch();
+web\src\app\(protected)\ho-so\[id]\page.tsx:45: profileQuery.refetch();
+web\src\app\(protected)\ho-so\[id]\page.tsx:46: documentsQuery.refetch();
+web\src\app\(protected)\ho-so\[id]\page.tsx:106: onRefresh={() => documentsQuery.refetch()}
+web\src\app\(protected)\nhat-ky-he-thong\page.tsx:91: onRefresh={() => auditLogsQuery.refetch()}
+web\src\app\(protected)\ocr\page.tsx:62: await ocrTextQuery.refetch();
+web\src\app\(protected)\ocr\page.tsx:123: onRefresh={() => ocrTextQuery.refetch()}
+web\src\app\(protected)\tai-lieu\[id]\page.tsx:376: await recordQuery.refetch();
+web\src\app\(protected)\tai-lieu\[id]\page.tsx:603: recordQuery.refetch();
+web\src\app\(protected)\tai-lieu\[id]\page.tsx:604: filesQuery.refetch();
+web\src\app\(protected)\tai-lieu\[id]\page.tsx:854: recordQuery.refetch();
+web\src\app\(protected)\tai-lieu\[id]\page.tsx:855: filesQuery.refetch();
+web\src\app\(protected)\tai-lieu\[id]\page.tsx:879: recordQuery.refetch();
+web\src\app\(protected)\tai-lieu\[id]\page.tsx:880: filesQuery.refetch();
+web\src\features\master-data\components\master-data-manager.tsx:335: onClick={() => listQuery.refetch()}
+web\src\features\ocr\components\ocr-profile-suggestion-card.tsx:267: await suggestionQuery.refetch();
+web\src\features\ocr\components\ocr-profile-suggestion-card.tsx:551: onClick={() => suggestionQuery.refetch()}
+web\src\features\ocr\components\record-ocr-panel.tsx:381: await progressQuery.refetch();
+web\src\features\ocr\components\record-ocr-panel.tsx:382: await textQuery.refetch();
+web\src\features\ocr\components\record-ocr-suggestion-card.tsx:625: onClick={() => suggestionQuery.refetch()}
+web\src\features\system\storage-health-card.tsx:62: onClick={() => storageQuery.refetch()}
+
+===== AXIOS_CALL_REVIEW_AUTH =====
+web\src\lib\api\client.ts:62: export const apiClient = axios.create({
+web\src\lib\api\client.ts:152: if (!axios.isAxiosError<ApiErrorResponse>(error)) {
+web\src\lib\api\client.ts:194: return axios.isAxiosError(error) && error.response?.status === 401;
+web\src\lib\api\client.ts:198: return axios.isAxiosError(error) && error.response?.status === 403;
+web\src\lib\api\client.ts:202: return axios.isAxiosError(error) && error.response?.status === 404;
+
+================================================================
+09_API_AUTH_AND_PERMISSION_SMOKE
+================================================================
+LOGIN_FAIL|Admin|Unable to connect to the remote server
+LOGIN_FAIL|user_test|Unable to connect to the remote server
+
+===== NO_AUTH_PERMISSION_CHECK =====
+API_GET|NO_AUTH|/api/search/profiles/|STATUS=0|LEN=0|SHA256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855|ERROR=Unable to connect to the remote server
+NO_AUTH_REVIEW_POSSIBLY_OPEN|/api/search/profiles/|STATUS=0
+API_GET|NO_AUTH|/api/search/profiles/?q=|STATUS=0|LEN=0|SHA256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855|ERROR=Unable to connect to the remote server
+NO_AUTH_REVIEW_POSSIBLY_OPEN|/api/search/profiles/?q=|STATUS=0
+API_GET|NO_AUTH|/api/dashboard/|STATUS=0|LEN=0|SHA256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855|ERROR=Unable to connect to the remote server
+NO_AUTH_REVIEW_POSSIBLY_OPEN|/api/dashboard/|STATUS=0
+API_GET|NO_AUTH|/api/dashboard/stats/|STATUS=0|LEN=0|SHA256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855|ERROR=Unable to connect to the remote server
+NO_AUTH_REVIEW_POSSIBLY_OPEN|/api/dashboard/stats/|STATUS=0
+API_GET|NO_AUTH|/api/fonds/|STATUS=0|LEN=0|SHA256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855|ERROR=Unable to connect to the remote server
+NO_AUTH_REVIEW_POSSIBLY_OPEN|/api/fonds/|STATUS=0
+API_GET|NO_AUTH|/api/catalogs/|STATUS=0|LEN=0|SHA256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855|ERROR=Unable to connect to the remote server
+NO_AUTH_REVIEW_POSSIBLY_OPEN|/api/catalogs/|STATUS=0
+API_GET|NO_AUTH|/api/warehouses/|STATUS=0|LEN=0|SHA256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855|ERROR=Unable to connect to the remote server
+NO_AUTH_REVIEW_POSSIBLY_OPEN|/api/warehouses/|STATUS=0
+API_GET|NO_AUTH|/api/storage-locations/|STATUS=0|LEN=0|SHA256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855|ERROR=Unable to connect to the remote server
+NO_AUTH_REVIEW_POSSIBLY_OPEN|/api/storage-locations/|STATUS=0
+API_GET|NO_AUTH|/api/storage-boxes/|STATUS=0|LEN=0|SHA256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855|ERROR=Unable to connect to the remote server
+NO_AUTH_REVIEW_POSSIBLY_OPEN|/api/storage-boxes/|STATUS=0
+API_GET|NO_AUTH|/api/storage-files/|STATUS=0|LEN=0|SHA256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855|ERROR=Unable to connect to the remote server
+NO_AUTH_REVIEW_POSSIBLY_OPEN|/api/storage-files/|STATUS=0
+API_GET|NO_AUTH|/api/profiles/|STATUS=0|LEN=0|SHA256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855|ERROR=Unable to connect to the remote server
+NO_AUTH_REVIEW_POSSIBLY_OPEN|/api/profiles/|STATUS=0
+API_GET|NO_AUTH|/api/documents/|STATUS=0|LEN=0|SHA256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855|ERROR=Unable to connect to the remote server
+NO_AUTH_REVIEW_POSSIBLY_OPEN|/api/documents/|STATUS=0
+API_GET|NO_AUTH|/api/digital-files/|STATUS=0|LEN=0|SHA256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855|ERROR=Unable to connect to the remote server
+NO_AUTH_REVIEW_POSSIBLY_OPEN|/api/digital-files/|STATUS=0
+
+===== ADMIN_USER_READ_COMPARE =====
+READ_COMPARE_REVIEW_STATUS|/api/search/profiles/|ADMIN=0|USER=0
+READ_COMPARE_REVIEW_STATUS|/api/search/profiles/?q=|ADMIN=0|USER=0
+READ_COMPARE_REVIEW_STATUS|/api/dashboard/|ADMIN=0|USER=0
+READ_COMPARE_REVIEW_STATUS|/api/dashboard/stats/|ADMIN=0|USER=0
+READ_COMPARE_REVIEW_STATUS|/api/fonds/|ADMIN=0|USER=0
+READ_COMPARE_REVIEW_STATUS|/api/catalogs/|ADMIN=0|USER=0
+READ_COMPARE_REVIEW_STATUS|/api/warehouses/|ADMIN=0|USER=0
+READ_COMPARE_REVIEW_STATUS|/api/storage-locations/|ADMIN=0|USER=0
+READ_COMPARE_REVIEW_STATUS|/api/storage-boxes/|ADMIN=0|USER=0
+READ_COMPARE_REVIEW_STATUS|/api/storage-files/|ADMIN=0|USER=0
+READ_COMPARE_REVIEW_STATUS|/api/profiles/|ADMIN=0|USER=0
+READ_COMPARE_REVIEW_STATUS|/api/documents/|ADMIN=0|USER=0
+READ_COMPARE_REVIEW_STATUS|/api/digital-files/|ADMIN=0|USER=0
+
+================================================================
+10_FRONTEND_ROUTE_SMOKE
+================================================================
+FRONT_GET|/login|STATUS=0|ERROR=Unable to connect to the remote server
+FRONT_GET|/dashboard|STATUS=0|ERROR=Unable to connect to the remote server
+FRONT_GET|/tim-kiem|STATUS=0|ERROR=Unable to connect to the remote server
+FRONT_GET|/ho-so|STATUS=0|ERROR=Unable to connect to the remote server
+FRONT_GET|/tai-lieu|STATUS=0|ERROR=Unable to connect to the remote server
+FRONT_GET|/nhat-ky-he-thong|STATUS=0|ERROR=Unable to connect to the remote server
+
+================================================================
+11_GIT_AND_RELEASE_STATE
+================================================================
+
+================================================================
+11_01_GIT_STATUS
+================================================================
+WORKDIR=D:\archive-management
+CMD=git status --short
+LOG_FILE=D:\archive-management\_reports\DEPLOY_SYNC_SECURITY_AUDIT_20260703-005446\11_01_GIT_STATUS.log
+EXIT_CODE=128
+--- LOG TAIL ---
+fatal: not a git repository (or any of the parent directories): .git
+
+================================================================
+11_02_GIT_LAST_COMMIT
+================================================================
+WORKDIR=D:\archive-management
+CMD=git log -1 --oneline
+LOG_FILE=D:\archive-management\_reports\DEPLOY_SYNC_SECURITY_AUDIT_20260703-005446\11_02_GIT_LAST_COMMIT.log
+EXIT_CODE=128
+--- LOG TAIL ---
+fatal: not a git repository (or any of the parent directories): .git
+
+================================================================
+12_SYNC_SECURITY_CONCLUSION
+================================================================
+REPORT_DIR=D:\archive-management\_reports\DEPLOY_SYNC_SECURITY_AUDIT_20260703-005446
+MAIN_REPORT=D:\archive-management\_reports\DEPLOY_SYNC_SECURITY_AUDIT_20260703-005446\deploy_sync_security_audit_20260703-005446.txt
+SECURITY_HITS_FILE=D:\archive-management\_reports\DEPLOY_SYNC_SECURITY_AUDIT_20260703-005446\security_hits_20260703-005446.txt
+API_SMOKE_FILE=D:\archive-management\_reports\DEPLOY_SYNC_SECURITY_AUDIT_20260703-005446\api_smoke_20260703-005446.txt
+
+CẦN ĐỌC KẾT LUẬN NÀY:
+1. Muốn đồng bộ nhiều tài khoản / nhiều máy thì tất cả máy phải dùng CHUNG 1 backend API và CHUNG 1 database.
+2. Nếu frontend/backend đang trỏ localhost hoặc 127.0.0.1 trên từng máy thì mỗi máy tự gọi máy đó; chỉ đồng bộ chéo máy khi các máy cùng trỏ về 1 server chung.
+3. Nếu DB_ENGINE là sqlite thì KHÔNG cứng cho đồng bộ nhiều máy.
+4. Nếu DB_ENGINE là PostgreSQL/MySQL và DB_HOST là server chung thì mô hình đồng bộ đúng hướng.
+5. NO_AUTH phải bị 401/403 ở các API dữ liệu. Nếu thấy NO_AUTH_REVIEW_POSSIBLY_OPEN thì phải kiểm tra lại quyền.
+6. READ_COMPARE khác nhau giữa admin và user chưa chắc sai, có thể do phân quyền. Nhưng nếu user cần xem dữ liệu mới giống admin thì endpoint đọc phải trả được dữ liệu phù hợp.
+7. SECURITY_HITS không phải tất cả đều là lỗi, nhưng các dòng AllowAny, csrf_exempt, DEBUG=True, CORS_ALLOW_ALL, ALLOWED_HOSTS=* phải rà kỹ trước khi giao khách.
+
+AUDIT_DONE=PASS
+COPY_REPORT_FOLDER_TO_REVIEW=D:\archive-management\_reports\DEPLOY_SYNC_SECURITY_AUDIT_20260703-005446

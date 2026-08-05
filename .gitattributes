@@ -1,0 +1,16 @@
+# >>> QLKLT V4-14 MANAGED ATTRIBUTES >>>
+* text=auto
+*.ps1 text eol=crlf
+*.psm1 text eol=crlf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.py text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.md text eol=lf
+# <<< QLKLT V4-14 MANAGED ATTRIBUTES <<<

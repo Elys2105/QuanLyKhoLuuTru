@@ -1,0 +1,388 @@
+﻿
+
+===== DJANGO_ALLOW_ANY =====
+api\.venv_ocr_paddle\Lib\site-packages\narwhals\translate.py:46: AllowAny,
+api\.venv_ocr_paddle\Lib\site-packages\narwhals\translate.py:155: native_object: IntoDataFrameT | IntoLazyFrameT | IntoSeriesT, **kwds: Unpack[AllowAny]
+api\.venv_ocr_paddle\Lib\site-packages\narwhals\_translate.py:286: class _AllowAny(TypedDict, total=False):
+api\.venv_ocr_paddle\Lib\site-packages\narwhals\_translate.py:292: class AllowAny(_AllowAny, total=False):
+api\.venv_ocr_paddle\Lib\site-packages\narwhals\_translate.py:296: class AllowAnyV1(_AllowAny, total=False):
+api\.venv_ocr_paddle\Lib\site-packages\narwhals\_translate.py:301: class AllowAnyStrictV1(_AllowAny, total=False):
+api\.venv_ocr_paddle\Lib\site-packages\narwhals\stable\v1\__init__.py:82: AllowAnyStrictV1 as AllowAnyStrict,
+api\.venv_ocr_paddle\Lib\site-packages\narwhals\stable\v1\__init__.py:83: AllowAnyV1 as AllowAny,
+api\.venv_ocr_paddle\Lib\site-packages\narwhals\stable\v1\__init__.py:598: native_object: IntoDataFrameT | IntoLazyFrameT | IntoSeriesT, **kwds: Unpack[AllowAny]
+api\.venv_ocr_paddle\Lib\site-packages\narwhals\stable\v1\__init__.py:603: **kwds: Unpack[AllowAnyStrict],
+api\.venv_ocr_paddle\Lib\site-packages\narwhals\stable\v2\__init__.py:79: AllowAny,
+api\.venv_ocr_paddle\Lib\site-packages\narwhals\stable\v2\__init__.py:421: native_object: IntoDataFrameT | IntoLazyFrameT | IntoSeriesT, **kwds: Unpack[AllowAny]
+api\apps\accounts\views.py:2: from rest_framework.permissions import IsAuthenticated, AllowAny
+api\apps\accounts\views.py:31: permission_classes = [AllowAny]
+api\apps\accounts\views.py:46: permission_classes = [AllowAny]
+
+===== DRF_PERMISSION_CLASSES_EMPTY =====
+
+===== DRF_AUTH_CLASSES_EMPTY =====
+
+===== CSRF_EXEMPT =====
+
+===== CORS_ALLOW_ALL_ORIGINS_TRUE =====
+
+===== ALLOWED_HOSTS_STAR =====
+
+===== DEBUG_TRUE =====
+.venv_ocr_paddle\Lib\site-packages\pip\_vendor\pyparsing\core.py:1809: self.debug = True
+.venv_ocr_paddle\Lib\site-packages\pkg_resources\_vendor\pyparsing\core.py:1782: self.debug = True
+.venv_ocr_paddle\Lib\site-packages\setuptools\_vendor\pyparsing\core.py:1782: self.debug = True
+api\.env:4: DEBUG=True
+api\.env.example:1: DEBUG=True
+api\.venv_ocr_paddle\Lib\site-packages\cv2\__init__.py:81: DEBUG = True
+api\.venv_ocr_paddle\Lib\site-packages\Cython\Build\BuildExecutable.py:11: DEBUG = True
+api\.venv_ocr_paddle\Lib\site-packages\Cython\Compiler\CmdLine.py:55: namespace.gdb_debug = True
+api\.venv_ocr_paddle\Lib\site-packages\Cython\Compiler\CmdLine.py:61: namespace.gdb_debug = True
+api\.venv_ocr_paddle\Lib\site-packages\Cython\Debugger\Tests\TestLibCython.py:96: compiler.compile(['cfuncs.c'], debug=True, extra_postargs=['-fPIC'])
+api\.venv_ocr_paddle\Lib\site-packages\flask\app.py:577: invoke :meth:`run` with ``debug=True`` and ``use_reloader=False``.
+api\.venv_ocr_paddle\Lib\site-packages\flask\config.py:65: DEBUG = True
+api\.venv_ocr_paddle\Lib\site-packages\imgaug\external\poly_point_isect_py2py3.py:26: USE_DEBUG = True
+api\.venv_ocr_paddle\Lib\site-packages\matplotlib\transforms.py:114: ``str(transform)`` when DEBUG=True.
+api\.venv_ocr_paddle\Lib\site-packages\numpy\distutils\mingw32ccompiler.py:67: msvcr_dbg_success = build_msvcr_library(debug=True)
+api\.venv_ocr_paddle\Lib\site-packages\numpy\tests\test_public_api.py:494: "NumPy possibly built with `USE_DEBUG=True ./tools/travis-test.sh`, "
+api\.venv_ocr_paddle\Lib\site-packages\paddle\distributed\ps\coordinator.py:167: self.debug = True
+api\.venv_ocr_paddle\Lib\site-packages\sympy\integrals\laplace.py:67: sympy.SYMPY_DEBUG = True
+api\.venv_ocr_paddle\Lib\site-packages\sympy\integrals\laplace.py:1343: debug information on by setting ``sympy.SYMPY_DEBUG=True``. The numbers
+api\.venv_ocr_paddle\Lib\site-packages\sympy\series\gruntz.py:98: [user@localhost]: SYMPY_DEBUG=True ./bin/isympy
+api\.venv_ocr_paddle\Lib\site-packages\torch\nested\_internal\sdpa.py:310: can_use_efficient_attention(params, debug=True)
+api\.venv_ocr_paddle\Lib\site-packages\torch\nested\_internal\sdpa.py:311: _can_use_efficient_sdpa_jagged(params, debug=True)
+api\.venv_ocr_paddle\Lib\site-packages\torch\nested\_internal\sdpa.py:313: can_use_flash_attention(params, debug=True)
+api\.venv_ocr_paddle\Lib\site-packages\torch\nested\_internal\sdpa.py:314: _can_use_flash_sdpa_jagged(params, debug=True)
+api\.venv_ocr_paddle\Lib\site-packages\torch\nested\_internal\sdpa.py:316: _can_use_math_sdpa_jagged(params, debug=True)
+api\.venv_ocr_paddle\Lib\site-packages\torch\package\package_exporter.py:174: "Set debug=True when invoking PackageExporter for a visualization of where "
+api\.venv_ocr_paddle\Lib\site-packages\torch\utils\checkpoint.py:900: because you passed `debug=True` to `torch.utils.checkpoint.checkpoint()`.
+api\.venv_ocr_paddle\Lib\site-packages\torch\utils\checkpoint.py:934: You are seeing this error because you passed `debug=True` to checkpoint and
+api\.venv_ocr_paddle\Lib\site-packages\torch\utils\checkpoint.py:1344: "debug=True is incompatible with non-default context_fn"
+
+===== HARDCODE_SECRET_KEY =====
+api\.env:5: SECRET_KEY=dev-secret-key-change-me
+api\.env.example:2: SECRET_KEY=change-me
+api\.venv_ocr_paddle\Lib\site-packages\flask\config.py:66: SECRET_KEY = 'development key'
+api\.venv_ocr_paddle\Lib\site-packages\flask\sansio\app.py:216: secret_key = ConfigAttribute[t.Union[str, bytes, None]]("SECRET_KEY")
+api\.venv_ocr_paddle\Lib\site-packages\itsdangerous\signer.py:196: secret_key = self.secret_keys[-1]
+api\.venv_ocr_paddle\Lib\site-packages\itsdangerous\signer.py:198: secret_key = want_bytes(secret_key)
+api\config\settings.py:26: SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key")
+
+===== PUBLIC_MEDIA_URL_DIRECT =====
+api\.env:36: MEDIA_URL=/media/
+api\.env.example:18: MEDIA_URL=/media/
+api\.venv_ocr_paddle\Lib\site-packages\baidubce\services\vca\vca_client.py:163: b'/v2/media/%s' % compat.convert_to_bytes(type),
+api\.venv_ocr_paddle\Lib\site-packages\Crypto\SelfTest\Hash\test_HMAC.py:258: # From https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/HMAC_SHA3-224.pdf
+api\.venv_ocr_paddle\Lib\site-packages\Crypto\SelfTest\Hash\test_HMAC.py:297: # From https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/HMAC_SHA3-256.pdf
+api\.venv_ocr_paddle\Lib\site-packages\Crypto\SelfTest\Hash\test_HMAC.py:336: # From https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/HMAC_SHA3-384.pdf
+api\.venv_ocr_paddle\Lib\site-packages\Crypto\SelfTest\Hash\test_HMAC.py:373: # From https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/HMAC_SHA3-512.pdf
+api\.venv_ocr_paddle\Lib\site-packages\Crypto\SelfTest\Hash\test_KMAC.py:205: # https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/KMAC_samples.pdf
+api\.venv_ocr_paddle\Lib\site-packages\docx\package.py:96: """The next available image partname, starting from ``/word/media/image1.{ext}``
+api\.venv_ocr_paddle\Lib\site-packages\docx\package.py:104: return PackURI("/word/media/image%d.%s" % (n, ext))
+api\.venv_ocr_paddle\Lib\site-packages\openpyxl\drawing\image.py:25: _path = "/xl/media/image{0}.{1}"
+api\.venv_ocr_paddle\Lib\site-packages\openpyxl\writer\excel.py:103: 'xl/ctrlProps', 'customUI', 'xl/activeX', r'xl/media/.*\.emf')
+api\.venv_ocr_paddle\Lib\site-packages\skimage\measure\_colocalization.py:157: https://imagej.net/media/manders.pdf
+api\.venv_ocr_paddle\Lib\site-packages\skimage\measure\_colocalization.py:230: https://imagej.net/media/manders.pdf
+api\.venv_ocr_paddle\Lib\site-packages\skimage\transform\pyramids.py:358: .. [2] http://sepwww.stanford.edu/data/media/public/sep/morgan/texturematch/paper_html/node3.html
+api\apps\audit\services.py:274: "/media/",
+api\apps\storage\archive_tree_services.py:34: Không dùng trực tiếp /media/... để frontend có thể đi qua quyền API.
+api\apps\system\views.py:150: "media_url": getattr(settings, "MEDIA_URL", "/media/"),
+api\config\settings.py:212: MEDIA_URL = os.getenv("MEDIA_URL", "/media/")
+api\config\settings.py:235: MEDIA_URL = os.environ.get("MEDIA_URL", "/media/")
+
+===== OFFLINE_OR_LOCAL_CACHE =====
+api\.venv_ocr_paddle\Lib\site-packages\baidubce\services\cdn\cdn_client.py:387: def set_domain_offline_mode(self, domain, offline_mode, config=None):
+api\.venv_ocr_paddle\Lib\site-packages\baidubce\services\cdn\cdn_client.py:389: update offlineMode of the domain
+api\.venv_ocr_paddle\Lib\site-packages\baidubce\services\cdn\cdn_client.py:392: :param offline_mode: detailed configuration of offlineMode
+api\.venv_ocr_paddle\Lib\site-packages\baidubce\services\cdn\cdn_client.py:393: :type offline_mode: bool
+api\.venv_ocr_paddle\Lib\site-packages\baidubce\services\cdn\cdn_client.py:403: params={'offlineMode': ''},
+api\.venv_ocr_paddle\Lib\site-packages\baidubce\services\cdn\cdn_client.py:404: body=json.dumps({'offlineMode': offline_mode}),
+api\.venv_ocr_paddle\Lib\site-packages\baidubce\services\cdn\cdn_client.py:408: def get_domain_offline_mode(self, domain, config=None):
+api\.venv_ocr_paddle\Lib\site-packages\baidubce\services\cdn\cdn_client.py:410: get offlineMode configuration of a domain
+api\.venv_ocr_paddle\Lib\site-packages\baidubce\services\cdn\cdn_client.py:421: params={'offlineMode': ''},
+api\.venv_ocr_paddle\Lib\site-packages\Crypto\SelfTest\Cipher\test_pkcs1_oaep.py:86: # d is computed offline as e^{-1} mod (p-1)(q-1)
+api\.venv_ocr_paddle\Lib\site-packages\mpmath\functions\rszeta.py:6: expansion: zeta_offline(s,k=0)
+api\.venv_ocr_paddle\Lib\site-packages\mpmath\functions\rszeta.py:11: for  0 <= k <= der. Used by zeta_offline and z_offline
+api\.venv_ocr_paddle\Lib\site-packages\mpmath\functions\rszeta.py:16: * z_offline(w,k): Z(w) and its derivatives of order k <= 4
+api\.venv_ocr_paddle\Lib\site-packages\mpmath\functions\rszeta.py:18: * zeta_offline(s): zeta(s) and its derivatives of order k<= 4
+api\.venv_ocr_paddle\Lib\site-packages\mpmath\functions\rszeta.py:21: * rs_zeta(s,k=0) Computes zeta^(k)(s)   Unifies zeta_half and zeta_offline
+api\.venv_ocr_paddle\Lib\site-packages\mpmath\functions\rszeta.py:22: * rs_z(w,k=0)    Computes Z^(k)(w)      Unifies z_offline and z_half
+api\.venv_ocr_paddle\Lib\site-packages\mpmath\functions\rszeta.py:1240: def zeta_offline(ctx, s, k=0):
+api\.venv_ocr_paddle\Lib\site-packages\mpmath\functions\rszeta.py:1306: def z_offline(ctx, w, k=0):
+api\.venv_ocr_paddle\Lib\site-packages\mpmath\functions\rszeta.py:1391: return zeta_offline(ctx, s, derivative)
+api\.venv_ocr_paddle\Lib\site-packages\mpmath\functions\rszeta.py:1403: return z_offline(ctx, w, derivative)
+api\.venv_ocr_paddle\Lib\site-packages\networkx\algorithms\lowest_common_ancestors.py:259: # Iterative implementation of Tarjan's offline lca algorithm
+api\.venv_ocr_paddle\Lib\site-packages\openpyxl\drawing\geometry.py:527: 'flowChartMerge', 'flowChartOfflineStorage', 'flowChartOnlineStorage',
+api\.venv_ocr_paddle\Lib\site-packages\paddle\hapi\callbacks.py:1016: mode(str, optional): Can be "online", "offline" or "disabled". Default: "online".
+api\.venv_ocr_paddle\Lib\site-packages\paddle\static\quantization\quantization_pass.py:1095: and weight will be scaled offline.
+api\.venv_ocr_paddle\Lib\site-packages\paddle\static\quantization\quantization_pass.py:3165: and weight will be scaled offline.
+api\.venv_ocr_paddle\Lib\site-packages\psutil\_pslinux.py:668: # if cpu core is offline, set to all zeroes
+api\.venv_ocr_paddle\Lib\site-packages\skimage\data\_fetchers.py:264: """Download all datasets for use with scikit-image offline.
+api\.venv_ocr_paddle\Lib\site-packages\skimage\data\_fetchers.py:276: offline on your machine.
+api\.venv_ocr_paddle\Lib\site-packages\skimage\data\__init__.py:7: downloaded on demand. To make data available offline, use :func:`download_all`.
+api\.venv_ocr_paddle\Lib\site-packages\sklearn\datasets\tests\test_openml.py:34: test_offline = True
+api\.venv_ocr_paddle\Lib\site-packages\sklearn\datasets\tests\test_openml.py:200: if test_offline:
+api\.venv_ocr_paddle\Lib\site-packages\torch\jit\_serialization.py:20: Save an offline version of this module for use in a separate process.
+api\.venv_ocr_paddle\Lib\site-packages\torch\jit\_serialization.py:194: Save an offline version of this module for use in a separate process.
+api\.venv_ocr_paddle\Lib\site-packages\torch\utils\_content_store.py:8: # offline debugging, but it's been put in this module in case you think of
+api\.venv_ocr_paddle\Lib\site-packages\torch\_inductor\ir.py:4376: # Discussed with Sherlock offline and we decided to allow serializing
+api\.venv_ocr_paddle\Lib\site-packages\torchaudio\models\decoder\_ctc_decoder.py:353: Performs batched offline decoding.
+api\.venv_ocr_paddle\Lib\site-packages\torchaudio\models\decoder\_ctc_decoder.py:357: This method performs offline decoding in one go. To perform incremental decoding,
+api\.venv_ocr_paddle\Lib\site-packages\torchvision\transforms\transforms.py:1084: offline.
+api\.venv_ocr_paddle\Lib\site-packages\torchvision\transforms\v2\_misc.py:53: """Transform a tensor image or video with a square transformation matrix and a mean_vector computed offline.
+chandra-local\.venv_chandra\lib\python3.12\site-packages\setuptools\tests\config\test_apply_pyprojecttoml.py:4: To run these tests offline, please have a look on ``./downloads/preload.py``
+web\src\app\(protected)\ho-so\page.tsx:18: import { OfflineProfilesCard } from "@/features/profiles/components/offline-profiles-card";
+web\src\app\(protected)\ho-so\page.tsx:251: <OfflineProfilesCard
+web\src\features\profiles\components\offline-profiles-card.tsx:9: addOfflineProfile,
+web\src\features\profiles\components\offline-profiles-card.tsx:10: getOfflineProfileCache,
+web\src\features\profiles\components\offline-profiles-card.tsx:11: getOfflineProfiles,
+web\src\features\profiles\components\offline-profiles-card.tsx:12: removeOfflineProfile,
+web\src\features\profiles\components\offline-profiles-card.tsx:13: saveOfflineProfileCache,
+web\src\features\profiles\components\offline-profiles-card.tsx:14: updateOfflineProfile,
+web\src\features\profiles\components\offline-profiles-card.tsx:15: type OfflineProfileItem,
+web\src\features\profiles\components\offline-profiles-card.tsx:16: } from "@/features/profiles/offline/offline-profile-storage";
+web\src\features\profiles\components\offline-profiles-card.tsx:31: interface OfflineProfilesCardProps {
+web\src\features\profiles\components\offline-profiles-card.tsx:39: interface OfflineFormValues {
+web\src\features\profiles\components\offline-profiles-card.tsx:52: const DEFAULT_VALUES: OfflineFormValues = {
+web\src\features\profiles\components\offline-profiles-card.tsx:129: function buildPayload(values: OfflineFormValues): ProfilePayload {
+web\src\features\profiles\components\offline-profiles-card.tsx:175: export function OfflineProfilesCard({
+web\src\features\profiles\components\offline-profiles-card.tsx:181: }: OfflineProfilesCardProps) {
+web\src\features\profiles\components\offline-profiles-card.tsx:182: const [values, setValues] = useState<OfflineFormValues>(DEFAULT_VALUES);
+web\src\features\profiles\components\offline-profiles-card.tsx:183: const [offlineItems, setOfflineItems] = useState<OfflineProfileItem[]>([]);
+web\src\features\profiles\components\offline-profiles-card.tsx:189: setOfflineItems(getOfflineProfiles());
+web\src\features\profiles\components\offline-profiles-card.tsx:191: const cache = getOfflineProfileCache();
+web\src\features\profiles\components\offline-profiles-card.tsx:203: const cache = saveOfflineProfileCache({
+web\src\features\profiles\components\offline-profiles-card.tsx:212: const cachedData = useMemo(() => getOfflineProfileCache(), [
+web\src\features\profiles\components\offline-profiles-card.tsx:224: function reloadOfflineItems() {
+web\src\features\profiles\components\offline-profiles-card.tsx:225: setOfflineItems(getOfflineProfiles());
+web\src\features\profiles\components\offline-profiles-card.tsx:228: function updateValue<K extends keyof OfflineFormValues>(
+web\src\features\profiles\components\offline-profiles-card.tsx:230: value: OfflineFormValues[K],
+web\src\features\profiles\components\offline-profiles-card.tsx:238: function handleSaveOffline(event: FormEvent<HTMLFormElement>) {
+web\src\features\profiles\components\offline-profiles-card.tsx:243: addOfflineProfile(payload);
+web\src\features\profiles\components\offline-profiles-card.tsx:244: reloadOfflineItems();
+web\src\features\profiles\components\offline-profiles-card.tsx:246: setMessage("Đã lưu hồ sơ vào hàng chờ offline.");
+web\src\features\profiles\components\offline-profiles-card.tsx:248: setMessage(error instanceof Error ? error.message : "Không lưu được hồ sơ offline.");
+web\src\features\profiles\components\offline-profiles-card.tsx:252: async function handleSyncOne(item: OfflineProfileItem) {
+web\src\features\profiles\components\offline-profiles-card.tsx:258: removeOfflineProfile(item.id);
+web\src\features\profiles\components\offline-profiles-card.tsx:259: reloadOfflineItems();
+web\src\features\profiles\components\offline-profiles-card.tsx:265: updateOfflineProfile(item.id, {
+web\src\features\profiles\components\offline-profiles-card.tsx:270: reloadOfflineItems();
+web\src\features\profiles\components\offline-profiles-card.tsx:278: const pendingItems = getOfflineProfiles();
+web\src\features\profiles\components\offline-profiles-card.tsx:286: const ok = window.confirm("Xóa hồ sơ offline này khỏi hàng chờ?");
+web\src\features\profiles\components\offline-profiles-card.tsx:290: removeOfflineProfile(id);
+web\src\features\profiles\components\offline-profiles-card.tsx:291: reloadOfflineItems();
+web\src\features\profiles\components\offline-profiles-card.tsx:294: const canSync = offlineItems.length > 0 && !isSyncing && !syncingId;
+web\src\features\profiles\offline\offline-profile-storage.ts:3: export type OfflineProfileStatus = "pending" | "failed";
+web\src\features\profiles\offline\offline-profile-storage.ts:5: export interface OfflineProfileItem {
+web\src\features\profiles\offline\offline-profile-storage.ts:10: status: OfflineProfileStatus;
+web\src\features\profiles\offline\offline-profile-storage.ts:14: export interface OfflineProfileCache {
+web\src\features\profiles\offline\offline-profile-storage.ts:21: const OFFLINE_PROFILES_KEY = "archive_management_offline_profiles_v1";
+web\src\features\profiles\offline\offline-profile-storage.ts:22: const OFFLINE_CACHE_KEY = "archive_management_offline_profile_cache_v1";
+web\src\features\profiles\offline\offline-profile-storage.ts:28: function createOfflineId(): string {
+web\src\features\profiles\offline\offline-profile-storage.ts:33: return `offline-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+web\src\features\profiles\offline\offline-profile-storage.ts:39: const raw = window.localStorage.getItem(key);
+web\src\features\profiles\offline\offline-profile-storage.ts:46: window.localStorage.removeItem(key);
+web\src\features\profiles\offline\offline-profile-storage.ts:54: window.localStorage.setItem(key, JSON.stringify(value));
+web\src\features\profiles\offline\offline-profile-storage.ts:57: export function getOfflineProfiles(): OfflineProfileItem[] {
+web\src\features\profiles\offline\offline-profile-storage.ts:58: return readJson<OfflineProfileItem[]>(OFFLINE_PROFILES_KEY, []);
+web\src\features\profiles\offline\offline-profile-storage.ts:61: export function saveOfflineProfiles(items: OfflineProfileItem[]): void {
+web\src\features\profiles\offline\offline-profile-storage.ts:62: writeJson(OFFLINE_PROFILES_KEY, items);
+web\src\features\profiles\offline\offline-profile-storage.ts:65: export function addOfflineProfile(payload: ProfilePayload): OfflineProfileItem {
+web\src\features\profiles\offline\offline-profile-storage.ts:68: const item: OfflineProfileItem = {
+web\src\features\profiles\offline\offline-profile-storage.ts:69: id: createOfflineId(),
+web\src\features\profiles\offline\offline-profile-storage.ts:76: const items = getOfflineProfiles();
+web\src\features\profiles\offline\offline-profile-storage.ts:77: saveOfflineProfiles([item, ...items]);
+web\src\features\profiles\offline\offline-profile-storage.ts:82: export function removeOfflineProfile(id: string): void {
+web\src\features\profiles\offline\offline-profile-storage.ts:83: const items = getOfflineProfiles().filter((item) => item.id !== id);
+web\src\features\profiles\offline\offline-profile-storage.ts:84: saveOfflineProfiles(items);
+web\src\features\profiles\offline\offline-profile-storage.ts:87: export function updateOfflineProfile(
+web\src\features\profiles\offline\offline-profile-storage.ts:89: patch: Partial<OfflineProfileItem>,
+web\src\features\profiles\offline\offline-profile-storage.ts:93: const items = getOfflineProfiles().map((item) => {
+web\src\features\profiles\offline\offline-profile-storage.ts:103: saveOfflineProfiles(items);
+web\src\features\profiles\offline\offline-profile-storage.ts:106: export function getOfflineProfileCache(): OfflineProfileCache {
+web\src\features\profiles\offline\offline-profile-storage.ts:107: return readJson<OfflineProfileCache>(OFFLINE_CACHE_KEY, {
+web\src\features\profiles\offline\offline-profile-storage.ts:114: export function saveOfflineProfileCache(
+web\src\features\profiles\offline\offline-profile-storage.ts:115: patch: Partial<OfflineProfileCache>,
+web\src\features\profiles\offline\offline-profile-storage.ts:116: ): OfflineProfileCache {
+web\src\features\profiles\offline\offline-profile-storage.ts:117: const currentCache = getOfflineProfileCache();
+web\src\features\profiles\offline\offline-profile-storage.ts:119: const nextCache: OfflineProfileCache = {
+web\src\features\profiles\offline\offline-profile-storage.ts:125: writeJson(OFFLINE_CACHE_KEY, nextCache);
+web\src\lib\api\client.ts:31: return window.localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
+web\src\lib\api\client.ts:36: window.localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, token);
+web\src\lib\api\client.ts:41: window.localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+web\src\lib\api\client.ts:46: return window.localStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN);
+web\src\lib\api\client.ts:51: window.localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, token);
+web\src\lib\api\client.ts:57: window.localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+web\src\lib\api\client.ts:58: window.localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
+web\src\lib\api\client.ts:59: window.localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+web\src\stores\auth-store.ts:21: return window.localStorage.getItem(key);
+web\src\stores\auth-store.ts:26: window.localStorage.setItem(key, value);
+web\src\stores\auth-store.ts:31: window.localStorage.removeItem(key);
+
+===== FETCH_CALL_REVIEW_AUTH =====
+.venv_ocr_paddle\Lib\site-packages\pip\_internal\vcs\git.py:178: def _should_fetch(cls, dest: str, rev: str) -> bool:
+.venv_ocr_paddle\Lib\site-packages\pip\_internal\vcs\git.py:232: if not cls._should_fetch(dest, rev):
+.venv_ocr_paddle\Lib\site-packages\pip\_vendor\distlib\locators.py:729: def _fetch(self):
+.venv_ocr_paddle\Lib\site-packages\pip\_vendor\urllib3\contrib\appengine.py:147: response = urlfetch.fetch(
+.venv_ocr_paddle\Lib\site-packages\setuptools\package_index.py:657: def fetch(self, requirement, tmpdir, force_scan=False, source=False):
+api\.venv_ocr_paddle\Lib\site-packages\baidubce\services\cdn\cdn_client.py:1677: def prefetch(self, tasks, config=None):
+api\.venv_ocr_paddle\Lib\site-packages\click\parser.py:68: def _fetch(c: deque[str]) -> str | T_UNSET:
+api\.venv_ocr_paddle\Lib\site-packages\click\parser.py:84: rv.append(_fetch(args))
+api\.venv_ocr_paddle\Lib\site-packages\click\parser.py:86: x: list[str | T_UNSET] = [_fetch(args) for _ in range(nargs)]
+api\.venv_ocr_paddle\Lib\site-packages\cssutils\_fetchgae.py:23: fetch(url, payload=None, method=GET, headers={}, allow_truncated=False)
+api\.venv_ocr_paddle\Lib\site-packages\cssutils\_fetchgae.py:29: True if the allow_truncated parameter to fetch() was True and
+api\.venv_ocr_paddle\Lib\site-packages\cssutils\_fetchgae.py:50: allow_truncated parameter passed to fetch() was False.
+api\.venv_ocr_paddle\Lib\site-packages\cssutils\_fetchgae.py:53: r = urlfetch.fetch(url, method=urlfetch.GET)
+api\.venv_ocr_paddle\Lib\site-packages\Cython\Compiler\Buffer.py:389: code.putln('PyErr_Fetch(&%s, &%s, &%s);' % exc_temps)
+api\.venv_ocr_paddle\Lib\site-packages\Cython\Compiler\ModuleNode.py:1840: code.putln("PyErr_Fetch(&etype, &eval, &etb);")
+api\.venv_ocr_paddle\Lib\site-packages\Cython\Compiler\ModuleNode.py:2020: code.putln("PyErr_Fetch(&etype, &eval, &etb);")
+api\.venv_ocr_paddle\Lib\site-packages\Cython\Compiler\ModuleNode.py:3316: code.putln("PyErr_Fetch(&tp, &value, &tb);")
+api\.venv_ocr_paddle\Lib\site-packages\Cython\Compiler\Nodes.py:2350: code.putln("__Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);")
+api\.venv_ocr_paddle\Lib\site-packages\Cython\Compiler\Nodes.py:8438: code.putln("__Pyx_ErrFetch(&%s, &%s, &%s);" % tuple(exc_vars))
+api\.venv_ocr_paddle\Lib\site-packages\Cython\Compiler\Nodes.py:8795: "__Pyx_ErrFetch(&%s, &%s, &%s);" % (exc_vars[:3] * 2))
+api\.venv_ocr_paddle\Lib\site-packages\Cython\Debugger\libpython.py:2706: gdb.parse_and_eval("PyErr_Fetch(%d, %d, %d)" % self.errstate)
+api\.venv_ocr_paddle\Lib\site-packages\fsspec\caching.py:62: def _fetch(self, start: int | None, stop: int | None) -> bytes:
+api\.venv_ocr_paddle\Lib\site-packages\fsspec\caching.py:165: def _fetch(self, start: int | None, end: int | None) -> bytes:
+api\.venv_ocr_paddle\Lib\site-packages\fsspec\caching.py:255: def _fetch(self, start: int | None, end: int | None) -> bytes:
+api\.venv_ocr_paddle\Lib\site-packages\fsspec\caching.py:301: def _fetch(self, start: int | None, end: int | None) -> bytes:
+api\.venv_ocr_paddle\Lib\site-packages\fsspec\caching.py:386: def _fetch(self, start: int | None, end: int | None) -> bytes:
+api\.venv_ocr_paddle\Lib\site-packages\fsspec\caching.py:413: block_contents = super()._fetch(start, end)
+api\.venv_ocr_paddle\Lib\site-packages\fsspec\caching.py:483: def _fetch(self, start: int | None, end: int | None) -> bytes:
+api\.venv_ocr_paddle\Lib\site-packages\fsspec\caching.py:579: def _fetch(self, start: int | None, stop: int | None) -> bytes:
+api\.venv_ocr_paddle\Lib\site-packages\fsspec\caching.py:655: def _fetch(self, start: int | None, stop: int | None) -> bytes:
+api\.venv_ocr_paddle\Lib\site-packages\fsspec\caching.py:831: def _fetch(self, start: int | None, end: int | None) -> bytes:
+api\.venv_ocr_paddle\Lib\site-packages\fsspec\caching.py:922: block_contents = super()._fetch(start, end)
+api\.venv_ocr_paddle\Lib\site-packages\fsspec\spec.py:883: """Fetch (potentially multiple) paths' contents
+api\.venv_ocr_paddle\Lib\site-packages\fsspec\spec.py:2125: out = self.cache._fetch(self.loc, self.loc + length)
+api\.venv_ocr_paddle\Lib\site-packages\future\backports\urllib\robotparser.py:133: def can_fetch(self, useragent, url):
+api\.venv_ocr_paddle\Lib\site-packages\numpy\f2py\rules.py:1134: PyErr_Fetch(&exc, &val, &tb);
+api\.venv_ocr_paddle\Lib\site-packages\paddle\base\executor.py:531: out = paddle._pir_ops.fetch(
+api\.venv_ocr_paddle\Lib\site-packages\paddle\dataset\cifar.py:174: def fetch():
+api\.venv_ocr_paddle\Lib\site-packages\paddle\dataset\common.py:149: importlib.import_module('paddle.dataset.%s' % module_name).fetch()
+api\.venv_ocr_paddle\Lib\site-packages\paddle\dataset\conll05.py:269: def fetch():
+api\.venv_ocr_paddle\Lib\site-packages\paddle\dataset\flowers.py:240: def fetch():
+api\.venv_ocr_paddle\Lib\site-packages\paddle\dataset\imdb.py:175: def fetch():
+api\.venv_ocr_paddle\Lib\site-packages\paddle\dataset\imikolov.py:176: def fetch():
+api\.venv_ocr_paddle\Lib\site-packages\paddle\dataset\mnist.py:152: def fetch():
+api\.venv_ocr_paddle\Lib\site-packages\paddle\dataset\movielens.py:317: def fetch():
+api\.venv_ocr_paddle\Lib\site-packages\paddle\dataset\uci_housing.py:189: def fetch():
+api\.venv_ocr_paddle\Lib\site-packages\paddle\dataset\wmt14.py:199: def fetch():
+api\.venv_ocr_paddle\Lib\site-packages\paddle\dataset\wmt16.py:367: def fetch():
+api\.venv_ocr_paddle\Lib\site-packages\paddle\distributed\auto_parallel\interface.py:311: def fetch(tensor, name=None, logging=False):
+api\.venv_ocr_paddle\Lib\site-packages\paddle\distributed\auto_parallel\static\dist_loader.py:168: batch = self.dataset_fetcher.fetch(indices)
+api\.venv_ocr_paddle\Lib\site-packages\paddle\distributed\auto_parallel\static\engine.py:465: def _prepare_fetch(self, user_fetches, mode):
+api\.venv_ocr_paddle\Lib\site-packages\paddle\distributed\auto_parallel\static\engine.py:496: fetch(var_name)
+api\.venv_ocr_paddle\Lib\site-packages\paddle\distributed\auto_parallel\static\engine.py:1012: fetch_names, fetch_indices = self._prepare_fetch(None, mode=self._mode)
+api\.venv_ocr_paddle\Lib\site-packages\paddle\distributed\auto_parallel\static\engine.py:1191: fetch_names, fetch_indices = self._prepare_fetch(None, mode=self._mode)
+api\.venv_ocr_paddle\Lib\site-packages\paddle\distributed\auto_parallel\static\engine.py:1322: fetch_names, fetch_indices = self._prepare_fetch(None, mode=self._mode)
+api\.venv_ocr_paddle\Lib\site-packages\paddle\distributed\auto_parallel\static\engine.py:1510: fetch_names, fetch_indices = self._prepare_fetch(fetch_list, self._mode)
+api\.venv_ocr_paddle\Lib\site-packages\paddle\distributed\fleet\meta_optimizers\sharding\offload_helper.py:148: (p,) = prefetch(p@offload)
+api\.venv_ocr_paddle\Lib\site-packages\paddle\distributed\fleet\meta_optimizers\sharding\offload_helper.py:318: (m1, m2) = prefetch(m1@offload, m2@offload)
+api\.venv_ocr_paddle\Lib\site-packages\paddle\distributed\transpiler\distribute_transpiler.py:1031: self._replace_lookup_table_op_with_prefetch(
+api\.venv_ocr_paddle\Lib\site-packages\paddle\distributed\transpiler\distribute_transpiler.py:1958: def _replace_lookup_table_op_with_prefetch(
+api\.venv_ocr_paddle\Lib\site-packages\paddle\incubate\optimizer\recompute.py:592: def _check_offload_fetch(self):
+api\.venv_ocr_paddle\Lib\site-packages\paddle\incubate\optimizer\recompute.py:641: self._check_offload_fetch()
+api\.venv_ocr_paddle\Lib\site-packages\paddle\io\dataloader\dataloader_iter.py:235: batch = self._dataset_fetcher.fetch(
+api\.venv_ocr_paddle\Lib\site-packages\paddle\io\dataloader\fetcher.py:32: def fetch(self, batch_indices, done_event=None):
+api\.venv_ocr_paddle\Lib\site-packages\paddle\io\dataloader\fetcher.py:43: def fetch(self, batch_indices, done_event=None):
+api\.venv_ocr_paddle\Lib\site-packages\paddle\io\dataloader\fetcher.py:72: def fetch(self, batch_indices, done_event=None):
+api\.venv_ocr_paddle\Lib\site-packages\paddle\io\dataloader\worker.py:372: batch = fetcher.fetch(indices)
+api\.venv_ocr_paddle\Lib\site-packages\paddle\jit\api.py:1836: fetch (list[int], optional): the output variable indices of the
+api\.venv_ocr_paddle\Lib\site-packages\paddle\jit\api.py:1929: def get_feed_fetch(all_vars, partial_vars):
+api\.venv_ocr_paddle\Lib\site-packages\paddle\jit\api.py:1936: feeded_var_names = get_feed_fetch(self._feed_names, feed)
+api\.venv_ocr_paddle\Lib\site-packages\paddle\jit\api.py:1937: target_var_names = get_feed_fetch(self._fetch_names, fetch)
+api\.venv_ocr_paddle\Lib\site-packages\pip\_internal\self_outdated_check.py:206: def pip_self_version_check_fetch(
+api\.venv_ocr_paddle\Lib\site-packages\pip\_internal\cli\index_command.py:140: def _pip_self_version_check_fetch(
+api\.venv_ocr_paddle\Lib\site-packages\pip\_internal\cli\index_command.py:145: return pip_self_version_check_fetch(session, options)
+api\.venv_ocr_paddle\Lib\site-packages\pip\_internal\cli\index_command.py:200: upgrade_prompt = _pip_self_version_check_fetch(session, options)
+api\.venv_ocr_paddle\Lib\site-packages\pip\_internal\vcs\git.py:190: def _should_fetch(cls, dest: str, rev: str) -> bool:
+api\.venv_ocr_paddle\Lib\site-packages\pip\_internal\vcs\git.py:244: if not cls._should_fetch(dest, rev):
+api\.venv_ocr_paddle\Lib\site-packages\pip\_vendor\urllib3\contrib\emscripten\emscripten_fetch_worker.js:70: const response = await fetch(event.data.url, event.data.fetchParams);
+api\.venv_ocr_paddle\Lib\site-packages\pip\_vendor\urllib3\contrib\emscripten\fetch.py:579: # Call JavaScript fetch (async api, returns a promise)
+api\.venv_ocr_paddle\Lib\site-packages\pip\_vendor\urllib3\contrib\emscripten\fetch.py:580: fetcher_promise_js = js.fetch(request.url, _obj_from_dict(fetch_data))
+api\.venv_ocr_paddle\Lib\site-packages\scipy\datasets\_fetchers.py:39: return data_fetcher.fetch(dataset_name, downloader=downloader)
+api\.venv_ocr_paddle\Lib\site-packages\setuptools\package_index.py:685: def fetch(self, requirement, tmpdir, force_scan=False, source=False):
+api\.venv_ocr_paddle\Lib\site-packages\skimage\data\_fetchers.py:185: def _fetch(data_filename, prefix=None):
+api\.venv_ocr_paddle\Lib\site-packages\skimage\data\_fetchers.py:249: cached_file_path = _image_fetcher.fetch(data_filename)
+api\.venv_ocr_paddle\Lib\site-packages\skimage\data\_fetchers.py:312: file_path = _fetch(data_filename)
+api\.venv_ocr_paddle\Lib\site-packages\skimage\data\_fetchers.py:335: return _fetch('data/lbpcascade_frontalface_opencv.xml')
+api\.venv_ocr_paddle\Lib\site-packages\skimage\data\_fetchers.py:357: return imread(_fetch(f), as_gray=as_gray)
+api\.venv_ocr_paddle\Lib\site-packages\skimage\data\_fetchers.py:1130: filename = _fetch("data/motorcycle_disp.npz")
+api\.venv_ocr_paddle\Lib\site-packages\skimage\data\_fetchers.py:1166: return np.load(_fetch('data/lfw_subset.npy'))
+api\.venv_ocr_paddle\Lib\site-packages\skimage\_shared\testing.py:196: def fetch(data_filename, prefix=None):
+api\.venv_ocr_paddle\Lib\site-packages\skimage\_shared\testing.py:216: return _fetch(data_filename, prefix=prefix)
+api\.venv_ocr_paddle\Lib\site-packages\sklearn\datasets\tests\test_california_housing.py:12: def test_fetch(fetch_california_housing_fxt):
+api\.venv_ocr_paddle\Lib\site-packages\sklearn\datasets\tests\test_covtype.py:12: def test_fetch(fetch_covtype_fxt, global_random_seed):
+api\.venv_ocr_paddle\Lib\site-packages\torch\distributed\fsdp\api.py:72: class BackwardPrefetch(Enum):
+api\.venv_ocr_paddle\Lib\site-packages\torch\distributed\fsdp\fully_sharded_data_parallel.py:300: backward_prefetch (Optional[BackwardPrefetch]):
+api\.venv_ocr_paddle\Lib\site-packages\torch\distributed\fsdp\fully_sharded_data_parallel.py:367: forward_prefetch (bool): If ``True``, then FSDP *explicitly* prefetches
+api\.venv_ocr_paddle\Lib\site-packages\torch\distributed\fsdp\_exec_order_utils.py:88: def get_handle_to_backward_prefetch(
+api\.venv_ocr_paddle\Lib\site-packages\torch\distributed\fsdp\_exec_order_utils.py:109: def get_handle_to_forward_prefetch(
+api\.venv_ocr_paddle\Lib\site-packages\torch\distributed\fsdp\_runtime_utils.py:1163: handle = _get_handle_to_prefetch(state, current_handle)
+api\.venv_ocr_paddle\Lib\site-packages\torch\distributed\fsdp\_runtime_utils.py:1183: def _get_handle_to_prefetch(
+api\.venv_ocr_paddle\Lib\site-packages\torch\distributed\fsdp\_runtime_utils.py:1215: target_handle_candidate = eod.get_handle_to_backward_prefetch(current_handle)
+api\.venv_ocr_paddle\Lib\site-packages\torch\distributed\fsdp\_runtime_utils.py:1225: target_handle_candidate = eod.get_handle_to_forward_prefetch(current_handle)
+api\.venv_ocr_paddle\Lib\site-packages\torch\onnx\_internal\onnxruntime.py:408: def _run_onnx_session_with_fetch(
+api\.venv_ocr_paddle\Lib\site-packages\torch\testing\_internal\common_fsdp.py:889: def _check_backward_prefetch(self, fsdp_model, backward_prefetch):
+api\.venv_ocr_paddle\Lib\site-packages\torch\testing\_internal\common_fsdp.py:892: def _check_forward_prefetch(self, fsdp_model, forward_prefetch):
+api\.venv_ocr_paddle\Lib\site-packages\torch\utils\data\dataloader.py:675: data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+api\.venv_ocr_paddle\Lib\site-packages\torch\utils\data\_utils\fetch.py:14: def fetch(self, possibly_batched_index):
+api\.venv_ocr_paddle\Lib\site-packages\torch\utils\data\_utils\fetch.py:24: def fetch(self, possibly_batched_index):
+api\.venv_ocr_paddle\Lib\site-packages\torch\utils\data\_utils\fetch.py:46: def fetch(self, possibly_batched_index):
+api\.venv_ocr_paddle\Lib\site-packages\torch\utils\data\_utils\worker.py:308: data = fetcher.fetch(index)
+api\.venv_ocr_paddle\Lib\site-packages\torch\utils\model_dump\code.js:635: fetch("./model_info.json").then(function(response) {
+api\.venv_ocr_paddle\Lib\site-packages\urllib3\contrib\emscripten\emscripten_fetch_worker.js:70: const response = await fetch(event.data.url, event.data.fetchParams);
+api\.venv_ocr_paddle\Lib\site-packages\urllib3\contrib\emscripten\fetch.py:579: # Call JavaScript fetch (async api, returns a promise)
+api\.venv_ocr_paddle\Lib\site-packages\urllib3\contrib\emscripten\fetch.py:580: fetcher_promise_js = js.fetch(request.url, _obj_from_dict(fetch_data))
+api\.venv_ocr_paddle\Lib\site-packages\werkzeug\debug\console.py:70: def fetch() -> str:
+api\.venv_ocr_paddle\Lib\site-packages\werkzeug\debug\console.py:172: output = ThreadedStream.fetch()
+api\.venv_ocr_paddle\Lib\site-packages\werkzeug\debug\shared\debugger.js:54: fetch(
+api\.venv_ocr_paddle\Lib\site-packages\werkzeug\debug\shared\debugger.js:84: fetch(makeDebugURL({cmd: "printpin"}));
+api\.venv_ocr_paddle\Lib\site-packages\werkzeug\debug\shared\debugger.js:267: fetch(makeDebugURL({cmd: command.value, frm: frameID}))
+chandra-local\.venv_chandra\lib\python3.12\site-packages\pip\_internal\self_outdated_check.py:206: def pip_self_version_check_fetch(
+chandra-local\.venv_chandra\lib\python3.12\site-packages\pip\_internal\cli\index_command.py:140: def _pip_self_version_check_fetch(
+chandra-local\.venv_chandra\lib\python3.12\site-packages\pip\_internal\cli\index_command.py:145: return pip_self_version_check_fetch(session, options)
+chandra-local\.venv_chandra\lib\python3.12\site-packages\pip\_internal\cli\index_command.py:200: upgrade_prompt = _pip_self_version_check_fetch(session, options)
+chandra-local\.venv_chandra\lib\python3.12\site-packages\pip\_internal\vcs\git.py:190: def _should_fetch(cls, dest: str, rev: str) -> bool:
+chandra-local\.venv_chandra\lib\python3.12\site-packages\pip\_internal\vcs\git.py:244: if not cls._should_fetch(dest, rev):
+chandra-local\.venv_chandra\lib\python3.12\site-packages\pip\_vendor\urllib3\contrib\emscripten\emscripten_fetch_worker.js:70: const response = await fetch(event.data.url, event.data.fetchParams);
+chandra-local\.venv_chandra\lib\python3.12\site-packages\pip\_vendor\urllib3\contrib\emscripten\fetch.py:579: # Call JavaScript fetch (async api, returns a promise)
+chandra-local\.venv_chandra\lib\python3.12\site-packages\pip\_vendor\urllib3\contrib\emscripten\fetch.py:580: fetcher_promise_js = js.fetch(request.url, _obj_from_dict(fetch_data))
+web\src\app\(protected)\bao-cao\page.tsx:75: onClick={() => dashboardQuery.refetch()}
+web\src\app\(protected)\cay-luu-tru\page.tsx:52: onClick={() => refetch()}
+web\src\app\(protected)\dashboard\page.tsx:117: onClick={() => refetch()}
+web\src\app\(protected)\ho-so\page.tsx:182: profilesQuery.refetch();
+web\src\app\(protected)\ho-so\page.tsx:183: digitalFilesQuery.refetch();
+web\src\app\(protected)\ho-so\page.tsx:184: fondsQuery.refetch();
+web\src\app\(protected)\ho-so\page.tsx:185: catalogsQuery.refetch();
+web\src\app\(protected)\ho-so\page.tsx:186: warehousesQuery.refetch();
+web\src\app\(protected)\ho-so\page.tsx:187: locationsQuery.refetch();
+web\src\app\(protected)\ho-so\page.tsx:188: boxesQuery.refetch();
+web\src\app\(protected)\ho-so\page.tsx:189: storageFilesQuery.refetch();
+web\src\app\(protected)\ho-so\page.tsx:258: await profilesQuery.refetch();
+web\src\app\(protected)\ho-so\[id]\page.tsx:45: profileQuery.refetch();
+web\src\app\(protected)\ho-so\[id]\page.tsx:46: documentsQuery.refetch();
+web\src\app\(protected)\ho-so\[id]\page.tsx:106: onRefresh={() => documentsQuery.refetch()}
+web\src\app\(protected)\nhat-ky-he-thong\page.tsx:91: onRefresh={() => auditLogsQuery.refetch()}
+web\src\app\(protected)\ocr\page.tsx:62: await ocrTextQuery.refetch();
+web\src\app\(protected)\ocr\page.tsx:123: onRefresh={() => ocrTextQuery.refetch()}
+web\src\app\(protected)\tai-lieu\[id]\page.tsx:376: await recordQuery.refetch();
+web\src\app\(protected)\tai-lieu\[id]\page.tsx:603: recordQuery.refetch();
+web\src\app\(protected)\tai-lieu\[id]\page.tsx:604: filesQuery.refetch();
+web\src\app\(protected)\tai-lieu\[id]\page.tsx:854: recordQuery.refetch();
+web\src\app\(protected)\tai-lieu\[id]\page.tsx:855: filesQuery.refetch();
+web\src\app\(protected)\tai-lieu\[id]\page.tsx:879: recordQuery.refetch();
+web\src\app\(protected)\tai-lieu\[id]\page.tsx:880: filesQuery.refetch();
+web\src\features\master-data\components\master-data-manager.tsx:335: onClick={() => listQuery.refetch()}
+web\src\features\ocr\components\ocr-profile-suggestion-card.tsx:267: await suggestionQuery.refetch();
+web\src\features\ocr\components\ocr-profile-suggestion-card.tsx:551: onClick={() => suggestionQuery.refetch()}
+web\src\features\ocr\components\record-ocr-panel.tsx:381: await progressQuery.refetch();
+web\src\features\ocr\components\record-ocr-panel.tsx:382: await textQuery.refetch();
+web\src\features\ocr\components\record-ocr-suggestion-card.tsx:625: onClick={() => suggestionQuery.refetch()}
+web\src\features\system\storage-health-card.tsx:62: onClick={() => storageQuery.refetch()}
+
+===== AXIOS_CALL_REVIEW_AUTH =====
+web\src\lib\api\client.ts:62: export const apiClient = axios.create({
+web\src\lib\api\client.ts:152: if (!axios.isAxiosError<ApiErrorResponse>(error)) {
+web\src\lib\api\client.ts:194: return axios.isAxiosError(error) && error.response?.status === 401;
+web\src\lib\api\client.ts:198: return axios.isAxiosError(error) && error.response?.status === 403;
+web\src\lib\api\client.ts:202: return axios.isAxiosError(error) && error.response?.status === 404;

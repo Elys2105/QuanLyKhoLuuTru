@@ -1,0 +1,13 @@
+{
+    "schema_version":  1,
+    "type":  "server",
+    "generated_at":  "2026-07-31T00:10:05+07:00",
+    "backend":  "app\\\\api",
+    "frontend":  "app\\\\web",
+    "runtime":  "runtime",
+    "data_template":  "data-template",
+    "includes_user_media":  false,
+    "includes_virtual_environment":  false,
+    "includes_node_modules":  false,
+    "includes_next_build":  false
+}

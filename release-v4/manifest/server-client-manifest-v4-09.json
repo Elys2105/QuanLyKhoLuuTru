@@ -1,0 +1,61 @@
+{
+    "project":  "QuanLyKhoLuuTru",
+    "pack":  "V4-09",
+    "status":  "PASS",
+    "generated_at":  "2026-07-31T01:31:24.9327090+07:00",
+    "topology_root":  "D:\\archive-management\\release-v4\\server-client",
+    "detected_server_ipv4":  "26.65.199.10",
+    "firewall_modified":  false,
+    "network_modified":  false,
+    "client_config_modified":  false,
+    "files":  [
+                  {
+                      "relative_path":  "config\\client.json.template",
+                      "size_bytes":  277,
+                      "sha256":  "65D0E47468971B8994887D43610FFC0ACF7282ABA4DADC8469E414D9FBD3CF86"
+                  },
+                  {
+                      "relative_path":  "config\\server-network.json",
+                      "size_bytes":  1205,
+                      "sha256":  "4630ECCDD920C3E000E7608AFB96F5F7B7725DCEFA52FABF655248D7A7036A95"
+                  },
+                  {
+                      "relative_path":  "docs\\SERVER_CLIENT_GUIDE.txt",
+                      "size_bytes":  797,
+                      "sha256":  "6981E6D802D155464745ED6AC51B4BAEBF19A8C3B0C34E3071438B7DBEBB71FC"
+                  },
+                  {
+                      "relative_path":  "scripts\\CONFIGURE_CLIENT.ps1",
+                      "size_bytes":  1125,
+                      "sha256":  "70BDAB71E721ABF048481C56BD0B40AEC89DD1D38F5957503B34E4FCF944ED7B"
+                  },
+                  {
+                      "relative_path":  "scripts\\CONFIGURE_FIREWALL.ps1",
+                      "size_bytes":  1887,
+                      "sha256":  "965E7DAC225A4EB5E6555898750C226AE49369827D6E93453F6B560105EE9225"
+                  },
+                  {
+                      "relative_path":  "scripts\\DEPLOY_SERVER_CLIENT_TOOLS.ps1",
+                      "size_bytes":  1004,
+                      "sha256":  "2EC7FBC72484BF294D8A03D189EE70F1BCFF053C6B58D65315904EF6554055FB"
+                  },
+                  {
+                      "relative_path":  "scripts\\SERVER_NETWORK_PRECHECK.ps1",
+                      "size_bytes":  1450,
+                      "sha256":  "2B0CCF1716F7785E86C6405980B69861E059FCAAF915DC0F540A4A5726669C68"
+                  },
+                  {
+                      "relative_path":  "scripts\\SHOW_SERVER_ADDRESS.ps1",
+                      "size_bytes":  690,
+                      "sha256":  "953723D88EAD87845FD8EE45FEA25B05FD38C49DD50CED3F5068A2C2B4DAFE28"
+                  },
+                  {
+                      "relative_path":  "scripts\\TEST_CLIENT_CONNECTION.ps1",
+                      "size_bytes":  1611,
+                      "sha256":  "10F48D24BE8FB54F1498F09DF11F70D8EA519365A171C30436A8ADB1DFFE11A1"
+                  }
+              ],
+    "warnings":  [
+
+                 ]
+}

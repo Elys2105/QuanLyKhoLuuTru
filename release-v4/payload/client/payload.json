@@ -1,0 +1,8 @@
+{
+    "schema_version":  1,
+    "type":  "client",
+    "generated_at":  "2026-07-31T00:10:06+07:00",
+    "launcher":  "launcher\\\\OPEN_QUAN_LY_KHO.ps1",
+    "configuration_template":  "config-template\\\\client.json.template",
+    "synchronizes_files":  false
+}

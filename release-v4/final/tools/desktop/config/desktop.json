@@ -1,0 +1,18 @@
+{
+    "project":  "QuanLyKhoLuuTru",
+    "pack":  "V4-07",
+    "generated_at":  "2026-07-31T01:30:11.0479192+07:00",
+    "product_name":  "Quan Ly Kho Luu Tru",
+    "install_root":  "C:\\Program Files\\QuanLyKhoLuuTru",
+    "server_root":  "C:\\Program Files\\QuanLyKhoLuuTru\\Server",
+    "client_root":  "C:\\Program Files\\QuanLyKhoLuuTru\\Client",
+    "program_data_root":  "C:\\ProgramData\\QuanLyKhoLuuTru",
+    "client_url":  "http://127.0.0.1:3000",
+    "shortcuts":  {
+                      "desktop":  true,
+                      "start_menu":  true,
+                      "server_console":  true,
+                      "client_launcher":  true,
+                      "uninstall":  true
+                  }
+}

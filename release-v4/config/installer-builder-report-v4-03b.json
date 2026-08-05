@@ -1,0 +1,18 @@
+{
+    "pack":  "V4-03B",
+    "status":  "PASS",
+    "generated_at":  "2026-07-31T01:00:30.6211750+07:00",
+    "source_verified":  true,
+    "runtime_layout":  "payload-server-runtime",
+    "app_venv_required":  false,
+    "iss_file":  "D:\\archive-management\\release-v4\\installer\\inno\\QuanLyKhoLuuTru_Server.iss",
+    "iss_recreated":  true,
+    "reused_existing_build":  false,
+    "compression":  "none",
+    "solid_compression":  false,
+    "disk_spanning":  true,
+    "installer_file_count":  5,
+    "output_directory":  "D:\\archive-management\\release-v4\\installer\\output",
+    "compiler_log":  "D:\\archive-management\\release-v4\\logs\\PACK_V4_03B_ISCC_FINAL_20260731_004949.log",
+    "checksum_file":  "D:\\archive-management\\release-v4\\manifest\\installer-sha256.txt"
+}

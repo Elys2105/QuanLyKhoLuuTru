@@ -1,0 +1,547 @@
+import os
+import tempfile
+from dataclasses import dataclass
+from functools import lru_cache
+from typing import Any, Optional
+
+import fitz
+from django.utils import timezone
+
+from apps.common.utils import normalize_search_text
+from apps.files.models import DigitalFile
+from apps.ocr.models import OcrJob
+from apps.ocr.engines.paddle_subprocess import run_paddle_ocr_worker
+
+
+@dataclass
+class ExtractResult:
+    text: str
+    page_count: int
+    engine: str
+    warning: str = ""
+
+
+def is_pdf_file(digital_file: DigitalFile) -> bool:
+    mime_type = (digital_file.mime_type or "").lower()
+    original_name = (digital_file.original_name or "").lower()
+
+    try:
+        file_name = (digital_file.file.name or "").lower()
+    except Exception:
+        file_name = ""
+
+    return (
+        mime_type == "application/pdf"
+        or original_name.endswith(".pdf")
+        or file_name.endswith(".pdf")
+    )
+
+
+def get_file_path(digital_file: DigitalFile) -> str:
+    try:
+        return digital_file.file.path
+    except Exception:
+        return ""
+
+
+def extract_text_by_pymupdf(pdf_path: str) -> ExtractResult:
+    """
+    Trích text từ PDF có text sẵn.
+
+    Nếu PDF là scan ảnh thì đoạn này thường trả text rỗng.
+    """
+
+    document = fitz.open(pdf_path)
+    page_texts = []
+
+    for page_index in range(document.page_count):
+        page = document.load_page(page_index)
+        text = page.get_text("text") or ""
+
+        if text.strip():
+            page_texts.append(
+                f"\n\n===== PAGE {page_index + 1} =====\n{text.strip()}"
+            )
+
+    return ExtractResult(
+        text="\n".join(page_texts).strip(),
+        page_count=document.page_count,
+        engine="pymupdf",
+    )
+
+
+@lru_cache(maxsize=4)
+def get_paddle_ocr_engine(language: str = "vi"):
+    """
+    Khởi tạo PaddleOCR.
+
+    Có fallback để tương thích cả PaddleOCR bản mới và bản cũ.
+    """
+
+    from paddleocr import PaddleOCR
+
+    init_attempts = [
+        {
+            "lang": language,
+            "use_doc_orientation_classify": False,
+            "use_doc_unwarping": False,
+            "use_textline_orientation": True,
+        },
+        {
+            "lang": language,
+            "use_doc_orientation_classify": False,
+            "use_doc_unwarping": False,
+            "use_textline_orientation": False,
+        },
+        {
+            "lang": language,
+            "use_angle_cls": True,
+            "show_log": False,
+        },
+        {
+            "lang": language,
+        },
+        {
+            "lang": "en",
+        },
+    ]
+
+    last_error = None
+
+    for kwargs in init_attempts:
+        try:
+            return PaddleOCR(**kwargs)
+        except Exception as exc:
+            last_error = exc
+
+    raise RuntimeError(f"Không khởi tạo được PaddleOCR: {last_error}")
+
+
+def collect_text_from_paddle_result(result: Any) -> list[str]:
+    """
+    PaddleOCR có nhiều format result giữa các version.
+
+    Hàm này cố gắng đọc text từ cả:
+    - result kiểu list cổ điển
+    - result kiểu dict mới có rec_texts
+    - object có .json hoặc .res
+    """
+
+    texts: list[str] = []
+
+    def walk(value: Any):
+        if value is None:
+            return
+
+        if isinstance(value, str):
+            return
+
+        if isinstance(value, dict):
+            if isinstance(value.get("rec_texts"), list):
+                for text in value["rec_texts"]:
+                    if isinstance(text, str) and text.strip():
+                        texts.append(text.strip())
+
+            if isinstance(value.get("texts"), list):
+                for text in value["texts"]:
+                    if isinstance(text, str) and text.strip():
+                        texts.append(text.strip())
+
+            if isinstance(value.get("text"), str) and value["text"].strip():
+                texts.append(value["text"].strip())
+
+            for item in value.values():
+                walk(item)
+
+            return
+
+        if isinstance(value, (list, tuple)):
+            # Format cổ điển:
+            # [ box, ("text", score) ]
+            if (
+                len(value) >= 2
+                and isinstance(value[1], (list, tuple))
+                and len(value[1]) >= 1
+                and isinstance(value[1][0], str)
+            ):
+                text = value[1][0].strip()
+
+                if text:
+                    texts.append(text)
+
+                return
+
+            # Format:
+            # ("text", score)
+            if (
+                len(value) >= 2
+                and isinstance(value[0], str)
+                and isinstance(value[1], (int, float))
+            ):
+                text = value[0].strip()
+
+                if text:
+                    texts.append(text)
+
+                return
+
+            for item in value:
+                walk(item)
+
+            return
+
+        # PaddleOCR 3.x có thể trả object có json/res
+        for attr_name in ["json", "res"]:
+            if hasattr(value, attr_name):
+                try:
+                    walk(getattr(value, attr_name))
+                    return
+                except Exception:
+                    pass
+
+        if hasattr(value, "to_dict"):
+            try:
+                walk(value.to_dict())
+                return
+            except Exception:
+                pass
+
+    walk(result)
+
+    # Loại trùng nhưng giữ thứ tự
+    unique_texts = []
+    seen = set()
+
+    for text in texts:
+        if text not in seen:
+            unique_texts.append(text)
+            seen.add(text)
+
+    return unique_texts
+
+
+def run_paddleocr_on_image(image_path: str, language: str = "vi") -> list[str]:
+    """
+    Chạy PaddleOCR trên một ảnh.
+    """
+
+    ocr = get_paddle_ocr_engine(language)
+
+    # PaddleOCR bản mới thường có predict()
+    if hasattr(ocr, "predict"):
+        try:
+            result = ocr.predict(input=image_path)
+            texts = collect_text_from_paddle_result(result)
+
+            if texts:
+                return texts
+        except Exception:
+            pass
+
+    # PaddleOCR bản cũ thường dùng ocr()
+    if hasattr(ocr, "ocr"):
+        try:
+            try:
+                result = ocr.ocr(image_path, cls=True)
+            except TypeError:
+                result = ocr.ocr(image_path)
+
+            texts = collect_text_from_paddle_result(result)
+
+            if texts:
+                return texts
+        except Exception as exc:
+            raise RuntimeError(f"PaddleOCR đọc ảnh lỗi: {exc}") from exc
+
+    return []
+
+
+def extract_text_by_paddleocr(
+    pdf_path: str,
+    language: str = "vi",
+    zoom: float = 2.0,
+    max_pages: Optional[int] = None,
+) -> ExtractResult:
+    """
+    OCR PDF scan ảnh bằng PaddleOCR v2 chạy ở môi trường riêng.
+
+    Backend chính không import PaddleOCR trực tiếp nữa.
+    Django sẽ gọi:
+        .venv_ocr_paddle/Scripts/python.exe scripts/paddle_ocr_worker.py
+
+    Cách này tránh lỗi PaddleOCR 3.x / oneDNN / PIR trên Windows.
+    """
+
+    dpi = 200
+
+    try:
+        if zoom and zoom > 0:
+            dpi = max(150, min(300, int(zoom * 100)))
+    except Exception:
+        dpi = 200
+
+    worker_result = run_paddle_ocr_worker(
+        pdf_path=pdf_path,
+        language=language or "vi",
+        dpi=dpi,
+        timeout_seconds=900,
+    )
+
+    extracted_text = (worker_result.get("text") or "").strip()
+    page_count = int(worker_result.get("page_count") or 0)
+    engine = (
+        worker_result.get("engine")
+        or f"pymupdf+paddleocr-v2-subprocess:{language}"
+    )
+
+    warning = ""
+
+    if not extracted_text:
+        warning = (
+            "PaddleOCR worker chạy xong nhưng không nhận được text. "
+            "Có thể file scan mờ hoặc chất lượng ảnh quá thấp."
+        )
+
+    return ExtractResult(
+        text=extracted_text,
+        page_count=page_count,
+        engine=engine,
+        warning=warning,
+    )
+
+def extract_text_from_pdf(
+    pdf_path: str,
+    language: str = "vi",
+    force_paddleocr: bool = False,
+) -> ExtractResult:
+    """
+    OCR thông minh:
+
+    force_paddleocr=False:
+        1. Thử PyMuPDF trước.
+        2. Nếu PDF không có text thì dùng PaddleOCR v2 worker.
+
+    force_paddleocr=True:
+        Bỏ qua text sẵn, luôn render trang và chạy PaddleOCR v2 worker.
+    """
+
+    if not force_paddleocr:
+        direct_result = extract_text_by_pymupdf(pdf_path)
+
+        if direct_result.text.strip():
+            return direct_result
+
+    try:
+        paddle_result = extract_text_by_paddleocr(
+            pdf_path=pdf_path,
+            language=language,
+        )
+
+        if paddle_result.text.strip():
+            return paddle_result
+
+        if not paddle_result.warning:
+            paddle_result.warning = (
+                "PaddleOCR worker chạy xong nhưng không nhận được text. "
+                "Có thể file scan mờ hoặc model chưa phù hợp."
+            )
+
+        return paddle_result
+
+    except Exception as exc:
+        if force_paddleocr:
+            return ExtractResult(
+                text="",
+                page_count=0,
+                engine=f"pymupdf+paddleocr-v2-subprocess:{language}",
+                warning=str(exc),
+            )
+
+        direct_result = extract_text_by_pymupdf(pdf_path)
+
+        direct_result.warning = (
+            "PDF không có text sẵn hoặc OCR ảnh thất bại bằng PaddleOCR v2 worker. "
+            f"Chi tiết: {exc}"
+        )
+
+        return direct_result
+
+def run_ocr_for_digital_file(
+    digital_file: DigitalFile,
+    user=None,
+    language: str = "vi",
+    force: bool = False,
+    force_paddleocr: bool = False,
+) -> OcrJob:
+    """
+    Chạy OCR cho DigitalFile.
+
+    force=False:
+        Nếu đã có job COMPLETED có text thì trả lại job mới nhất.
+
+    force=True:
+        Chạy lại OCR và tạo job mới.
+    """
+
+    if not force:
+        existing_job = (
+            OcrJob.objects
+            .filter(
+                digital_file=digital_file,
+                status=OcrJob.Status.COMPLETED,
+            )
+            .exclude(extracted_text="")
+            .order_by("-created_at", "-id")
+            .first()
+        )
+
+        if existing_job:
+            return existing_job
+
+    job = OcrJob.objects.create(
+        digital_file=digital_file,
+        profile=digital_file.profile,
+        document=digital_file.document,
+        created_by=user if user and user.is_authenticated else None,
+        status=OcrJob.Status.PENDING,
+        language=language,
+    )
+
+    job.status = OcrJob.Status.RUNNING
+    job.started_at = timezone.now()
+    job.save(update_fields=["status", "started_at", "updated_at"])
+
+    try:
+        if getattr(digital_file, "is_deleted", False):
+            raise ValueError("File số hóa đã bị xóa mềm, không thể OCR.")
+
+        if not is_pdf_file(digital_file):
+            raise ValueError("OCR hiện chỉ hỗ trợ file PDF.")
+
+        file_path = get_file_path(digital_file)
+
+        if not file_path:
+            raise FileNotFoundError("Không lấy được đường dẫn file vật lý.")
+
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(f"File vật lý không tồn tại: {file_path}")
+
+        result = extract_text_from_pdf(
+            pdf_path=file_path,
+            language=language,
+            force_paddleocr=force_paddleocr,
+        )
+
+        extracted_text = result.text.strip()
+        normalized_text = normalize_search_text(extracted_text)
+
+        if not extracted_text and result.warning:
+            job.status = OcrJob.Status.FAILED
+            job.engine = result.engine
+            job.page_count = result.page_count
+            job.character_count = 0
+            job.extracted_text = ""
+            job.normalized_text = ""
+            job.error_message = result.warning
+            job.finished_at = timezone.now()
+            job.save(
+                update_fields=[
+                    "status",
+                    "engine",
+                    "page_count",
+                    "character_count",
+                    "extracted_text",
+                    "normalized_text",
+                    "error_message",
+                    "finished_at",
+                    "updated_at",
+                ]
+            )
+
+            return job
+
+        job.status = OcrJob.Status.COMPLETED
+        job.engine = result.engine
+        job.page_count = result.page_count
+        job.character_count = len(extracted_text)
+        job.extracted_text = extracted_text
+        job.normalized_text = normalized_text
+        job.error_message = result.warning or ""
+        job.finished_at = timezone.now()
+        job.save(
+            update_fields=[
+                "status",
+                "engine",
+                "page_count",
+                "character_count",
+                "extracted_text",
+                "normalized_text",
+                "error_message",
+                "finished_at",
+                "updated_at",
+            ]
+        )
+
+        return job
+
+    except Exception as exc:
+        job.status = OcrJob.Status.FAILED
+        job.error_message = str(exc)
+        job.finished_at = timezone.now()
+        job.save(
+            update_fields=[
+                "status",
+                "error_message",
+                "finished_at",
+                "updated_at",
+            ]
+        )
+
+        return job
+
+def search_ocr_text(query: str, limit: int = 50):
+    normalized_query = normalize_search_text(query or "")
+
+    queryset = (
+        OcrJob.objects
+        .select_related("digital_file", "profile", "document", "created_by")
+        .filter(status=OcrJob.Status.COMPLETED)
+        .exclude(normalized_text="")
+    )
+
+    tokens = [token for token in normalized_query.split() if token]
+
+    for token in tokens:
+        queryset = queryset.filter(normalized_text__icontains=token)
+
+    return queryset.order_by("-created_at", "-id")[:limit]
+
+
+def get_latest_ocr_job_for_file(digital_file_id: int) -> Optional[OcrJob]:
+    """
+    Lấy OCR job mới nhất có text trước.
+    Nếu chưa có job có text thì mới lấy job mới nhất bất kỳ.
+    """
+
+    good_job = (
+        OcrJob.objects
+        .select_related("digital_file", "profile", "document", "created_by")
+        .filter(
+            digital_file_id=digital_file_id,
+            status=OcrJob.Status.COMPLETED,
+        )
+        .exclude(extracted_text="")
+        .order_by("-created_at", "-id")
+        .first()
+    )
+
+    if good_job:
+        return good_job
+
+    return (
+        OcrJob.objects
+        .select_related("digital_file", "profile", "document", "created_by")
+        .filter(digital_file_id=digital_file_id)
+        .order_by("-created_at", "-id")
+        .first()
+    )

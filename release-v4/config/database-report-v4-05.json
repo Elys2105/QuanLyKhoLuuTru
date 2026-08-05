@@ -1,0 +1,19 @@
+{
+    "pack":  "V4-05",
+    "status":  "PASS",
+    "generated_at":  "2026-07-31T01:28:49.0976005+07:00",
+    "postgres_tools_ready":  true,
+    "windows_service_detected":  true,
+    "port_5432_listening":  true,
+    "postgres_ready":  true,
+    "django_audit_created":  true,
+    "migration_plan_created":  true,
+    "backup_restore_scripts_created":  true,
+    "database_modified":  false,
+    "current_media_modified":  false,
+    "warnings":  [
+                     "Django database audit that bai",
+                     "Khong doc duoc migration plan vi PostgreSQL chua san sang. ExitCode=1"
+                 ],
+    "log":  "D:\\archive-management\\release-v4\\logs\\PACK_V4_05_20260731_012843.log"
+}

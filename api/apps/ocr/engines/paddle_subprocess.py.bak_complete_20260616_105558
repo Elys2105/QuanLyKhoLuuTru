@@ -1,0 +1,100 @@
+﻿import json
+import subprocess
+from pathlib import Path
+
+from django.conf import settings
+
+
+def get_default_paddle_python_path() -> Path:
+    return Path(settings.BASE_DIR) / ".venv_ocr_paddle" / "Scripts" / "python.exe"
+
+
+def get_default_worker_path() -> Path:
+    return Path(settings.BASE_DIR) / "scripts" / "paddle_ocr_worker.py"
+
+
+def run_paddle_ocr_worker(
+    pdf_path: str | Path,
+    language: str = "vi",
+    dpi: int = 200,
+    timeout_seconds: int = 900,
+) -> dict:
+    pdf_path = Path(pdf_path)
+    paddle_python = Path(
+        getattr(settings, "OCR_PADDLE_PYTHON", get_default_paddle_python_path())
+    )
+    worker_path = Path(
+        getattr(settings, "OCR_PADDLE_WORKER", get_default_worker_path())
+    )
+
+    if not pdf_path.exists():
+        raise FileNotFoundError(f"PDF không tồn tại: {pdf_path}")
+
+    if not paddle_python.exists():
+        raise FileNotFoundError(
+            f"Không tìm thấy Python OCR Paddle riêng: {paddle_python}"
+        )
+
+    if not worker_path.exists():
+        raise FileNotFoundError(
+            f"Không tìm thấy OCR worker: {worker_path}"
+        )
+
+    command = [
+        str(paddle_python),
+        str(worker_path),
+        "--pdf",
+        str(pdf_path),
+        "--language",
+        language,
+        "--dpi",
+        str(dpi),
+    ]
+
+    completed = subprocess.run(
+        command,
+        cwd=str(settings.BASE_DIR),
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        timeout=timeout_seconds,
+    )
+
+    stdout = (completed.stdout or "").strip()
+    stderr = (completed.stderr or "").strip()
+
+    if completed.returncode != 0:
+        raise RuntimeError(
+            "PaddleOCR worker chạy lỗi.\n"
+            f"Return code: {completed.returncode}\n"
+            f"STDOUT:\n{stdout}\n"
+            f"STDERR:\n{stderr}"
+        )
+
+    # Worker phải trả JSON ở stdout.
+    # Nếu stdout có nhiều dòng, lấy dòng JSON cuối cùng.
+    json_line = ""
+
+    for line in reversed(stdout.splitlines()):
+        line = line.strip()
+        if line.startswith("{") and line.endswith("}"):
+            json_line = line
+            break
+
+    if not json_line:
+        raise RuntimeError(
+            "PaddleOCR worker không trả JSON hợp lệ.\n"
+            f"STDOUT:\n{stdout}\n"
+            f"STDERR:\n{stderr}"
+        )
+
+    payload = json.loads(json_line)
+
+    if not payload.get("success"):
+        raise RuntimeError(
+            payload.get("error")
+            or "PaddleOCR worker trả về success=false."
+        )
+
+    return payload

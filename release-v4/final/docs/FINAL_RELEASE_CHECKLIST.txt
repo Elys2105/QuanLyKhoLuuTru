@@ -1,0 +1,31 @@
+FINAL RELEASE CHECKLIST - QUAN LY KHO LUU TRU V4
+
+[ ] Server Setup.exe co mat
+[ ] Tat ca Server .bin co mat
+[ ] Client Setup.exe co mat
+[ ] SHA256SUMS.txt co mat
+[ ] FINAL_RELEASE_MANIFEST.json co mat
+[ ] INSTALL_GUIDE.txt co mat
+[ ] RELEASE_NOTES_V4.txt co mat
+[ ] UPDATE_V4.ps1 co mat
+[ ] UNINSTALL_V4.ps1 co mat
+[ ] Server installer cai thanh cong tren may test sach
+[ ] Client installer cai thanh cong tren may test sach
+[ ] PostgreSQL da cai va chay
+[ ] Database da tao
+[ ] Django migrate thanh cong
+[ ] NSSM da cai
+[ ] Backend service RUNNING
+[ ] Frontend service RUNNING
+[ ] Port 3000 LISTEN
+[ ] Port 8000 LISTEN
+[ ] Port 5432 LISTEN noi bo
+[ ] Firewall TCP 3000 da mo tren Private network
+[ ] Client truy cap duoc Server
+[ ] Full health check PASS
+[ ] Full backup thanh cong
+[ ] Backup verify PASS
+[ ] Restore test thanh cong
+[ ] Da chon dung IP LAN that, khong phai Radmin VPN
+[ ] api\media goc khong bi thay doi
+[ ] Database goc khong bi reset
