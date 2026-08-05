@@ -87,3 +87,16 @@ desktop.ini
 .vscode/*.log
 *.swp
 # <<< QLKLT V4-14 MANAGED IGNORE <<<
+
+# >>> QLKLT V4-14 WEB MONOREPO IGNORE >>>
+# Generated Electron desktop outputs
+/web/dist-desktop/
+
+# Historical manual backup copies; preserved in the V4-14 private baseline
+/web/electron/backup-*/
+/web/**/*.bak_*
+/web/**/*.bak_step*
+
+# Nested repository metadata must never be committed
+/web/.git/
+# <<< QLKLT V4-14 WEB MONOREPO IGNORE <<<
