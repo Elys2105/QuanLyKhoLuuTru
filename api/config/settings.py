@@ -80,6 +80,7 @@ INSTALLED_APPS = [
 
     # Local apps
     "apps.accounts",
+    "apps.workspaces",
     "apps.permissions",
     "apps.fonds",
     "apps.catalogs",
