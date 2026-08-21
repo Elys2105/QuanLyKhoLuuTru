@@ -64,6 +64,7 @@ export const API_ENDPOINTS = {
   digitalFiles: {
     list: "/api/digital-files/",
     detail: (id: ApiId) => `/api/digital-files/${id}/`,
+    registerBlob: "/api/digital-files/register-blob",
     preview: (id: ApiId) => `/api/digital-files/${id}/preview/`,
     download: (id: ApiId) => `/api/digital-files/${id}/download/`,
   },

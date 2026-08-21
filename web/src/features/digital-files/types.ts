@@ -15,6 +15,7 @@ export interface DigitalFile extends BaseEntity {
   document_title?: string | null;
 
   file?: string;
+  storage_path?: string;
   file_url?: string;
 
   original_name: string;

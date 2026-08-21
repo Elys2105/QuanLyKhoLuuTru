@@ -1,5 +1,5 @@
 import { API_ENDPOINTS } from "@/lib/api/endpoints";
-import { apiClient, cleanQueryParams } from "@/lib/api/client";
+import { apiClient, cleanQueryParams, getAccessToken } from "@/lib/api/client";
 import {
   normalizeListResponse,
   type MaybeWrappedListResponse,
@@ -39,27 +39,128 @@ export async function getDigitalFilesApi(
   return normalizeListResponse<DigitalFile>(response.data).results;
 }
 
+type DirectUploadTokenResponse = {
+  success: true;
+  uploadUrl: string;
+  pathname: string;
+  registrationTicket: string;
+  contentType: string;
+  validUntil: number;
+};
+
+async function cleanupUnregisteredBlob(
+  pathname: string,
+  registrationTicket: string,
+  accessToken: string,
+): Promise<void> {
+  try {
+    await fetch("/api/digital-files/direct-upload-cleanup", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json; charset=utf-8",
+      },
+      body: JSON.stringify({
+        pathname,
+        registration_ticket: registrationTicket,
+      }),
+      cache: "no-store",
+    });
+  } catch {
+    // Best effort only. Registration remains the source-of-truth boundary.
+  }
+}
+
 export async function uploadDigitalFileApi(
   payload: DigitalFileUploadPayload,
 ): Promise<DigitalFile> {
-  const formData = new FormData();
+  const accessToken = getAccessToken();
 
-  formData.append("profile", String(payload.profile));
-  formData.append("file", payload.file);
-  formData.append("is_primary", payload.is_primary ? "true" : "false");
-
-  if (payload.document) {
-    formData.append("document", String(payload.document));
+  if (!accessToken) {
+    throw new Error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
   }
 
-  const response = await apiClient.post<
-    DigitalFile | ApiResponse<DigitalFile>
-  >(
-    API_ENDPOINTS.digitalFiles.list,
-    formData,
+  if (!payload.file || payload.file.size <= 0) {
+    throw new Error("File upload không hợp lệ.");
+  }
+
+  if (payload.file.size > 100 * 1024 * 1024) {
+    throw new Error("File vượt quá giới hạn 100 MB.");
+  }
+
+  const tokenResponse = await fetch(
+    "/api/digital-files/direct-upload-token",
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json; charset=utf-8",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        profile: payload.profile,
+        document: payload.document ?? null,
+        original_name: payload.file.name,
+        file_size: payload.file.size,
+        mime_type: payload.file.type || "",
+        is_primary: Boolean(payload.is_primary),
+      }),
+      cache: "no-store",
+    },
   );
 
-  return unwrapDetailResponse<DigitalFile>(response.data);
+  if (!tokenResponse.ok) {
+    const message = await tokenResponse.text();
+
+    throw new Error(
+      message || "Không thể cấp quyền upload file trực tiếp.",
+    );
+  }
+
+  const uploadGrant =
+    (await tokenResponse.json()) as DirectUploadTokenResponse;
+
+  const putResponse = await fetch(uploadGrant.uploadUrl, {
+    method: "PUT",
+    headers: {
+      "Content-Type": uploadGrant.contentType,
+    },
+    body: payload.file,
+  });
+
+  if (!putResponse.ok) {
+    throw new Error(
+      `Upload Private Blob thất bại (HTTP ${putResponse.status}).`,
+    );
+  }
+
+  try {
+    const response = await apiClient.post<
+      DigitalFile | ApiResponse<DigitalFile>
+    >(
+      API_ENDPOINTS.digitalFiles.registerBlob,
+      {
+        profile: payload.profile,
+        document: payload.document ?? null,
+        blob_path: uploadGrant.pathname,
+        registration_ticket: uploadGrant.registrationTicket,
+        original_name: payload.file.name,
+        file_size: payload.file.size,
+        mime_type: uploadGrant.contentType,
+        is_primary: Boolean(payload.is_primary),
+      },
+    );
+
+    return unwrapDetailResponse<DigitalFile>(response.data);
+  } catch (error) {
+    await cleanupUnregisteredBlob(
+      uploadGrant.pathname,
+      uploadGrant.registrationTicket,
+      accessToken,
+    );
+
+    throw error;
+  }
 }
 
 export async function getDigitalFilePreviewBlobApi(

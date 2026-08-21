@@ -214,19 +214,27 @@ class DigitalFile(BaseModel):
             if not self.original_name:
                 self.original_name = os.path.basename(self.file.name)
 
-            if hasattr(self.file, "size"):
-                self.file_size = self.file.size
+            uploaded_file = getattr(self.file, "_file", None)
 
-            uploaded_content_type = getattr(
-                getattr(self.file, "file", None),
-                "content_type",
-                None,
-            )
+            if uploaded_file is not None:
+                uploaded_size = getattr(uploaded_file, "size", None)
 
-            self.mime_type = get_digital_file_mime_type(
-                self.original_name or self.file.name,
-                uploaded_content_type,
-            )
+                if uploaded_size is not None:
+                    self.file_size = uploaded_size
+
+                uploaded_content_type = getattr(
+                    uploaded_file,
+                    "content_type",
+                    None,
+                )
+            else:
+                uploaded_content_type = None
+
+            if not self.mime_type:
+                self.mime_type = get_digital_file_mime_type(
+                    self.original_name or self.file.name,
+                    uploaded_content_type,
+                )
 
         super().save(*args, **kwargs)
 

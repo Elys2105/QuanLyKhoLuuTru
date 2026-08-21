@@ -6,13 +6,14 @@ import {
 import { NextRequest, NextResponse } from "next/server";
 
 const DEFAULT_BACKEND_BASE =
-  "https://qlklt-v414-ohokt70at-chaunguyen22012005-6505s-projects.vercel.app";
+  "https://qlklt-v414-he3f3zfz5-chaunguyen22012005-6505s-projects.vercel.app";
 
 const ROUTE_PROOF = "V05B";
 const SIGNED_URL_TTL_MS = 5 * 60 * 1000;
 
 type DigitalFileMeta = {
   id?: number | string;
+  storage_path?: string | null;
   original_name?: string | null;
   file_size?: number | null;
   mime_type?: string | null;
@@ -50,7 +51,19 @@ function normalizedExtension(name?: string | null): string {
 function pathnameForDigitalFile(
   id: string,
   originalName?: string | null,
+  storagePath?: string | null,
 ): string {
+  const remotePath = String(storagePath || "")
+    .trim()
+    .replace(/^\/+/, "");
+
+  if (
+    remotePath.startsWith("digital-files/") &&
+    !remotePath.split("/").includes("..")
+  ) {
+    return remotePath;
+  }
+
   const extension = normalizedExtension(originalName);
 
   return `digital-files/${encodeURIComponent(id)}/source${extension}`;
@@ -158,6 +171,7 @@ export async function signedDigitalFileRedirect(
   const pathname = pathnameForDigitalFile(
     id,
     meta.original_name,
+    meta.storage_path,
   );
 
   if (

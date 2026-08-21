@@ -8,6 +8,7 @@ class DigitalFileSerializer(serializers.ModelSerializer):
     profile_code = serializers.CharField(source="profile.profile_code", read_only=True)
     profile_title = serializers.CharField(source="profile.title", read_only=True)
     document_title = serializers.CharField(source="document.title", read_only=True)
+    storage_path = serializers.SerializerMethodField(read_only=True)
     file_url = serializers.SerializerMethodField(read_only=True)
     preview_url = serializers.SerializerMethodField(read_only=True)
     download_url = serializers.SerializerMethodField(read_only=True)
@@ -32,6 +33,7 @@ class DigitalFileSerializer(serializers.ModelSerializer):
             "document",
             "document_title",
             "file",
+            "storage_path",
             "file_url",
             "preview_url",
             "download_url",
@@ -58,6 +60,7 @@ class DigitalFileSerializer(serializers.ModelSerializer):
             "profile_code",
             "profile_title",
             "document_title",
+            "storage_path",
             "file_url",
             "preview_url",
             "download_url",
@@ -133,6 +136,12 @@ class DigitalFileSerializer(serializers.ModelSerializer):
             ).exclude(id=instance.id).update(is_primary=False)
 
         return instance
+
+    def get_storage_path(self, obj) -> str:
+        try:
+            return str(obj.file.name or "")
+        except Exception:
+            return ""
 
     # STEP21_12B_SECURE_FILE_URLS
     def _build_secure_file_url(self, obj, action: str) -> str | None:
