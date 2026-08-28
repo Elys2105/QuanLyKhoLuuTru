@@ -1,3 +1,14 @@
+from apps.ocr.worker_views import (
+    WorkerClaimView,
+    WorkerCompleteView,
+    WorkerDownloadTicketValidateView,
+    WorkerFailView,
+    WorkerHealthView,
+    WorkerHeartbeatView,
+    WorkerResultChunkView,
+    WorkerResultResetView,
+)
+
 from django.urls import path
 
 from apps.ocr.views import (
@@ -27,4 +38,12 @@ urlpatterns = [
     path("digital-files/<int:digital_file_id>/profile-suggestion/", OcrProfileSuggestionView.as_view(), name="ocr-profile-suggestion"),
     path("digital-files/<int:digital_file_id>/delete/", OcrDigitalFileDeleteView.as_view(), name="ocr-digital-file-delete"),
     path("search/", OcrSearchView.as_view(), name="ocr-search"),
+    path("worker/health/", WorkerHealthView.as_view(), name="ocr-worker-health"),
+    path("worker/claim/", WorkerClaimView.as_view(), name="ocr-worker-claim"),
+    path("worker/download-ticket/validate/", WorkerDownloadTicketValidateView.as_view(), name="ocr-worker-download-ticket-validate"),
+    path("worker/jobs/<int:job_id>/heartbeat/", WorkerHeartbeatView.as_view(), name="ocr-worker-heartbeat"),
+    path("worker/jobs/<int:job_id>/result-reset/", WorkerResultResetView.as_view(), name="ocr-worker-result-reset"),
+    path("worker/jobs/<int:job_id>/result-chunk/", WorkerResultChunkView.as_view(), name="ocr-worker-result-chunk"),
+    path("worker/jobs/<int:job_id>/complete/", WorkerCompleteView.as_view(), name="ocr-worker-complete"),
+    path("worker/jobs/<int:job_id>/fail/", WorkerFailView.as_view(), name="ocr-worker-fail"),
 ]

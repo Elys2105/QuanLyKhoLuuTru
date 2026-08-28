@@ -1,4 +1,5 @@
-﻿from django.conf import settings
+import uuid
+from django.conf import settings
 from django.db import models
 
 
@@ -59,6 +60,55 @@ class OcrJob(models.Model):
         choices=Mode.choices,
         default=Mode.FAST,
         verbose_name="Chế độ OCR",
+    )
+
+    pipeline_id = models.UUIDField(
+        null=True,
+        blank=True,
+        editable=False,
+        verbose_name="Pipeline OCR",
+    )
+
+    lease_owner = models.CharField(
+        max_length=128,
+        blank=True,
+        default="",
+        verbose_name="Worker đang giữ lease",
+    )
+
+    lease_token = models.UUIDField(
+        null=True,
+        blank=True,
+        editable=False,
+        verbose_name="Lease token",
+    )
+
+    lease_expires_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name="Lease hết hạn",
+    )
+
+    heartbeat_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name="Heartbeat gần nhất",
+    )
+
+    attempt_count = models.PositiveSmallIntegerField(
+        default=0,
+        verbose_name="Số lần đã claim",
+    )
+
+    max_attempts = models.PositiveSmallIntegerField(
+        default=3,
+        verbose_name="Số lần thử tối đa",
+    )
+
+    next_retry_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name="Cho phép retry từ",
     )
 
     current_page = models.PositiveIntegerField(
@@ -145,6 +195,18 @@ class OcrJob(models.Model):
             models.Index(fields=["profile"]),
             models.Index(fields=["document"]),
             models.Index(fields=["created_at"]),
+            models.Index(
+                fields=["status", "next_retry_at"],
+                name="ocr_jobs_status_retry_idx",
+            ),
+            models.Index(
+                fields=["pipeline_id", "ocr_mode"],
+                name="ocr_jobs_pipe_mode_idx",
+            ),
+            models.Index(
+                fields=["lease_expires_at"],
+                name="ocr_jobs_lease_exp_idx",
+            ),
         ]
         verbose_name = "OCR job"
         verbose_name_plural = "OCR jobs"

@@ -1,4 +1,4 @@
-const BACKEND_ORIGIN = "https://qlklt-v414-he3f3zfz5-chaunguyen22012005-6505s-projects.vercel.app";
+const BACKEND_ORIGIN = "https://qlklt-v414-api.vercel.app";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";

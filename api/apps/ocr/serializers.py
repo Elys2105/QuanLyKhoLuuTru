@@ -1,4 +1,4 @@
-﻿from rest_framework import serializers
+from rest_framework import serializers
 from apps.ocr.models import OcrJob
 
 
@@ -30,6 +30,13 @@ class OcrJobSerializer(serializers.ModelSerializer):
             "status_display",
             "ocr_mode",
             "ocr_mode_display",
+            "pipeline_id",
+            "lease_owner",
+            "lease_expires_at",
+            "heartbeat_at",
+            "attempt_count",
+            "max_attempts",
+            "next_retry_at",
             "current_page",
             "progress_percent",
             "engine",

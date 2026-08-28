@@ -304,32 +304,16 @@ def main():
             )
 
             if args.mode == "fast":
-                page_texts = []
-
-                with contextlib.redirect_stdout(sys.stderr):
-                    ocr = build_fast_ocr()
-
-                for page_number, image_path in enumerate(image_paths, start=1):
-                    page_started = time.time()
-
-                    with contextlib.redirect_stdout(sys.stderr):
-                        text = run_fast_page(ocr, image_path)
-
-                    seconds = round(time.time() - page_started, 2)
-
-                    page_texts.append({
-                        "page": page_number,
-                        "text": text,
-                        "seconds": seconds,
-                    })
-
-                    print(
-                        f"FAST PAGE {page_number}/{len(image_paths)} done in {seconds}s",
-                        file=sys.stderr,
-                        flush=True,
+                # V82R18: scanned Vietnamese FAST keeps the fast text-layer shortcut above,
+                # but image recognition uses Paddle detection + VietOCR vgg_transformer
+                # instead of PaddleOCR's generic recognizer, which drops/corrupts diacritics.
+                if args.vietocr_model != "vgg_transformer":
+                    raise RuntimeError(
+                        "FAST VietOCR model contract must be vgg_transformer; got "
+                        + str(args.vietocr_model)
                     )
-
-                engine = "paddle-fast"
+                page_texts = run_quality_pages(image_paths, args)
+                engine = f"paddle-det+vietocr-rec:{args.vietocr_model}"
 
             else:
                 page_texts = run_quality_pages(image_paths, args)

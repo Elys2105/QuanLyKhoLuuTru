@@ -370,10 +370,16 @@ export function DocumentsManagerCard({
       }
 
       if (isPdfFile(file)) {
-        await runOcrForDigitalFileApi(uploadedFileId);
-        setQuickPdfMessage(
-          `Đã tạo bản ghi "${titleFromFile}", upload PDF và bắt đầu OCR nhanh.`,
-        );
+        try {
+          await runOcrForDigitalFileApi(uploadedFileId);
+          setQuickPdfMessage(
+            `Đã tạo bản ghi "${titleFromFile}", upload PDF và bắt đầu OCR nhanh.`,
+          );
+        } catch {
+          setQuickPdfMessage(
+            `Đã tạo bản ghi "${titleFromFile}" và upload PDF thành công; OCR chưa khởi chạy. Không tạo lại bản ghi.`,
+          );
+        }
       } else {
         setQuickPdfMessage(
           `Đã tạo bản ghi "${titleFromFile}" và upload file vào bản ghi.`,
