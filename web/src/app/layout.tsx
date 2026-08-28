@@ -1,3 +1,4 @@
+import { OcrCompletionNotifier } from "@/features/ocr/components/ocr-completion-notifier";
 import type { Metadata } from "next";
 
 import { Providers } from "@/app/providers";
@@ -20,6 +21,7 @@ export default function RootLayout({
         <Providers>
           {children}
         </Providers>
+              <OcrCompletionNotifier />
       </body>
     </html>
   );

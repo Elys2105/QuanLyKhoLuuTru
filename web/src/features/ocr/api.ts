@@ -1,3 +1,4 @@
+import { registerOcrCompletionWatch } from "@/features/ocr/completion-watch";
 import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { apiClient, cleanQueryParams } from "@/lib/api/client";
 import type { ApiResponse } from "@/types/api";
@@ -56,7 +57,12 @@ export async function runOcrForDigitalFileApi(
     {},
   );
 
-  return unwrapData<OcrRunResult>(response.data);
+  const result = unwrapData<OcrRunResult>(response.data);
+  const targetJob = result.quality_job ?? result.fast_job ?? result.job;
+
+  registerOcrCompletionWatch(digitalFileId, targetJob);
+
+  return result;
 }
 
 export async function getOcrTextForDigitalFileApi(

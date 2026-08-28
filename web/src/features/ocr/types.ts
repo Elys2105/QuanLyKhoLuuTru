@@ -17,6 +17,13 @@ export interface OcrJob {
   id: ID;
   digital_file?: ID;
   digital_file_id?: ID;
+  digital_file_name?: string;
+  profile?: ID | null;
+  profile_code?: string | null;
+  profile_title?: string | null;
+  document?: ID | null;
+  document_code?: string | null;
+  document_title?: string | null;
   status?: OcrJobStatus;
   ocr_mode?: string;
   current_page?: number;
