@@ -1,0 +1,32 @@
+QUAN LY KHO LUU TRU V4.14 - HUONG DAN CAI DAT
+
+1. Tai bo cai:
+https://qlklt-v414-web-live.vercel.app/downloads/QuanLyKhoLuuTru_V4_14_05E_Native_WebView2_Setup.exe
+
+2. Kiem tra SHA256 neu can:
+bdc0dba9fb35caec556939eca6d7c7c34a942529dea4000c0c802f061969757f
+
+3. Pham vi client cai dat:
+- Windows 10/11 64-bit.
+- Can ket noi Internet.
+- Neu may chua co Microsoft Edge WebView2 Runtime, bo cai co kem WebView2 Evergreen Bootstrapper de tu cai runtime.
+
+4. Cai dat:
+- Chay QuanLyKhoLuuTru_V4_14_05E_Native_WebView2_Setup.exe
+- Lam theo trinh cai dat.
+- Sau khi cai xong mo Quan Ly Kho Luu Tru tu Desktop hoac Start Menu.
+
+5. Ung dung ket noi truc tiep toi he thong trung tam:
+https://qlklt-v414-web-live.vercel.app
+
+6. Khong can cai tren may khach:
+- PostgreSQL
+- Django backend
+- OCR engine/model
+- Windows OCR worker
+
+OCR xu ly tren worker trung tam; du lieu luu tren he thong trung tam.
+
+7. Neu khong dung Windows 64-bit:
+Co the truy cap he thong truc tiep bang trinh duyet tai:
+https://qlklt-v414-web-live.vercel.app

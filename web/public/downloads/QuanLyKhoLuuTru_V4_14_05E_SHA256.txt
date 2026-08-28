@@ -1,0 +1,4 @@
+QuanLyKhoLuuTru V4.14
+File: QuanLyKhoLuuTru_V4_14_05E_Native_WebView2_Setup.exe
+SHA256: bdc0dba9fb35caec556939eca6d7c7c34a942529dea4000c0c802f061969757f
+Bytes: 3893211
