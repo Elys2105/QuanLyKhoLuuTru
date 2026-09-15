@@ -32,6 +32,10 @@
 /api/*.pdf
 /api/ocr_debug_context*.txt
 /api/*_result.json
+/api/ocr_quality_*.json
+/api/views_numbered.txt
+/api/profiles_export_*.xlsx
+/api/final-export*.xlsx
 **/db.sqlite3
 **/*.sqlite
 **/*.sqlite3
