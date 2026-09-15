@@ -50,8 +50,3 @@ Mặc định:
 - Backend: `http://127.0.0.1:8000`
 - Frontend: `http://localhost:3000`
 
-## Tác giả
-
-**Nguyễn Ngọc Bích Châu**  
-Sinh viên Công nghệ Thông tin - Chuyên ngành Công nghệ Phần mềm  
-GitHub: [Elys2105](https://github.com/Elys2105)
