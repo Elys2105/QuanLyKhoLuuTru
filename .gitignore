@@ -55,6 +55,16 @@
 **/*.bak
 **/*.old
 
+# Backups and generated exports
+/backups/
+**/*.backup
+**/*backup*.zip
+**/*media*.zip
+/_reports/
+/file7_text_check.json
+/file7_text_utf8.txt
+/file7_text_cleaned_utf8.txt
+
 # Large ML/runtime artifacts
 **/*.onnx
 **/*.pdmodel
