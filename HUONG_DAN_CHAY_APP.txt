@@ -33,12 +33,17 @@ Hoac chay PowerShell:
   cd D:\archive-management
   powershell -ExecutionPolicy Bypass -File .\scripts\start-quanlykholuutru-local.ps1
 
-4. Tai khoan dang nhap hien tai
+4. Tai khoan dang nhap
 
-username: Admin
-password: Admin@123456789
+Khong luu tai khoan hoac mat khau that trong repository public.
+Su dung tai khoan duoc cau hinh rieng tren may trien khai hoac trong bien moi truong.
 
-Sau khi dua vao su dung that, can doi mat khau admin.
+Vi du:
+
+  username: <ADMIN_USERNAME>
+  password: <ADMIN_PASSWORD>
+
+Sau khi dua vao su dung that, can doi mat khau admin mac dinh.
 
 5. Cac dia chi noi bo
 
@@ -118,9 +123,8 @@ Chay PowerShell:
     -F c `
     -f "$backupDir\archive_db_$stamp.backup"
 
-Neu duoc hoi password, nhap:
-
-  123456789
+Neu duoc hoi password, nhap mat khau PostgreSQL da cau hinh tren may trien khai.
+Khong commit mat khau vao GitHub.
 
 10. Backup thu muc media va source
 
