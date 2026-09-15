@@ -19,10 +19,12 @@ HUONG DAN CHAY LOCAL - QuanLyKhoLuuTru
 
    http://localhost:3000
 
-5. Dang nhap bang tai khoan admin:
+5. Dang nhap bang tai khoan admin da duoc cau hinh tren may trien khai.
 
-   username: Admin
-   password: Admin@123456789
+   username: <ADMIN_USERNAME>
+   password: <ADMIN_PASSWORD>
+
+Khong luu tai khoan hoac mat khau that trong repository public.
 
 6. Neu app khong mo duoc, kiem tra port bang lenh:
 
